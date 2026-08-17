@@ -58,7 +58,7 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
         <div><h3>{title}</h3>{subtitle && <p>{subtitle}</p>}</div>
         <div className="chart-card-tools">
           <SourceBadge type={badge} />
-          <label className="chart-view-filter"><span>Chart period</span><select value={chartView} onChange={(event) => setChartView(event.target.value as ChartView)} aria-label={`${title} chart period`}><option value="selected">Selected period</option><option value="prior">Prior comparable</option></select></label>
+          <label className="chart-view-filter"><span>Chart period</span><select value={chartView} onChange={(event) => setChartView(event.target.value as ChartView)} aria-label={`${title} chart period`}><option value="selected">Selected period</option><option value="prior">Prior period</option></select></label>
         </div>
       </header>
       <ChartViewProvider value={chartView}>{children}</ChartViewProvider>
