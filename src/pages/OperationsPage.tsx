@@ -28,7 +28,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       </section>
 
       <section aria-labelledby="glance-title">
-        <div className="section-heading"><div><h2 id="glance-title">The operating picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
+        <div className="section-heading"><div><h2 id="glance-title">The Operating Picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
         <div className="mini-metric-grid">
           <MiniMetric icon={UsersRound} label="Attendance" value={Math.round(attendance).toLocaleString()} detail={`+5% vs. ${data.comparisonLabel}`} definition="Unique visitors who redeemed admission and checked in during the selected period." />
           <MiniMetric icon={Gauge} label="Peak utilization" value="91%" detail="2:00–3:00 PM · At risk" definition="Highest hourly attendance divided by available visitor capacity." />
