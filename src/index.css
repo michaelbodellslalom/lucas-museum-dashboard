@@ -161,7 +161,7 @@ h1, h2, h3 { letter-spacing: 0; }
 .digital-metrics { margin-bottom: 14px; }
 .mini-metric { min-height: 125px; padding: 15px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); display: flex; flex-direction: column; }
 .mini-metric-heading { min-height: 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; color: var(--blue); }.mini-metric-heading .info-button { margin: -2px -2px 0 0; }.mini-metric > span { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
-.mini-metric > strong { margin: 5px 0; font-size: 22px; }.mini-metric-comparison { margin: 1px 0 7px; width: fit-content; gap: 2px; font-size: 11px; }.mini-metric > small { margin-top: auto; color: var(--muted); font-size: 10px; line-height: 1.35; }
+.mini-metric > strong { margin: 5px 0; font-size: 22px; }.mini-metric-comparison { margin: 1px 0 7px; width: fit-content; gap: 2px; font-size: 11px; }.mini-metric-comparison i { margin: 0 2px; font-style: normal; font-weight: 500; }.mini-metric > small { margin-top: auto; color: var(--muted); font-size: 10px; line-height: 1.35; }
 .operations-band { padding-top: 44px; border-top: 3px solid var(--blue); }.onsite-band { border-top-color: var(--green); }.digital-band { border-top-color: var(--plum); }
 .ops-subsection { margin-top: 34px; padding-top: 28px; border-top: 1px solid var(--line); }
 .subsection-title { margin-bottom: 15px; display: flex; justify-content: space-between; gap: 15px; align-items: flex-start; }
