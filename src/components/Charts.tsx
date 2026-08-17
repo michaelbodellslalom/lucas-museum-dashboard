@@ -51,7 +51,7 @@ export function SalesAttendanceChart({ data }: { data: TimePoint[] }) {
       <CartesianGrid stroke="#e6e2da" vertical={false} />
       <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis tickLine={false} axisLine={false} fontSize={12} />
-      <Tooltip contentStyle={tooltipStyle} />
+      <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
       <Bar dataKey="current" name="Tickets sold" fill="#285f7a" radius={[3, 3, 0, 0]} />
       <Line type="monotone" dataKey="secondary" name="Visitors checked in" stroke="#bf6449" strokeWidth={3} dot={{ r: 3 }} />
@@ -82,8 +82,8 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
         <CartesianGrid stroke="#e6e2da" horizontal={false} />
         <XAxis type="number" hide />
         <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={82} fontSize={12} />
-        <Tooltip contentStyle={tooltipStyle} />
-        <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#4f7b65" radius={[0, 3, 3, 0]}><LabelList dataKey="value" position="right" fontSize={12} /></Bar>
+        <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
+        <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#4f7b65" radius={[0, 3, 3, 0]}><LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
       </BarChart></ResponsiveContainer>
     </AccessibleChart>
   </div>
@@ -170,7 +170,7 @@ export function AreaPairChart({ data, label, firstName, secondName }: { data: Ti
       <CartesianGrid stroke="#e6e2da" vertical={false} />
       <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis tickLine={false} axisLine={false} fontSize={12} />
-      <Tooltip contentStyle={tooltipStyle} />
+      <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
       <Area type="monotone" dataKey="current" name={firstName} stroke="#285f7a" fill="#d9e5e9" strokeWidth={2} />
       <Area type="monotone" dataKey="secondary" name={secondName} stroke="#bf6449" fill="#f2ddd5" strokeWidth={2} />
@@ -197,9 +197,9 @@ export function FlowMap() {
   const flow = view === 'selected' ? { upper: 438, lower: 612 } : { upper: 403, lower: 563 }
   return <div className="flow-map" role="img" aria-label="Simplified visitor flow between museum floors and zones">
     <div className="flow-node flow-5"><b>5</b><span>Dining + garden</span><small>Downflow peak 3:10 PM</small></div>
-    <div className="flow-arrow">↓ <span>{flow.upper}</span></div>
+    <div className="flow-arrow">↓ <span>{flow.upper.toLocaleString()}</span></div>
     <div className="flow-node flow-4"><b>4</b><span>Galleries + theaters</span><small>Elevator upflow peak 1:25 PM</small></div>
-    <div className="flow-arrow">↓ <span>{flow.lower}</span></div>
+    <div className="flow-arrow">↓ <span>{flow.lower.toLocaleString()}</span></div>
     <div className="flow-node flow-1"><b>1</b><span>Lobby + retail</span><small>Arrival peak 1:05 PM</small></div>
   </div>
 }
