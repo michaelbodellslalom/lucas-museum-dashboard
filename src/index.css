@@ -199,10 +199,10 @@ tbody th { min-width: 120px; font-size: 12px; } td:last-child { min-width: 200px
 .multi-select-trigger { width: 100%; min-width: 0; height: 36px; padding: 0 22px 0 7px; border: 1px solid #cec9be; border-radius: 4px; appearance: none; background: var(--paper); color: var(--ink); font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; text-align: left; }
 .multi-select-trigger.open { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(40,95,122,.12); }
 .multi-select-trigger svg { flex-shrink: 0; transition: transform 0.2s ease; }
-.multi-select-menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 50; margin-top: 4px; border: 1px solid #cec9be; border-radius: 4px; background: var(--paper); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
-.multi-select-option { display: flex; align-items: center; padding: 8px 11px; gap: 8px; cursor: pointer; }
+.multi-select-menu { position: fixed; z-index: 1000; margin-top: 4px; border: 1px solid #cec9be; border-radius: 4px; background: var(--paper); box-shadow: 0 4px 12px rgba(0,0,0,.15); max-height: 300px; overflow-y: auto; }
+.multi-select-option { display: flex; align-items: center; padding: 8px 11px; gap: 8px; cursor: pointer; white-space: nowrap; }
 .multi-select-option:hover { background: #f9f7f3; }
-.multi-select-option input[type="checkbox"] { cursor: pointer; width: 16px; height: 16px; margin: 0; }
+.multi-select-option input[type="checkbox"] { cursor: pointer; width: 16px; height: 16px; margin: 0; flex-shrink: 0; }
 .multi-select-option span { font-size: 11px; color: var(--ink); }
 
 @media (min-width: 1350px) { .chart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }.chart-wide { grid-column: span 2; } }

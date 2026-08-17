@@ -10,7 +10,7 @@ import {
   Users,
   X,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { filterOptions } from '../data/mockData'
 import type { Filters, PageId, ReportingPeriod } from '../types/dashboard'
 
@@ -33,7 +33,34 @@ const navigation = [
 
 function Field({ label, value, options, onChange }: { label: string; value: string[]; options: readonly string[]; onChange: (value: string[]) => void }) {
   const [open, setOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [menuStyle, setMenuStyle] = useState<{ top: number; left: number; width: number }>({ top: 0, left: 0, width: 0 })
   
+  useEffect(() => {
+    if (open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setMenuStyle({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+      })
+    }
+  }, [open])
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [open])
+
   const toggleOption = (option: string) => {
     if (value.includes(option)) {
       onChange(value.filter(v => v !== option))
@@ -45,10 +72,11 @@ function Field({ label, value, options, onChange }: { label: string; value: stri
   const displayLabel = value.length === 1 ? value[0] : value.length === options.length ? 'All selected' : `${value.length} selected`
 
   return (
-    <div className="filter-field">
+    <div className="filter-field" ref={containerRef}>
       <span>{label}</span>
       <div className="multi-select">
         <button 
+          ref={triggerRef}
           className={`multi-select-trigger ${open ? 'open' : ''}`}
           onClick={() => setOpen(!open)}
           aria-haspopup="listbox"
@@ -58,7 +86,14 @@ function Field({ label, value, options, onChange }: { label: string; value: stri
           <ChevronDown size={14} style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
         </button>
         {open && (
-          <div className="multi-select-menu">
+          <div 
+            className="multi-select-menu"
+            style={{
+              top: `${menuStyle.top}px`,
+              left: `${menuStyle.left}px`,
+              width: `${menuStyle.width}px`,
+            }}
+          >
             {options.map((option) => (
               <label key={option} className="multi-select-option">
                 <input
