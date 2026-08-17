@@ -62,10 +62,11 @@ export const membershipChannels: CategoryValue[] = [
 ]
 
 export const membershipLevels: CategoryValue[] = [
-  { name: 'Individual', value: 58, prior: 51 },
-  { name: 'Dual', value: 47, prior: 42 },
-  { name: 'Family', value: 39, prior: 34 },
-  { name: 'Supporter+', value: 20, prior: 16 },
+  { name: 'Access', value: 41, prior: 36 },
+  { name: 'Alliance', value: 49, prior: 43 },
+  { name: 'Corporate', value: 33, prior: 29 },
+  { name: 'Insider', value: 25, prior: 21 },
+  { name: 'Social', value: 16, prior: 14 },
 ]
 
 export const visitorDemographics: DemographicValue[] = [
