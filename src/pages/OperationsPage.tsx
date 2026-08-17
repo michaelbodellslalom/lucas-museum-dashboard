@@ -1,4 +1,4 @@
-import { ArrowRight, CarFront, Clock3, Gauge, Info, MapPin, MousePointerClick, UsersRound } from 'lucide-react'
+import { ArrowDownRight, ArrowRight, ArrowUpRight, CarFront, Clock3, Gauge, Info, MapPin, Minus, MousePointerClick, UsersRound } from 'lucide-react'
 import {
   AreaPairChart,
   CapacityChart,
@@ -11,8 +11,11 @@ import {
 import { ChartCard, SectionIntro, SourceBadge, StatusBadge } from '../components/DashboardUI'
 import type { DashboardData } from '../types/dashboard'
 
-function MiniMetric({ label, value, detail, definition, icon: Icon }: { label: string; value: string; detail: string; definition?: string; icon: typeof Gauge }) {
-  return <article className="mini-metric"><div className="mini-metric-heading"><Icon size={19} />{definition && <button className="info-button" aria-label={`Definition: ${definition}`} data-tooltip={definition}><Info size={15} /></button>}</div><span>{label}</span><strong>{value}</strong><small>{detail}</small></article>
+type MetricComparison = { direction: 'up' | 'down' | 'flat'; label: string; tone: 'good' | 'bad' | 'muted' }
+
+function MiniMetric({ label, value, detail, definition, comparison, icon: Icon }: { label: string; value: string; detail: string; definition?: string; comparison?: MetricComparison; icon: typeof Gauge }) {
+  const TrendIcon = comparison?.direction === 'up' ? ArrowUpRight : comparison?.direction === 'down' ? ArrowDownRight : Minus
+  return <article className="mini-metric"><div className="mini-metric-heading"><Icon size={19} />{definition && <button className="info-button" aria-label={`Definition: ${definition}`} data-tooltip={definition}><Info size={15} /></button>}</div><span>{label}</span><strong>{value}</strong>{comparison && <div className={`mini-metric-comparison trend trend-${comparison.tone}`}><TrendIcon size={15} />{comparison.label}</div>}<small>{detail}</small></article>
 }
 
 function InsightPanel({ title, items }: { title: string; items: { text: string; action: string }[] }) {
@@ -21,13 +24,27 @@ function InsightPanel({ title, items }: { title: string; items: { text: string; 
 
 export function OperationsPage({ data }: { data: DashboardData }) {
   const attendance = data.kpis.find((kpi) => kpi.id === 'attendance')?.value ?? 0
-  const capacity = data.kpis.find((kpi) => kpi.id === 'capacity')?.value ?? 0
+  const capacityKpi = data.kpis.find((kpi) => kpi.id === 'capacity')
+  const capacity = capacityKpi?.value ?? 0
   const galleryDwellTimes = data.dwellTime.filter((item) => item.name.toLowerCase().includes('gallery'))
   const averageGalleryVisit = galleryDwellTimes.length
     ? Math.round(galleryDwellTimes.reduce((total, item) => total + item.value, 0) / galleryDwellTimes.length)
     : 0
-  const latestReservations = data.reservationsTrend[data.reservationsTrend.length - 1]?.current ?? 0
-  const totalWebVisitors = data.funnel[0]?.value ?? 0
+  const averagePriorGalleryVisit = galleryDwellTimes.length
+    ? Math.round(galleryDwellTimes.reduce((total, item) => total + (item.prior ?? item.value), 0) / galleryDwellTimes.length)
+    : 0
+  const latestReservationPoint = data.reservationsTrend[data.reservationsTrend.length - 1]
+  const latestReservations = latestReservationPoint?.current ?? 0
+  const reservationComparison = latestReservationPoint?.prior
+    ? Math.round(((latestReservations - latestReservationPoint.prior) / latestReservationPoint.prior) * 100)
+    : 0
+  const webVisitors = data.funnel[0]
+  const totalWebVisitors = webVisitors?.value ?? 0
+  const webComparison = webVisitors?.prior
+    ? Math.round(((totalWebVisitors - webVisitors.prior) / webVisitors.prior) * 100)
+    : 0
+  const cinemaWaitTrend = data.queueRisks.find((risk) => risk.location === 'Cinema entry')?.trend ?? 0
+  const elevatorWaitTrend = data.queueRisks.find((risk) => risk.location === '4th-floor elevators')?.trend ?? 0
   return (
     <div className="page operations-page">
       <section className="page-hero operations-hero">
@@ -37,14 +54,14 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       <section aria-labelledby="glance-title">
         <div className="section-heading"><div><h2 id="glance-title">The Operating Picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
         <div className="mini-metric-grid operating-picture-grid">
-          <MiniMetric icon={Gauge} label="% of Capacity" value={`${Math.round(capacity)}%`} detail="Average completed-day utilization" definition="Checked-in attendance divided by available visitor capacity for the selected completed period." />
-          <MiniMetric icon={Clock3} label="Avg Cinema Wait Time" value="12 min" detail="Cinema / galleries" definition="Average observed or estimated wait for cinema and gallery entry during the selected period." />
-          <MiniMetric icon={Clock3} label="Avg Elevator Wait Time" value="9 min" detail="Completed-day average" definition="Average observed or estimated elevator wait during the selected completed period." />
-          <MiniMetric icon={UsersRound} label="Avg Elevator Party Size" value="3 people" detail="Instrumented proxy" definition="Average visitors per observed elevator party based on aggregated instrumentation." />
-          <MiniMetric icon={Clock3} label="Avg Museum Visit Duration" value="3h 08m" detail={`+11 min vs. ${data.comparisonLabel}`} definition="Average elapsed time between visitor arrival and departure during the selected period." />
-          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail="West, east, and archive galleries" definition="Average dwell time across west, east, and archive gallery observations." />
-          <MiniMetric icon={UsersRound} label="Restaurant Reservation / Repeat Customers" value={`${Math.round(latestReservations).toLocaleString()} / 9%`} detail="Reservations / repeat customers" definition="Completed restaurant reservations and the consented share attributed to repeat customers." />
-          <MiniMetric icon={MousePointerClick} label="Total Web Visitors" value={Math.round(totalWebVisitors).toLocaleString()} detail={`+4% vs. ${data.comparisonLabel}`} definition="Website sessions recorded during the selected completed period." />
+          <MiniMetric icon={Gauge} label="% of Capacity" value={`${Math.round(capacity)}%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${Math.round(Math.abs(capacityKpi?.comparison ?? 0))}%`, tone: 'bad' }} definition="Checked-in attendance divided by available visitor capacity for the selected completed period." />
+          <MiniMetric icon={Clock3} label="Avg Cinema Wait Time" value="12 min" detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: cinemaWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(cinemaWaitTrend)} min`, tone: cinemaWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated wait for cinema and gallery entry during the selected period." />
+          <MiniMetric icon={Clock3} label="Avg Elevator Wait Time" value="9 min" detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: elevatorWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(elevatorWaitTrend)} min`, tone: elevatorWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated elevator wait during the selected completed period." />
+          <MiniMetric icon={UsersRound} label="Avg Elevator Party Size" value="3 people" detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'flat', label: 'No change', tone: 'muted' }} definition="Average visitors per observed elevator party based on aggregated instrumentation." />
+          <MiniMetric icon={Clock3} label="Avg Museum Visit Duration" value="3h 08m" detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: '11 min', tone: 'good' }} definition="Average elapsed time between visitor arrival and departure during the selected period." />
+          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: averageGalleryVisit >= averagePriorGalleryVisit ? 'up' : 'down', label: `${Math.abs(averageGalleryVisit - averagePriorGalleryVisit)} min`, tone: averageGalleryVisit >= averagePriorGalleryVisit ? 'good' : 'muted' }} definition="Average dwell time across west, east, and archive gallery observations." />
+          <MiniMetric icon={UsersRound} label="Restaurant Reservation / Repeat Customers" value={`${Math.round(latestReservations).toLocaleString()} / 9%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: reservationComparison >= 0 ? 'up' : 'down', label: `${Math.abs(reservationComparison)}%`, tone: reservationComparison >= 0 ? 'good' : 'muted' }} definition="Completed restaurant reservations and the consented share attributed to repeat customers." />
+          <MiniMetric icon={MousePointerClick} label="Total Web Visitors" value={Math.round(totalWebVisitors).toLocaleString()} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: webComparison >= 0 ? 'up' : 'down', label: `${Math.abs(webComparison)}%`, tone: webComparison >= 0 ? 'good' : 'muted' }} definition="Website sessions recorded during the selected completed period." />
         </div>
       </section>
 
