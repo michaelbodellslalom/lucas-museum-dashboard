@@ -12,8 +12,8 @@ export const REPORTING_DATE = '2026-11-12'
 export const REFRESH_TIME = '2026-11-13T05:00:00-08:00'
 
 export const filterOptions = {
-  membershipLevel: ['All membership levels', 'Individual', 'Dual', 'Family', 'Supporter+'],
-  demographic: ['All demographics', 'Adult 18–64', 'Youth 6–17', 'Child under 6', 'Senior 65+', 'Student'],
+  membershipLevel: ['All membership levels', 'Access', 'Alliance', 'Corporate', 'Insider', 'Social'],
+  demographic: ['Select all', 'Active Military', 'Adult', 'Child (0-12)', 'Teen Student (13-17)', 'Senior (65+)'],
   ticketPrice: ['All ticket prices', 'Complimentary ($0)', 'Access ($1–$20)', 'Standard ($21–$30)', 'Premium ($31+)'],
   membershipChannel: ['All membership channels', 'Online', 'In person'],
 } as const

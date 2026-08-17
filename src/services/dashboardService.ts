@@ -15,8 +15,8 @@ const periodLabels: Record<ReportingPeriod, string> = {
 }
 
 const multipliers: Record<string, number> = {
-  Individual: 0.35, Dual: 0.29, Family: 0.24, 'Supporter+': 0.12,
-  'Adult 18–64': 0.54, 'Youth 6–17': 0.19, 'Child under 6': 0.08, 'Senior 65+': 0.14, Student: 0.06,
+  Access: 0.25, Alliance: 0.30, Corporate: 0.20, Insider: 0.15, Social: 0.10,
+  'Active Military': 0.08, Adult: 0.50, 'Child (0-12)': 0.12, 'Teen Student (13-17)': 0.15, 'Senior (65+)': 0.15,
   'Complimentary ($0)': 0.08, 'Access ($1–$20)': 0.25, 'Standard ($21–$30)': 0.43, 'Premium ($31+)': 0.24,
   Online: 0.68, 'In person': 0.32,
 }
