@@ -137,6 +137,7 @@ h1, h2, h3 { letter-spacing: 0; }
 .chart-view-filter span { color: var(--muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
 .chart-view-filter select { min-width: 126px; height: 30px; padding: 0 7px; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); color: var(--ink); font-size: 10px; cursor: pointer; }
 .chart-frame { width: 100%; min-width: 0; }.recharts-surface:focus { outline: none; }
+.executive-paired-card > .chart-frame, .executive-paired-card > .membership-chart, .executive-paired-card > .funnel-chart { height: 260px !important; min-height: 0; }
 .insight { min-height: 82px; margin: 10px -18px -18px; padding: 12px 18px; border-top: 1px solid var(--line-soft); background: #f6f3ed; display: grid; grid-template-columns: 102px 1fr; gap: 3px 10px; flex: 1; font-size: 11px; line-height: 1.5; }
 .insight > strong { color: var(--terracotta); text-transform: uppercase; }.insight > span { color: var(--muted); }.insight > b { grid-column: 2; color: var(--blue); font-size: 11px; }
 .membership-chart { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -195,6 +196,7 @@ tbody th { min-width: 120px; font-size: 12px; } td:last-child { min-width: 200px
 .privacy-note { align-items: center; }.privacy-note p { flex: 1; margin: 0; }.page-loading { min-height: 70vh; display: grid; place-items: center; color: var(--muted); font-size: 14px; }
 
 @media (min-width: 1350px) { .chart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }.chart-wide { grid-column: span 2; } }
+@media (min-width: 1051px) { .executive-paired-card > .card-heading { min-height: 86px; } }
 @media (max-width: 1180px) {
   .filter-bar, .page { padding-inline: 22px; }
   .mini-metric-grid { grid-template-columns: repeat(3, 1fr); }
