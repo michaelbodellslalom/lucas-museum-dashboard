@@ -93,9 +93,9 @@ export const capacityByHour: TimePoint[] = [
 
 export const queueRisks: QueueRisk[] = [
   { location: 'East galleries', peak: 24, trend: 6, threshold: 15, action: 'Open overflow queue; add host at 12:45 PM.' },
-  { location: '4th-floor elevators', peak: 18, trend: 4, threshold: 12, action: 'Stage elevator ambassador during 1–3 PM.' },
+  { location: '4th-floor elevators', peak: 18, trend: -2, threshold: 12, action: 'Stage elevator ambassador during 1–3 PM.' },
   { location: 'Restaurant host stand', peak: 16, trend: -2, threshold: 15, action: 'Hold current staffing; monitor reservations.' },
-  { location: 'Cinema entry', peak: 11, trend: 1, threshold: 12, action: 'Maintain pre-scan 15 minutes before showtime.' },
+  { location: 'Cinema entry', peak: 11, trend: -1, threshold: 12, action: 'Maintain pre-scan 15 minutes before showtime.' },
   { location: 'Visitor services', peak: 9, trend: -1, threshold: 10, action: 'No change; preserve flex coverage.' },
 ]
 
