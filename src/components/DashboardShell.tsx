@@ -15,7 +15,7 @@ import { filterOptions } from '../data/mockData'
 import type { Filters, PageId, ReportingPeriod } from '../types/dashboard'
 
 const periodOptions: { value: ReportingPeriod; label: string; start: string; end: string }[] = [
-  { value: 'last-business-day', label: 'Last complete business day', start: '2026-11-11', end: '2026-11-11' },
+  { value: 'last-business-day', label: 'Yesterday', start: '2026-11-11', end: '2026-11-11' },
   { value: 'last-7', label: 'Last 7 completed days', start: '2026-11-05', end: '2026-11-11' },
   { value: 'last-30', label: 'Last 30 completed days', start: '2026-10-13', end: '2026-11-11' },
   { value: 'mtd', label: 'Month to date', start: '2026-11-01', end: '2026-11-11' },

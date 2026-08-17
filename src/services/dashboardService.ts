@@ -6,7 +6,7 @@ export interface DashboardDataAdapter {
 }
 
 const periodLabels: Record<ReportingPeriod, string> = {
-  'last-business-day': 'Last complete business day',
+  'last-business-day': 'Yesterday',
   'last-7': 'Last 7 completed days',
   'last-30': 'Last 30 completed days',
   mtd: 'Month to date',
