@@ -225,14 +225,14 @@ export function Heatmap({ data }: { data: HeatmapCell[] }) {
   </div>
 }
 
-export function FlowMap() {
+export function FlowMap({ scale = 1 }: { scale?: number }) {
   const view = useChartView()
   const flow = view === 'selected' ? { upper: 438, lower: 612 } : { upper: 403, lower: 563 }
   return <div className="flow-map" role="img" aria-label="Simplified visitor flow between museum floors and zones">
     <div className="flow-node flow-5"><b>5</b><span>Dining + garden</span><small>Downflow peak 3:10 PM</small></div>
-    <div className="flow-arrow">↓ <span>{flow.upper.toLocaleString()}</span></div>
+    <div className="flow-arrow">↓ <span>{Math.round(flow.upper * scale).toLocaleString()}</span></div>
     <div className="flow-node flow-4"><b>4</b><span>Galleries + theaters</span><small>Elevator upflow peak 1:25 PM</small></div>
-    <div className="flow-arrow">↓ <span>{flow.lower.toLocaleString()}</span></div>
+    <div className="flow-arrow">↓ <span>{Math.round(flow.lower * scale).toLocaleString()}</span></div>
     <div className="flow-node flow-1"><b>1</b><span>Lobby + retail</span><small>Arrival peak 1:05 PM</small></div>
   </div>
 }

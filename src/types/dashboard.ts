@@ -82,6 +82,9 @@ export interface DashboardData {
   periodLabel: string
   dateRangeLabel: string
   comparisonLabel: string
+  rangeDays: number
+  periodScale: number
+  averageFactor: number
   scale: number
   kpis: Kpi[]
   alerts: AlertItem[]
