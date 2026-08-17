@@ -57,16 +57,16 @@ export const revenueMix: CategoryValue[] = [
 ]
 
 export const membershipChannels: CategoryValue[] = [
-  { name: 'Online', value: 111, prior: 92, color: '#285f7a' },
+  { name: 'Online', value: 111, prior: 92, color: '#4f7b65' },
   { name: 'In person', value: 53, prior: 51, color: '#bf6449' },
 ]
 
 export const membershipLevels: CategoryValue[] = [
-  { name: 'Access', value: 41, prior: 36, color: '#a34f68' },
-  { name: 'Alliance', value: 49, prior: 43, color: '#4f7b65' },
-  { name: 'Corporate', value: 33, prior: 29, color: '#927039' },
-  { name: 'Insider', value: 25, prior: 21, color: '#73536f' },
-  { name: 'Social', value: 16, prior: 14, color: '#7393a1' },
+  { name: 'Access', value: 41, prior: 36 },
+  { name: 'Alliance', value: 49, prior: 43 },
+  { name: 'Corporate', value: 33, prior: 29 },
+  { name: 'Insider', value: 25, prior: 21 },
+  { name: 'Social', value: 16, prior: 14 },
 ]
 
 export const visitorDemographics: DemographicValue[] = [

@@ -85,7 +85,7 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
         <XAxis type="number" hide />
         <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={60} fontSize={12} />
         <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
-        <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} radius={[0, 3, 3, 0]}>{levelData.map((item, index) => <Cell key={item.name} fill={item.color ?? colors[index % colors.length]} />)}<LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
+        <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#285f7a" radius={[0, 3, 3, 0]}><LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
         <ReferenceLine x={median} stroke="#9a3f2d" strokeWidth={3} strokeDasharray="7 4" label={{ value: `Median ${median.toLocaleString()}`, position: 'top', fill: '#873f2e', fontSize: 12, fontWeight: 700 }} />
       </BarChart></ResponsiveContainer>
     </AccessibleChart>
