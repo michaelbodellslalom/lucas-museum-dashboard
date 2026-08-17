@@ -26,7 +26,7 @@ export const baseKpis: Kpi[] = [
   { id: 'revenue', label: 'Total revenue', value: 187420, format: 'currency', comparison: 12, definition: 'Recognized ticketing, membership, commerce, event, and donation revenue.', availability: 'integration' },
   { id: 'revenue-per-visitor', label: 'Revenue per visitor', value: 51.80, format: 'currency', comparison: 6, definition: 'Total recognized revenue divided by checked-in visitors.', availability: 'integration' },
   { id: 'memberships', label: 'Memberships sold', value: 164, format: 'number', comparison: 15, definition: 'New paid memberships started in the selected period.', availability: 'day-one' },
-  { id: 'conversion', label: 'Ticket-to-member conversion', value: 4, format: 'percent', comparison: 1, definition: 'Memberships sold divided by ticket purchases.', availability: 'quality-review' },
+  { id: 'conversion', label: 'Ticket-to-member conversion', value: 4, format: 'percent', comparison: 1, definition: 'Memberships sold divided by ticket purchases.', availability: 'day-one' },
 ]
 
 export const alerts: AlertItem[] = [
@@ -77,11 +77,10 @@ export const visitorDemographics: DemographicValue[] = [
 ]
 
 export const funnel: CategoryValue[] = [
-  { name: 'Ticket page', value: 18240, prior: 17500 },
-  { name: 'Ticket selection', value: 11280, prior: 10940 },
-  { name: 'Checkout start', value: 7460, prior: 7210 },
-  { name: 'Purchase complete', value: 4286, prior: 4140 },
-  { name: 'Membership add-on', value: 164, prior: 143 },
+  { name: 'Awareness', value: 18240, prior: 17500 },
+  { name: 'Interest', value: 11280, prior: 10940 },
+  { name: 'Desire', value: 7460, prior: 7210 },
+  { name: 'Action', value: 4286, prior: 4140 },
 ]
 
 export const capacityByHour: TimePoint[] = [

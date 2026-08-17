@@ -12,7 +12,6 @@ export type Availability =
   | 'day-one'
   | 'integration'
   | 'instrumentation'
-  | 'quality-review'
 
 export type OperatingStatus = 'On track' | 'Watch' | 'Needs attention' | 'At risk'
 

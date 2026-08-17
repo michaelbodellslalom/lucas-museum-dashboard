@@ -35,16 +35,6 @@ function Field({ label, value, options, onChange }: { label: string; value: stri
   return <label className="filter-field"><span>{label}</span><div><select value={value} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option key={option}>{option}</option>)}</select><ChevronDown size={14} /></div></label>
 }
 
-const headerDateFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
-
-function formatHeaderDate(value: string) {
-  return headerDateFormatter.format(new Date(`${value}T00:00:00Z`))
-}
-
-function formatHeaderRange(start: string, end: string) {
-  return start === end ? formatHeaderDate(start) : `${formatHeaderDate(start)} – ${formatHeaderDate(end)}`
-}
-
 function formatUsInputDate(value: string) {
   const [year, month, day] = value.split('-')
   return year && month && day ? `${month}/${day}/${year}` : value
@@ -77,9 +67,10 @@ function UsDateInput({ label, value, min, max, onChange }: { label: string; valu
   return <label><span>{label}</span><input type="text" inputMode="numeric" placeholder="MM/DD/YYYY" value={draft} onChange={(event) => setDraft(event.target.value)} onBlur={(event) => commit(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur() }} /></label>
 }
 
-export function FilterBar({ filters, onChange }: {
+export function FilterBar({ filters, onChange, onOpenNavigation }: {
   filters: Filters
   onChange: (next: Filters) => void
+  onOpenNavigation: () => void
 }) {
   const update = (key: keyof Filters, value: string) => onChange({ ...filters, [key]: value })
   const updatePeriod = (period: ReportingPeriod) => {
@@ -90,6 +81,7 @@ export function FilterBar({ filters, onChange }: {
   const updateDate = (key: 'customStart' | 'customEnd', value: string) => onChange({ ...filters, period: 'custom', [key]: value })
   return (
     <section className="filter-bar" aria-label="Dashboard filters">
+      <button className="menu-button" onClick={onOpenNavigation} aria-label="Open navigation"><Menu /></button>
       <div className="filter-title"><Settings2 size={18} /><div><strong>Reporting view</strong><span>Completed periods only</span></div></div>
       <div className="filter-controls">
         <div className="date-filter-group" role="group" aria-label="Reporting dates">
@@ -129,19 +121,12 @@ export function DashboardShell({ page, onNavigate, filters, onFiltersChange, chi
   children: ReactNode
 }) {
   const [navOpen, setNavOpen] = useState(false)
-  const selectedPeriod = periodOptions.find((option) => option.value === filters.period)
   return (
     <div className="app-shell">
       <Sidebar page={page} onNavigate={onNavigate} open={navOpen} onClose={() => setNavOpen(false)} />
       {navOpen && <button className="nav-scrim" aria-label="Close navigation" onClick={() => setNavOpen(false)} />}
       <div className="app-main">
-        <header className="global-header">
-          <button className="menu-button" onClick={() => setNavOpen(true)} aria-label="Open navigation"><Menu /></button>
-          <div className="global-period"><span>Reporting period</span><strong>{formatHeaderRange(filters.customStart, filters.customEnd)}</strong><small>{selectedPeriod?.label ?? 'Custom range'}</small></div>
-          <div className="header-meta"><div><span>Data refreshed</span><strong>5:00 AM PT</strong></div><div><span>Through close of business</span><strong>{formatHeaderDate(filters.customEnd)}</strong></div></div>
-          <span className="demo-badge header-demo-badge">Demo data</span>
-        </header>
-        <FilterBar filters={filters} onChange={onFiltersChange} />
+        <FilterBar filters={filters} onChange={onFiltersChange} onOpenNavigation={() => setNavOpen(true)} />
         <main id="main-content">{children}</main>
       </div>
     </div>

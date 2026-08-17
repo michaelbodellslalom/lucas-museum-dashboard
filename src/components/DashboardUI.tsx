@@ -5,7 +5,6 @@ import { ChartViewProvider, type ChartView } from './Charts'
 
 const availabilityLabels: Partial<Record<Availability, string>> = {
   instrumentation: 'Instrumentation required',
-  'quality-review': 'Data quality review needed',
 }
 
 export function SourceBadge({ type }: { type: Availability }) {

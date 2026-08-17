@@ -32,10 +32,10 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
           <ChartCard className="chart-wide" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Individual and Dual levels." action="Keep onsite prompts focused on Family and Supporter upgrades.">
             <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
           </ChartCard>
-          <ChartCard title="Digital purchase funnel" subtitle="Completed-day web sessions and commerce outcomes" badge="quality-review" insight="Checkout start to completed purchase is the largest consequential loss, with mobile payment completion down 5 points." action="Review payment errors by device before the next campaign send.">
+          <ChartCard title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Strengthen campaign-to-landing-page continuity and test clearer next steps for high-intent visitors.">
             <FunnelChart data={data.funnel} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Ticket demand by visitor segment and price" subtitle="Aggregated ticket-holder mix and realized average price" badge="quality-review" insight="Adults represented 54% of attendance. Youth and student demand broadened reach while lowering realized ticket yield." action="Protect access pricing while testing family bundles in lower-demand windows.">
+          <ChartCard className="chart-full" title="Ticket demand by visitor segment and price" subtitle="Aggregated ticket-holder mix and realized average price" insight="Adults represented 54% of attendance. Youth and student demand broadened reach while lowering realized ticket yield." action="Protect access pricing while testing family bundles in lower-demand windows.">
             <DemographicPriceChart data={data.visitorDemographics} />
           </ChartCard>
         </div>
