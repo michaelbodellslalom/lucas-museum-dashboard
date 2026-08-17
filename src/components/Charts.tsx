@@ -107,20 +107,34 @@ function DemographicTooltip({ active, payload, label }: {
   </div>
 }
 
-export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
-  const view = useChartView()
-  const periodData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
-  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.averageTicketPrice }))
+function DemographicAxisTick({ x = 0, y = 0, payload }: {
+  x?: number
+  y?: number
+  payload?: { value: string }
+}) {
+  const value = payload?.value ?? ''
+  if (value === 'Active Military') {
+    return <text x={x} y={y} textAnchor="middle" fill="#66635c" fontSize={11}>
+      <tspan x={x} dy="0.8em">Active</tspan>
+      <tspan x={x} dy="1.15em">Military</tspan>
+    </text>
+  }
   const shortLabels: Record<string, string> = {
-    'Active Military': 'Military',
     'Child (0-12)': 'Child',
     'Teen Student (13-17)': 'Teen',
     'Senior (65+)': 'Senior',
   }
+  return <text x={x} y={y} dy="0.8em" textAnchor="middle" fill="#66635c" fontSize={11}>{shortLabels[value] ?? value}</text>
+}
+
+export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
+  const view = useChartView()
+  const periodData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
+  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.averageTicketPrice }))
   return <AccessibleChart label="Visitor volume and average ticket price by aggregated visitor demographic" height={280}>
     <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 18, right: 12, bottom: 4, left: -8 }}>
       <CartesianGrid stroke="#e6e2da" vertical={false} />
-      <XAxis dataKey="name" tickFormatter={(value) => shortLabels[value] ?? value} tickLine={false} axisLine={false} fontSize={11} interval={0} />
+      <XAxis dataKey="name" tick={<DemographicAxisTick />} tickLine={false} axisLine={false} height={38} interval={0} />
       <YAxis yAxisId="visitors" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis yAxisId="price" orientation="right" domain={[0, 40]} tickFormatter={(value) => `$${value}`} tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip content={<DemographicTooltip />} />
