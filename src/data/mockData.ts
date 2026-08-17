@@ -73,8 +73,8 @@ export const visitorDemographics: DemographicValue[] = [
   { name: 'Active Military', visitors: 289, averageTicketPrice: 21.60 },
   { name: 'Adult', visitors: 1809, averageTicketPrice: 31.40 },
   { name: 'Child (0-12)', visitors: 434, averageTicketPrice: 0 },
-  { name: 'Teen Student (13-17)', visitors: 543, averageTicketPrice: 17.20 },
   { name: 'Senior (65+)', visitors: 543, averageTicketPrice: 24.80 },
+  { name: 'Teen Student (13-17)', visitors: 543, averageTicketPrice: 17.20 },
 ]
 
 export const funnel: CategoryValue[] = [
