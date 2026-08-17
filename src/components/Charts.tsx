@@ -92,9 +92,25 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
   </div>
 }
 
+function DemographicTooltip({ active, payload, label }: {
+  active?: boolean
+  payload?: Array<{ payload?: DemographicValue & { totalRevenue: number } }>
+  label?: string
+}) {
+  const item = payload?.[0]?.payload
+  if (!active || !item) return null
+  return <div style={tooltipStyle} className="chart-tooltip">
+    <strong>{label}</strong>
+    <span>Visitors <b>{item.visitors.toLocaleString()}</b></span>
+    <span>Average ticket price <b>${item.averageTicketPrice.toFixed(2)}</b></span>
+    <span>Total revenue <b>${Math.round(item.totalRevenue).toLocaleString()}</b></span>
+  </div>
+}
+
 export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
   const view = useChartView()
-  const chartData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
+  const periodData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
+  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.averageTicketPrice }))
   const shortLabels: Record<string, string> = {
     'Adult 18–64': 'Adult',
     'Youth 6–17': 'Youth',
@@ -107,7 +123,7 @@ export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
       <XAxis dataKey="name" tickFormatter={(value) => shortLabels[value] ?? value} tickLine={false} axisLine={false} fontSize={11} interval={0} />
       <YAxis yAxisId="visitors" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis yAxisId="price" orientation="right" domain={[0, 40]} tickFormatter={(value) => `$${value}`} tickLine={false} axisLine={false} fontSize={12} />
-      <Tooltip contentStyle={tooltipStyle} formatter={(value, name) => String(name) === 'Average ticket price' ? `$${Number(value).toFixed(2)}` : Number(value).toLocaleString()} />
+      <Tooltip content={<DemographicTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
       <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#285f7a" radius={[3, 3, 0, 0]} />
       <Line yAxisId="price" type="monotone" dataKey="averageTicketPrice" name="Average ticket price" stroke="#bf6449" strokeWidth={3} dot={{ r: 4 }} />

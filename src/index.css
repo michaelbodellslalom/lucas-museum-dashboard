@@ -138,6 +138,10 @@ h1, h2, h3 { letter-spacing: 0; }
 .chart-view-filter span { color: var(--muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
 .chart-view-filter select { min-width: 126px; height: 30px; padding: 0 7px; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); color: var(--ink); font-size: 10px; cursor: pointer; }
 .chart-frame { width: 100%; min-width: 0; }.recharts-surface:focus { outline: none; }
+.chart-tooltip { padding: 10px 12px; background: var(--paper); display: grid; gap: 5px; color: var(--muted); }
+.chart-tooltip > strong { margin-bottom: 2px; color: var(--ink); }
+.chart-tooltip > span { min-width: 205px; display: flex; justify-content: space-between; gap: 18px; }
+.chart-tooltip > span:last-child { padding-top: 5px; border-top: 1px solid var(--line-soft); color: var(--ink); }
 .executive-paired-card > .chart-frame, .executive-paired-card > .membership-chart, .executive-paired-card > .funnel-chart { height: 260px !important; min-height: 0; }
 .insight { min-height: 82px; margin: 10px -18px -18px; padding: 12px 18px; border-top: 1px solid var(--line-soft); background: #f6f3ed; display: grid; grid-template-columns: 102px 1fr; gap: 3px 10px; flex: 1; font-size: 11px; line-height: 1.5; }
 .insight > strong { color: var(--terracotta); text-transform: uppercase; }.insight > span { color: var(--muted); }.insight > b { grid-column: 2; color: var(--blue); font-size: 11px; }
