@@ -76,6 +76,6 @@ export function MetricState({ state, onRetry }: { state: 'loading' | 'empty' | '
   return <div className="metric-state" role={state === 'error' ? 'alert' : 'status'}>{content.icon}<div><strong>{content.title}</strong><p>{content.detail}</p></div>{state === 'error' && <button className="secondary-button" onClick={onRetry}>Retry</button>}</div>
 }
 
-export function SectionIntro({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
-  return <header className="section-intro"><span>{eyebrow}</span><h2>{title}</h2><p>{description}</p></header>
+export function SectionIntro({ eyebrow, title, description }: { eyebrow?: string; title: string; description: string }) {
+  return <header className="section-intro">{eyebrow && <span>{eyebrow}</span>}<h2>{title}</h2><p>{description}</p></header>
 }

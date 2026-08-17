@@ -24,12 +24,11 @@ export function OperationsPage({ data }: { data: DashboardData }) {
   return (
     <div className="page operations-page">
       <section className="page-hero operations-hero">
-        <div><span className="eyebrow">Operations · Level 2</span><h1>Operations & Visitor Services</h1><p>Completed-day visitor flow, onsite experience, and digital demand translated into practical operating decisions.</p><div className="hero-period"><Clock3 size={17} /><span>{data.periodLabel} · <strong>{data.dateRangeLabel}</strong></span></div></div>
-        <div className="operations-summary"><div><span>Overall operating state</span><StatusBadge status="Watch" /></div><p>Peak arrivals and east-gallery queues need targeted follow-up. No museum-wide capacity breach occurred.</p></div>
+        <div><h1>Operations & Visitor Services</h1><p>Completed-day visitor flow, onsite experience, and digital demand translated into practical operating decisions.</p><div className="hero-period"><Clock3 size={17} /><span>{data.periodLabel} · <strong>{data.dateRangeLabel}</strong></span></div></div>
       </section>
 
       <section aria-labelledby="glance-title">
-        <div className="section-heading"><div><span className="section-kicker">1 · Selected period at a glance</span><h2 id="glance-title">The operating picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
+        <div className="section-heading"><div><h2 id="glance-title">The operating picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
         <div className="mini-metric-grid">
           <MiniMetric icon={UsersRound} label="Attendance" value={Math.round(attendance).toLocaleString()} detail={`+5% vs. ${data.comparisonLabel}`} definition="Unique visitors who redeemed admission and checked in during the selected period." />
           <MiniMetric icon={Gauge} label="Peak utilization" value="91%" detail="2:00–3:00 PM · At risk" definition="Highest hourly attendance divided by available visitor capacity." />
@@ -41,7 +40,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       </section>
 
       <div className="operations-band">
-        <SectionIntro eyebrow="2 · Peak periods and exceptions" title="Operations & Visitor Services" description="Where capacity, queues, movement, and arrivals created operational risk during the completed business day." />
+        <SectionIntro title="Operations & Visitor Services" description="Where capacity, queues, movement, and arrivals created operational risk during the completed business day." />
 
         <section className="ops-subsection" aria-labelledby="capacity-title">
           <div className="subsection-title"><div><span>Daily capacity utilization</span><h3 id="capacity-title">Attendance vs. available capacity</h3></div><SourceBadge type="day-one" /></div>
@@ -86,7 +85,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       </div>
 
       <div className="operations-band onsite-band">
-        <SectionIntro eyebrow="3 · Trend and comparison" title="Onsite Engagement" description="Aggregated engagement signals showing how visitors used galleries, theaters, food, retail, park, and garden spaces." />
+        <SectionIntro title="Onsite Engagement" description="Aggregated engagement signals showing how visitors used galleries, theaters, food, retail, park, and garden spaces." />
         <div className="mini-metric-grid compact"><MiniMetric icon={Clock3} label="Average visit" value="3h 08m" detail={`+11 min vs. ${data.comparisonLabel}`} /><MiniMetric icon={UsersRound} label="Average party" value="2 people" detail="Theater 2 · Elevator proxy 3" /><MiniMetric icon={Gauge} label="Peak gallery load" value="88%" detail="Average 68% · East peak 1:40 PM" /><MiniMetric icon={MapPin} label="Top food floor" value="Level 5" detail="Peak demand 3:00 PM" /></div>
         <div className="chart-grid">
           <ChartCard title="Average dwell time by space" subtitle="Minutes per observed visit" badge="instrumentation" insight="West gallery dwell was highest and increased three minutes. Archive gallery dwell declined despite stable entries." action="Review interpretive touchpoints and staff positioning in Archive gallery."><HorizontalBarChart data={data.dwellTime} label="Average visit duration by gallery, theater, and zone" unit=" min" /></ChartCard>
@@ -102,7 +101,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       </div>
 
       <div className="operations-band digital-band">
-        <SectionIntro eyebrow="3 · Trend and comparison" title="Digital Engagement" description="Completed-day acquisition, commerce, subscriber, campaign, and reservation signals connected to onsite planning." />
+        <SectionIntro title="Digital Engagement" description="Completed-day acquisition, commerce, subscriber, campaign, and reservation signals connected to onsite planning." />
         <div className="mini-metric-grid digital-metrics"><MiniMetric icon={MousePointerClick} label="Web sessions" value="18,240" detail={`+4% vs. ${data.comparisonLabel}`} /><MiniMetric icon={Gauge} label="Email click-through" value="5%" detail="+1 point" /><MiniMetric icon={UsersRound} label="Email list" value="43,780" detail="+460 net subscribers" /><MiniMetric icon={Clock3} label="Reservations" value="278" detail={`+12% vs. ${data.comparisonLabel}`} /><MiniMetric icon={MousePointerClick} label="Social engagement" value="6%" detail="Week 6% · Month 5%" /><MiniMetric icon={UsersRound} label="Repeat customers" value="9%" detail="Repeat reservations 13% · consented" /></div>
         <div className="chart-grid">
           <ChartCard title="Traffic acquisition mix" subtitle="Completed-day website sessions" badge="integration" insight="Organic search remained the largest source; paid social produced traffic but converted below average." action="Shift campaign optimization toward purchase completion, not landing-page clicks."><DonutChart data={data.acquisitionMix} label="Website acquisition source mix" /></ChartCard>
