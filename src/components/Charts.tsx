@@ -112,10 +112,10 @@ export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
   const periodData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
   const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.averageTicketPrice }))
   const shortLabels: Record<string, string> = {
-    'Adult 18–64': 'Adult',
-    'Youth 6–17': 'Youth',
-    'Child under 6': 'Under 6',
-    'Senior 65+': 'Senior',
+    'Active Military': 'Military',
+    'Child (0-12)': 'Child',
+    'Teen Student (13-17)': 'Teen',
+    'Senior (65+)': 'Senior',
   }
   return <AccessibleChart label="Visitor volume and average ticket price by aggregated visitor demographic" height={280}>
     <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 18, right: 12, bottom: 4, left: -8 }}>

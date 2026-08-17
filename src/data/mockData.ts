@@ -70,11 +70,11 @@ export const membershipLevels: CategoryValue[] = [
 ]
 
 export const visitorDemographics: DemographicValue[] = [
-  { name: 'Adult 18–64', visitors: 1938, averageTicketPrice: 31.40 },
-  { name: 'Youth 6–17', visitors: 684, averageTicketPrice: 17.20 },
-  { name: 'Child under 6', visitors: 286, averageTicketPrice: 0 },
-  { name: 'Senior 65+', visitors: 496, averageTicketPrice: 24.80 },
-  { name: 'Student', visitors: 214, averageTicketPrice: 21.60 },
+  { name: 'Active Military', visitors: 289, averageTicketPrice: 21.60 },
+  { name: 'Adult', visitors: 1809, averageTicketPrice: 31.40 },
+  { name: 'Child (0-12)', visitors: 434, averageTicketPrice: 0 },
+  { name: 'Teen Student (13-17)', visitors: 543, averageTicketPrice: 17.20 },
+  { name: 'Senior (65+)', visitors: 543, averageTicketPrice: 24.80 },
 ]
 
 export const funnel: CategoryValue[] = [
