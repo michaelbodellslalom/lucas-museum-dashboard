@@ -21,6 +21,13 @@ function InsightPanel({ title, items }: { title: string; items: { text: string; 
 
 export function OperationsPage({ data }: { data: DashboardData }) {
   const attendance = data.kpis.find((kpi) => kpi.id === 'attendance')?.value ?? 0
+  const capacity = data.kpis.find((kpi) => kpi.id === 'capacity')?.value ?? 0
+  const galleryDwellTimes = data.dwellTime.filter((item) => item.name.toLowerCase().includes('gallery'))
+  const averageGalleryVisit = galleryDwellTimes.length
+    ? Math.round(galleryDwellTimes.reduce((total, item) => total + item.value, 0) / galleryDwellTimes.length)
+    : 0
+  const latestReservations = data.reservationsTrend[data.reservationsTrend.length - 1]?.current ?? 0
+  const totalWebVisitors = data.funnel[0]?.value ?? 0
   return (
     <div className="page operations-page">
       <section className="page-hero operations-hero">
@@ -29,13 +36,15 @@ export function OperationsPage({ data }: { data: DashboardData }) {
 
       <section aria-labelledby="glance-title">
         <div className="section-heading"><div><h2 id="glance-title">The Operating Picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
-        <div className="mini-metric-grid">
-          <MiniMetric icon={UsersRound} label="Attendance" value={Math.round(attendance).toLocaleString()} detail={`+5% vs. ${data.comparisonLabel}`} definition="Unique visitors who redeemed admission and checked in during the selected period." />
-          <MiniMetric icon={Gauge} label="Peak utilization" value="91%" detail="2:00–3:00 PM · At risk" definition="Highest hourly attendance divided by available visitor capacity." />
-          <MiniMetric icon={Clock3} label="Longest queue" value="24 min" detail="East galleries · +6 min" definition="Longest observed or estimated visitor wait during the selected period." />
-          <MiniMetric icon={MapPin} label="Busiest zone" value="Galleries" detail="2,874 observed visits" definition="Museum zone with the highest aggregated observed visitor volume." />
-          <MiniMetric icon={CarFront} label="Parking arrivals" value="31%" detail="Estimated · proxy data" definition="Estimated share of visitor arrivals associated with a parking transaction." />
-          <MiniMetric icon={MousePointerClick} label="Purchase completion" value="24%" detail="Ticket page to purchase" definition="Completed online ticket purchases divided by ticket-page sessions." />
+        <div className="mini-metric-grid operating-picture-grid">
+          <MiniMetric icon={Gauge} label="% of Capacity" value={`${Math.round(capacity)}%`} detail="Average completed-day utilization" definition="Checked-in attendance divided by available visitor capacity for the selected completed period." />
+          <MiniMetric icon={Clock3} label="Avg Cinema Wait Time" value="12 min" detail="Cinema / galleries" definition="Average observed or estimated wait for cinema and gallery entry during the selected period." />
+          <MiniMetric icon={Clock3} label="Avg Elevator Wait Time" value="9 min" detail="Completed-day average" definition="Average observed or estimated elevator wait during the selected completed period." />
+          <MiniMetric icon={UsersRound} label="Avg Elevator Party Size" value="3 people" detail="Instrumented proxy" definition="Average visitors per observed elevator party based on aggregated instrumentation." />
+          <MiniMetric icon={Clock3} label="Avg Museum Visit Duration" value="3h 08m" detail={`+11 min vs. ${data.comparisonLabel}`} definition="Average elapsed time between visitor arrival and departure during the selected period." />
+          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail="West, east, and archive galleries" definition="Average dwell time across west, east, and archive gallery observations." />
+          <MiniMetric icon={UsersRound} label="Restaurant Reservation / Repeat Customers" value={`${Math.round(latestReservations).toLocaleString()} / 9%`} detail="Reservations / repeat customers" definition="Completed restaurant reservations and the consented share attributed to repeat customers." />
+          <MiniMetric icon={MousePointerClick} label="Total Web Visitors" value={Math.round(totalWebVisitors).toLocaleString()} detail={`+4% vs. ${data.comparisonLabel}`} definition="Website sessions recorded during the selected completed period." />
         </div>
       </section>
 

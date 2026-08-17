@@ -156,6 +156,7 @@ h1, h2, h3 { letter-spacing: 0; }
 .section-intro { max-width: 760px; margin-bottom: 27px; }.section-intro .section-kicker { margin-bottom: 8px; }.section-intro h2 { font-size: 30px; }
 .section-intro p { max-width: 680px; margin: 10px 0 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
 .mini-metric-grid { display: grid; grid-template-columns: repeat(6, minmax(130px, 1fr)); gap: 9px; }
+.operating-picture-grid { grid-template-columns: repeat(4, minmax(150px, 1fr)); }
 .mini-metric-grid.compact { grid-template-columns: repeat(4, minmax(150px, 1fr)); margin-bottom: 14px; }
 .digital-metrics { margin-bottom: 14px; }
 .mini-metric { min-height: 125px; padding: 15px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); display: flex; flex-direction: column; }
