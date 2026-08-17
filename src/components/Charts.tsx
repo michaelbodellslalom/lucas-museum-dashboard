@@ -75,14 +75,17 @@ export function DonutChart({ data, label, currency = false }: { data: CategoryVa
 export function MembershipChart({ channels, levels }: { channels: CategoryValue[]; levels: CategoryValue[] }) {
   const view = useChartView()
   const levelData = view === 'selected' ? levels : levels.map((item) => ({ ...item, value: Math.round(item.prior ?? item.value * 0.92) }))
+  const sortedValues = levelData.map((item) => item.value).sort((first, second) => first - second)
+  const median = sortedValues[Math.floor(sortedValues.length / 2)] ?? 0
   return <div className="membership-chart">
     <DonutChart data={channels} label="Membership sales split between online and in-person channels" />
-    <AccessibleChart label="Memberships sold by level" height={250}>
-      <ResponsiveContainer width="100%" height="100%"><BarChart data={levelData} layout="vertical" margin={{ top: 8, right: 20, bottom: 8, left: 70 }}>
+    <AccessibleChart label={`Memberships sold by level with median reference at ${median.toLocaleString()}`} height={250}>
+      <ResponsiveContainer width="100%" height="100%"><BarChart data={levelData} layout="vertical" margin={{ top: 30, right: 20, bottom: 8, left: 70 }}>
         <CartesianGrid stroke="#e6e2da" horizontal={false} />
         <XAxis type="number" hide />
         <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={60} fontSize={12} />
         <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
+        <ReferenceLine x={median} stroke="#927039" strokeDasharray="4 4" label={{ value: `Median ${median.toLocaleString()}`, position: 'top', fill: '#735a2e', fontSize: 11 }} />
         <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#4f7b65" radius={[0, 3, 3, 0]}><LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
       </BarChart></ResponsiveContainer>
     </AccessibleChart>

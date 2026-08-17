@@ -29,7 +29,7 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
           <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue." action="Test a post-visit retail offer for scanned ticket holders.">
             <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />
           </ChartCard>
-          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Individual and Dual levels." action="Keep onsite prompts focused on Family and Supporter upgrades.">
+          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels." action="Keep onsite prompts focused on Corporate and Insider upgrades.">
             <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
           </ChartCard>
           <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Strengthen campaign-to-landing-page continuity and test clearer next steps for high-intent visitors.">
