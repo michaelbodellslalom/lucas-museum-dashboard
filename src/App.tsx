@@ -7,12 +7,12 @@ import type { DashboardData, Filters, PageId } from './types/dashboard'
 
 const initialFilters: Filters = {
   period: 'last-business-day',
-  membershipLevel: 'All membership levels',
-  demographic: 'All demographics',
-  ticketPrice: 'All ticket prices',
-  membershipChannel: 'All membership channels',
-  customStart: '2026-11-12',
-  customEnd: '2026-11-12',
+  membershipLevel: ['All membership levels'],
+  demographic: ['Select all'],
+  ticketPrice: ['All ticket prices'],
+  membershipChannel: ['All membership channels'],
+  customStart: '2026-11-11',
+  customEnd: '2026-11-11',
 }
 
 function App() {

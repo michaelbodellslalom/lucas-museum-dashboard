@@ -22,8 +22,17 @@ const multipliers: Record<string, number> = {
 }
 
 function filterScale(filters: Filters) {
-  return [filters.membershipLevel, filters.demographic, filters.ticketPrice, filters.membershipChannel]
-    .reduce((scale, filter) => scale * (multipliers[filter] ?? 1), 1)
+  const getAverageMultiplier = (items: string[]) => {
+    const values = items.map(item => multipliers[item] ?? 1)
+    return values.reduce((sum, val) => sum + val, 0) / values.length
+  }
+  
+  return [
+    getAverageMultiplier(filters.membershipLevel),
+    getAverageMultiplier(filters.demographic),
+    getAverageMultiplier(filters.ticketPrice),
+    getAverageMultiplier(filters.membershipChannel),
+  ].reduce((scale, multiplier) => scale * multiplier, 1)
 }
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })

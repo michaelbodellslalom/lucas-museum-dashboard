@@ -195,6 +195,16 @@ tbody th { min-width: 120px; font-size: 12px; } td:last-child { min-width: 200px
 .instrumentation-callout svg { color: var(--plum); }.instrumentation-callout strong, .privacy-note strong { font-size: 12px; }.instrumentation-callout p, .privacy-note p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
 .privacy-note { align-items: center; }.privacy-note p { flex: 1; margin: 0; }.page-loading { min-height: 70vh; display: grid; place-items: center; color: var(--muted); font-size: 14px; }
 
+.multi-select { position: relative; }
+.multi-select-trigger { width: 100%; min-width: 0; height: 36px; padding: 0 22px 0 7px; border: 1px solid #cec9be; border-radius: 4px; appearance: none; background: var(--paper); color: var(--ink); font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; text-align: left; }
+.multi-select-trigger.open { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(40,95,122,.12); }
+.multi-select-trigger svg { flex-shrink: 0; transition: transform 0.2s ease; }
+.multi-select-menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 50; margin-top: 4px; border: 1px solid #cec9be; border-radius: 4px; background: var(--paper); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.multi-select-option { display: flex; align-items: center; padding: 8px 11px; gap: 8px; cursor: pointer; }
+.multi-select-option:hover { background: #f9f7f3; }
+.multi-select-option input[type="checkbox"] { cursor: pointer; width: 16px; height: 16px; margin: 0; }
+.multi-select-option span { font-size: 11px; color: var(--ink); }
+
 @media (min-width: 1350px) { .chart-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }.chart-wide { grid-column: span 2; } }
 @media (min-width: 1051px) { .executive-paired-card > .card-heading { min-height: 86px; } }
 @media (max-width: 1180px) {

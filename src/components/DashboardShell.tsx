@@ -31,8 +31,49 @@ const navigation = [
   { id: 'admissions', label: 'Admissions', icon: TicketCheck },
 ]
 
-function Field({ label, value, options, onChange }: { label: string; value: string; options: readonly string[]; onChange: (value: string) => void }) {
-  return <label className="filter-field"><span>{label}</span><div><select value={value} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option key={option}>{option}</option>)}</select><ChevronDown size={14} /></div></label>
+function Field({ label, value, options, onChange }: { label: string; value: string[]; options: readonly string[]; onChange: (value: string[]) => void }) {
+  const [open, setOpen] = useState(false)
+  
+  const toggleOption = (option: string) => {
+    if (value.includes(option)) {
+      onChange(value.filter(v => v !== option))
+    } else {
+      onChange([...value, option])
+    }
+  }
+
+  const displayLabel = value.length === 1 ? value[0] : value.length === options.length ? 'All selected' : `${value.length} selected`
+
+  return (
+    <div className="filter-field">
+      <span>{label}</span>
+      <div className="multi-select">
+        <button 
+          className={`multi-select-trigger ${open ? 'open' : ''}`}
+          onClick={() => setOpen(!open)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+        >
+          <span>{displayLabel}</span>
+          <ChevronDown size={14} style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+        </button>
+        {open && (
+          <div className="multi-select-menu">
+            {options.map((option) => (
+              <label key={option} className="multi-select-option">
+                <input
+                  type="checkbox"
+                  checked={value.includes(option)}
+                  onChange={() => toggleOption(option)}
+                />
+                <span>{option}</span>
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
 function formatUsInputDate(value: string) {
@@ -72,7 +113,7 @@ export function FilterBar({ filters, onChange, onOpenNavigation }: {
   onChange: (next: Filters) => void
   onOpenNavigation: () => void
 }) {
-  const update = (key: keyof Filters, value: string) => onChange({ ...filters, [key]: value })
+  const update = (key: keyof Filters, value: string[]) => onChange({ ...filters, [key]: value })
   const updatePeriod = (period: ReportingPeriod) => {
     const option = periodOptions.find((item) => item.value === period)
     if (!option) return

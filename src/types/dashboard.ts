@@ -17,10 +17,10 @@ export type OperatingStatus = 'On track' | 'Watch' | 'Needs attention' | 'At ris
 
 export interface Filters {
   period: ReportingPeriod
-  membershipLevel: string
-  demographic: string
-  ticketPrice: string
-  membershipChannel: string
+  membershipLevel: string[]
+  demographic: string[]
+  ticketPrice: string[]
+  membershipChannel: string[]
   customStart: string
   customEnd: string
 }
