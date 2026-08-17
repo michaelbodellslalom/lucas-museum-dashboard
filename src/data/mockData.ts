@@ -62,7 +62,7 @@ export const membershipChannels: CategoryValue[] = [
 ]
 
 export const membershipLevels: CategoryValue[] = [
-  { name: 'Access', value: 41, prior: 36, color: '#bf6449' },
+  { name: 'Access', value: 41, prior: 36, color: '#a34f68' },
   { name: 'Alliance', value: 49, prior: 43, color: '#4f7b65' },
   { name: 'Corporate', value: 33, prior: 29, color: '#927039' },
   { name: 'Insider', value: 25, prior: 21, color: '#73536f' },
