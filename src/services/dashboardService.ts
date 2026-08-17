@@ -22,16 +22,16 @@ const multipliers: Record<string, number> = {
 }
 
 function filterScale(filters: Filters) {
-  const getAverageMultiplier = (items: string[]) => {
-    const values = items.map(item => multipliers[item] ?? 1)
-    return values.reduce((sum, val) => sum + val, 0) / values.length
+  const getSumMultiplier = (items: string[]) => {
+    const values = items.map(item => multipliers[item] ?? 0)
+    return values.reduce((sum, val) => sum + val, 0)
   }
   
   return [
-    getAverageMultiplier(filters.membershipLevel),
-    getAverageMultiplier(filters.demographic),
-    getAverageMultiplier(filters.ticketPrice),
-    getAverageMultiplier(filters.membershipChannel),
+    getSumMultiplier(filters.membershipLevel),
+    getSumMultiplier(filters.demographic),
+    getSumMultiplier(filters.ticketPrice),
+    getSumMultiplier(filters.membershipChannel),
   ].reduce((scale, multiplier) => scale * multiplier, 1)
 }
 
