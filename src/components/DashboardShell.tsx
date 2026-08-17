@@ -15,12 +15,12 @@ import { filterOptions } from '../data/mockData'
 import type { Filters, PageId, ReportingPeriod } from '../types/dashboard'
 
 const periodOptions: { value: ReportingPeriod; label: string; start: string; end: string }[] = [
-  { value: 'last-business-day', label: 'Last complete business day', start: '2026-11-12', end: '2026-11-12' },
-  { value: 'last-7', label: 'Last 7 completed days', start: '2026-11-06', end: '2026-11-12' },
-  { value: 'last-30', label: 'Last 30 completed days', start: '2026-10-14', end: '2026-11-12' },
-  { value: 'mtd', label: 'Month to date', start: '2026-11-01', end: '2026-11-12' },
-  { value: 'ytd', label: 'Year to date', start: '2026-01-01', end: '2026-11-12' },
-  { value: 'custom', label: 'Custom range', start: '2026-11-06', end: '2026-11-12' },
+  { value: 'last-business-day', label: 'Last complete business day', start: '2026-11-11', end: '2026-11-11' },
+  { value: 'last-7', label: 'Last 7 completed days', start: '2026-11-05', end: '2026-11-11' },
+  { value: 'last-30', label: 'Last 30 completed days', start: '2026-10-13', end: '2026-11-11' },
+  { value: 'mtd', label: 'Month to date', start: '2026-11-01', end: '2026-11-11' },
+  { value: 'ytd', label: 'Year to date', start: '2026-01-01', end: '2026-11-11' },
+  { value: 'custom', label: 'Custom range', start: '2026-11-05', end: '2026-11-11' },
 ]
 
 const navigation = [
@@ -86,7 +86,7 @@ export function FilterBar({ filters, onChange, onOpenNavigation }: {
       <div className="filter-controls">
         <div className="date-filter-group" role="group" aria-label="Reporting dates">
           <label className="filter-field period-field"><span>Date range</span><div><select value={filters.period} onChange={(event) => updatePeriod(event.target.value as ReportingPeriod)}>{periodOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select><ChevronDown size={14} /></div></label>
-          <div className="custom-range"><UsDateInput label="Start" value={filters.customStart} max={filters.customEnd} onChange={(value) => updateDate('customStart', value)} /><UsDateInput label="End" value={filters.customEnd} min={filters.customStart} max="2026-11-12" onChange={(value) => updateDate('customEnd', value)} /></div>
+          <div className="custom-range"><UsDateInput label="Start" value={filters.customStart} max={filters.customEnd} onChange={(value) => updateDate('customStart', value)} /><UsDateInput label="End" value={filters.customEnd} min={filters.customStart} max="2026-11-11" onChange={(value) => updateDate('customEnd', value)} /></div>
         </div>
         <Field label="Membership level" value={filters.membershipLevel} options={filterOptions.membershipLevel} onChange={(value) => update('membershipLevel', value)} />
         <Field label="Demographics" value={filters.demographic} options={filterOptions.demographic} onChange={(value) => update('demographic', value)} />
