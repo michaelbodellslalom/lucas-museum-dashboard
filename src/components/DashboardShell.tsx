@@ -20,7 +20,6 @@ const periodOptions: { value: ReportingPeriod; label: string; start: string; end
   { value: 'last-30', label: 'Last 30 completed days', start: '2026-10-13', end: '2026-11-11' },
   { value: 'mtd', label: 'Month to date', start: '2026-11-01', end: '2026-11-11' },
   { value: 'ytd', label: 'Year to date', start: '2026-01-01', end: '2026-11-11' },
-  { value: 'custom', label: 'Custom range', start: '2026-11-05', end: '2026-11-11' },
 ]
 
 const navigation = [
