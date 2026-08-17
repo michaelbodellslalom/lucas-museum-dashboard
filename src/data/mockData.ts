@@ -9,7 +9,7 @@ import type {
 } from '../types/dashboard'
 
 export const REPORTING_DATE = '2026-11-12'
-export const REFRESH_TIME = '2026-11-13T05:00:00-08:00'
+export const REFRESH_TIME = '2026-11-12T05:00:00-08:00'
 
 export const filterOptions = {
   membershipLevel: ['All membership levels', 'Access', 'Alliance', 'Corporate', 'Insider', 'Social'],

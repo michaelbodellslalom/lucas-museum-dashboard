@@ -42,7 +42,7 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
       </section>}
 
       <section className="data-assurance" aria-label="Dashboard refresh">
-        <div><RefreshCw size={20} /><span><strong>Dashboard refreshed</strong>November 13, 2026 at 5:00 AM PT</span></div>
+        <div><RefreshCw size={20} /><span><strong>Dashboard refreshed</strong>November 12, 2026 at 5:00 AM PT</span></div>
       </section>
     </div>
   )
