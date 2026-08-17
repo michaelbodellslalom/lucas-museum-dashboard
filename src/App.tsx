@@ -2,15 +2,16 @@ import { useDeferredValue, useEffect, useState } from 'react'
 import { DashboardShell } from './components/DashboardShell'
 import { ExecutiveOverview } from './pages/ExecutiveOverview'
 import { OperationsPage } from './pages/OperationsPage'
+import { filterOptions } from './data/mockData'
 import { dashboardDataAdapter } from './services/dashboardService'
 import type { DashboardData, Filters, PageId } from './types/dashboard'
 
 const initialFilters: Filters = {
   period: 'last-business-day',
-  membershipLevel: ['All membership levels'],
-  demographic: ['Select all'],
-  ticketPrice: ['All ticket prices'],
-  membershipChannel: ['All membership channels'],
+  membershipLevel: [...filterOptions.membershipLevel],
+  demographic: [...filterOptions.demographic],
+  ticketPrice: [...filterOptions.ticketPrice],
+  membershipChannel: [...filterOptions.membershipChannel],
   customStart: '2026-11-11',
   customEnd: '2026-11-11',
 }
