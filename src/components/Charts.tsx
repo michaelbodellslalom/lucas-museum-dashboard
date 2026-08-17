@@ -135,7 +135,7 @@ export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
     <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 18, right: 12, bottom: 4, left: -8 }}>
       <CartesianGrid stroke="#e6e2da" vertical={false} />
       <XAxis dataKey="name" tick={<DemographicAxisTick />} tickLine={false} axisLine={false} height={38} interval={0} />
-      <YAxis yAxisId="visitors" tickLine={false} axisLine={false} fontSize={12} />
+      <YAxis yAxisId="visitors" tickFormatter={(value) => Number(value).toLocaleString()} tickLine={false} axisLine={false} fontSize={12} />
       <YAxis yAxisId="price" orientation="right" domain={[0, 40]} tickFormatter={(value) => `$${value}`} tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip content={<DemographicTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
