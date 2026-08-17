@@ -227,6 +227,7 @@ tbody th { min-width: 120px; font-size: 12px; } td:last-child { min-width: 200px
   .page > section, .operations-band { margin-top: 34px; }.section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
   .kpi-grid { grid-template-columns: 1fr 1fr; gap: 7px; }.kpi-card { min-height: 175px; padding: 12px; }.kpi-card > strong { font-size: 25px; }.source-badge { white-space: normal; }
   .chart-card { padding: 14px; }.card-heading { flex-direction: column; }.chart-card-tools { width: 100%; justify-content: space-between; }.chart-view-filter { margin-left: auto; }.insight { margin: 10px -14px -14px; padding: 12px 14px; grid-template-columns: 1fr; }.insight > b { grid-column: 1; }.membership-chart { grid-template-columns: 1fr; }
+    .executive-paired-card > .membership-chart { height: auto !important; }
   .data-assurance { grid-template-columns: 1fr; gap: 15px; }.mini-metric-grid, .mini-metric-grid.compact { grid-template-columns: repeat(2, 1fr); }.threshold-row { justify-content: flex-start; flex-wrap: wrap; }
   .subsection-title { flex-direction: column; }.queue-summary dl { grid-template-columns: 1fr; }.privacy-note { flex-wrap: wrap; }
 }

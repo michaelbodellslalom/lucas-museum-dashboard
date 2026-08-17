@@ -78,10 +78,10 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
   return <div className="membership-chart">
     <DonutChart data={channels} label="Membership sales split between online and in-person channels" />
     <AccessibleChart label="Memberships sold by level" height={250}>
-      <ResponsiveContainer width="100%" height="100%"><BarChart data={levelData} layout="vertical" margin={{ top: 8, right: 20, bottom: 8, left: 95 }}>
+      <ResponsiveContainer width="100%" height="100%"><BarChart data={levelData} layout="vertical" margin={{ top: 8, right: 20, bottom: 8, left: 70 }}>
         <CartesianGrid stroke="#e6e2da" horizontal={false} />
         <XAxis type="number" hide />
-        <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={82} fontSize={12} />
+        <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={60} fontSize={12} />
         <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
         <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#4f7b65" radius={[0, 3, 3, 0]}><LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
       </BarChart></ResponsiveContainer>
