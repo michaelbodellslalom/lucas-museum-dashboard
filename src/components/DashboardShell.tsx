@@ -62,10 +62,22 @@ function Field({ label, value, options, onChange }: { label: string; value: stri
   }, [open])
 
   const toggleOption = (option: string) => {
-    if (value.includes(option)) {
-      onChange(value.filter(v => v !== option))
+    const isFirstOption = options[0] === option
+    
+    if (isFirstOption) {
+      // If clicking the "select all" option, toggle between all selected and none selected
+      if (value.length === options.length) {
+        onChange([])
+      } else {
+        onChange([...options])
+      }
     } else {
-      onChange([...value, option])
+      // Regular option toggling
+      if (value.includes(option)) {
+        onChange(value.filter(v => v !== option))
+      } else {
+        onChange([...value, option])
+      }
     }
   }
 
