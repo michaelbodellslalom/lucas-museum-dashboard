@@ -36,6 +36,7 @@ const chartAnnotations: Record<string, string> = {
   'Membership performance': 'How many Memberships were sold online vs in person, today, this week, this month? What were the most popular Membership levels sold?',
   'Online drop off funnel': 'What is our online user journey to purchase path and where are they dropping off/abandoning?',
   'Ticket demand by visitor segment and revenue': 'What does our visitor demographic look like based on ticket type? How many tickets were sold by price today?',
+  'Time-of-day traffic heatmap': 'When are our peak arrival times today, this week, this month? Are we maintaining a constant flow of visitors?',
 }
 
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {

@@ -173,8 +173,6 @@ export function CapacityChart({ data }: { data: TimePoint[] }) {
       <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip contentStyle={tooltipStyle} formatter={(value) => `${value}%`} />
-      <ReferenceLine y={85} stroke="#bf6449" strokeDasharray="5 4" label={{ value: 'At risk 85%', fontSize: 11, fill: '#8d4230' }} />
-      <ReferenceLine y={70} stroke="#927039" strokeDasharray="4 4" label={{ value: 'Watch 70%', fontSize: 11, fill: '#735a2e' }} />
       <Area type="monotone" dataKey="current" name="Utilization" stroke="#285f7a" fill="#d9e5e9" strokeWidth={3} />
       <Line type="monotone" dataKey="prior" name="Prior comparable" stroke="#73536f" strokeWidth={2} dot={false} />
     </AreaChart></ResponsiveContainer>

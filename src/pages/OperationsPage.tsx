@@ -1,20 +1,17 @@
-import { ArrowDownRight, ArrowRight, ArrowUpRight, CarFront, Clock3, Gauge, Info, MapPin, Minus, UsersRound } from 'lucide-react'
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Clock3, Gauge, Info, MapPin, MessageSquareText, Minus, UsersRound } from 'lucide-react'
 import {
-  AreaPairChart,
   CapacityChart,
-  DonutChart,
   FlowMap,
   Heatmap,
-  HorizontalBarChart,
 } from '../components/Charts'
 import { ChartCard, SectionIntro, SourceBadge, StatusBadge } from '../components/DashboardUI'
 import type { DashboardData } from '../types/dashboard'
 
 type MetricComparison = { direction: 'up' | 'down' | 'flat'; label: string; secondaryLabel?: string; tone: 'good' | 'bad' | 'muted' }
 
-function MiniMetric({ label, value, detail, definition, comparison, icon: Icon }: { label: string; value: string; detail: string; definition?: string; comparison?: MetricComparison; icon: typeof Gauge }) {
+function MiniMetric({ label, value, detail, definition, comparison, annotation = false, annotationText = 'Annotation text to be provided', icon: Icon }: { label: string; value: string; detail: string; definition?: string; comparison?: MetricComparison; annotation?: boolean; annotationText?: string; icon: typeof Gauge }) {
   const TrendIcon = comparison?.direction === 'up' ? ArrowUpRight : comparison?.direction === 'down' ? ArrowDownRight : Minus
-  return <article className="mini-metric"><div className="mini-metric-heading"><Icon size={19} />{definition && <button className="info-button" aria-label={`Definition: ${definition}`} data-tooltip={definition}><Info size={15} /></button>}</div><span>{label}</span><strong>{value}</strong>{comparison && <div className={`mini-metric-comparison trend trend-${comparison.tone}`}><TrendIcon size={15} />{comparison.label}{comparison.secondaryLabel && <><i>/</i><TrendIcon size={15} />{comparison.secondaryLabel}</>}</div>}<small>{detail}</small></article>
+  return <article className="mini-metric"><div className="mini-metric-heading"><Icon size={19} /><div className="mini-metric-actions">{definition && <button className="info-button" aria-label={`Definition: ${definition}`} data-tooltip={definition}><Info size={15} /></button>}{annotation && <button className="info-button annotation-button" aria-label={`Annotation for ${label}`} data-tooltip={annotationText}><MessageSquareText size={15} /></button>}</div></div><span>{label}</span><strong>{value}</strong>{comparison && <div className={`mini-metric-comparison trend trend-${comparison.tone}`}><TrendIcon size={15} />{comparison.label}{comparison.secondaryLabel && <><i>/</i><TrendIcon size={15} />{comparison.secondaryLabel}</>}</div>}<small>{detail}</small></article>
 }
 
 function formatDuration(totalMinutes: number) {
@@ -25,6 +22,34 @@ function formatDuration(totalMinutes: number) {
 
 function InsightPanel({ title, titleId, items }: { title: string; titleId?: string; items: { text: string; action: string }[] }) {
   return <aside className="action-panel"><span className="section-kicker">Recommended action</span><h3 id={titleId}>{title}</h3>{items.map((item) => <div key={item.text}><p>{item.text}</p><strong><ArrowRight size={14} />{item.action}</strong></div>)}</aside>
+}
+
+const galleryAttendanceBaseline = [
+  { name: 'Art and Artists', capacity: 1000, utilization: 75, visitors: 749, duration: 45 },
+  { name: 'Graphic Storytelling', capacity: 500, utilization: 93, visitors: 424, duration: 12 },
+  { name: 'Cinematic Art', capacity: 300, utilization: 97, visitors: 287, duration: 67 },
+  { name: 'History', capacity: 100, utilization: 80, visitors: 80, duration: 32 },
+  { name: 'Community', capacity: 70, utilization: 89, visitors: 62, duration: 23 },
+  { name: 'Comics', capacity: 50, utilization: 35, visitors: 20, duration: 25 },
+  { name: 'Frank Frazetta', capacity: 50, utilization: 85, visitors: 46, duration: 34 },
+  { name: "Children's Stories", capacity: 40, utilization: 95, visitors: 38, duration: 13 },
+  { name: 'Fantasy', capacity: 35, utilization: 67, visitors: 27, duration: 27 },
+]
+
+function GalleryAttendanceTable({ periodScale, averageFactor }: { periodScale: number; averageFactor: number }) {
+  const rows = galleryAttendanceBaseline.map((gallery) => ({
+    ...gallery,
+    capacity: Math.round(gallery.capacity * periodScale),
+    visitors: Math.round(gallery.visitors * periodScale),
+    duration: Math.round(gallery.duration * averageFactor),
+  }))
+  const totalCapacity = rows.reduce((total, gallery) => total + gallery.capacity, 0)
+  const totalVisitors = rows.reduce((total, gallery) => total + gallery.visitors, 0)
+  const averageUtilization = Math.round(rows.reduce((total, gallery) => total + gallery.utilization, 0) / rows.length)
+  const averageVisitors = Math.round(totalVisitors / rows.length)
+  const averageDuration = Math.round(rows.reduce((total, gallery) => total + gallery.duration, 0) / rows.length)
+
+  return <div className="gallery-attendance-wrap"><table className="gallery-attendance-table"><thead><tr><th>Gallery name</th><th>Total capacity</th><th>Avg. % of capacity</th><th>Avg. visitors</th><th>Avg. visit duration</th></tr></thead><tbody>{rows.map((gallery) => <tr key={gallery.name}><th>{gallery.name}</th><td>{gallery.capacity.toLocaleString()}</td><td>{gallery.utilization}%</td><td>{gallery.visitors.toLocaleString()}</td><td>{gallery.duration} min</td></tr>)}</tbody><tfoot><tr><th>Total</th><td>{totalCapacity.toLocaleString()}</td><td>{averageUtilization}%</td><td>{averageVisitors.toLocaleString()}</td><td>{averageDuration} min</td></tr></tfoot></table></div>
 }
 
 export function OperationsPage({ data }: { data: DashboardData }) {
@@ -56,9 +81,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
   const peakCapacity = Math.max(...data.capacityByHour.map((item) => item.current))
   const priorPeakCapacity = Math.max(...data.capacityByHour.map((item) => item.prior))
   const peakHeadroom = Math.round(68 * data.averageFactor)
-  const onsiteAverageParty = Math.max(1, 2 + Math.ceil((data.averageFactor - 1) * 5))
   const peakGalleryLoad = Math.min(100, Math.round(88 * data.averageFactor))
-  const averageGalleryLoad = Math.min(100, Math.round(68 * data.averageFactor))
   return (
     <div className="page operations-page">
       <section className="page-hero operations-hero">
@@ -68,14 +91,14 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       <section aria-labelledby="glance-title">
         <div className="section-heading"><div><h2 id="glance-title">The Operating Picture</h2></div><p>Compared with {data.comparisonLabel}</p></div>
         <div className="mini-metric-grid operating-picture-grid">
-          <MiniMetric icon={Gauge} label="% of Capacity" value={`${Math.round(capacity)}%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${Math.round(Math.abs(capacityKpi?.comparison ?? 0))}%`, tone: 'good' }} definition="Checked-in attendance divided by available visitor capacity for the selected completed period." />
-          <MiniMetric icon={Clock3} label="Avg Cinema Wait Time" value={`${averageCinemaWait} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: cinemaWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(cinemaWaitTrend)} min`, tone: cinemaWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated wait for cinema and gallery entry during the selected period." />
-          <MiniMetric icon={Clock3} label="Avg Elevator Wait Time" value={`${averageElevatorWait} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: elevatorWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(elevatorWaitTrend)} min`, tone: elevatorWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated elevator wait during the selected completed period." />
-          <MiniMetric icon={UsersRound} label="Avg Elevator Party Size" value={`${elevatorPartySize} people`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: '1 person', tone: 'bad' }} definition="Average visitors per observed elevator party based on aggregated instrumentation." />
-          <MiniMetric icon={Clock3} label="Avg Museum Visit Duration" value={formatDuration(museumVisitMinutes)} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${Math.round(11 * data.averageFactor)} min`, tone: 'good' }} definition="Average elapsed time between visitor arrival and departure during the selected period." />
-          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: averageGalleryVisit >= averagePriorGalleryVisit ? 'up' : 'down', label: `${Math.abs(averageGalleryVisit - averagePriorGalleryVisit)} min`, tone: averageGalleryVisit >= averagePriorGalleryVisit ? 'good' : 'muted' }} definition="Average time across west, east, and archive gallery observations." />
-          <MiniMetric icon={UsersRound} label="Restaurant Reservations" value={Math.round(latestReservations).toLocaleString()} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: reservationComparison >= 0 ? 'up' : 'down', label: `${Math.abs(reservationComparison)}%`, tone: reservationComparison >= 0 ? 'good' : 'muted' }} definition="Completed restaurant reservations during the selected completed period." />
-          <MiniMetric icon={UsersRound} label="Restaurant Repeat Customers" value={`${repeatCustomerRate}%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${repeatCustomerComparison}%`, tone: 'good' }} definition="Share of consented restaurant reservations attributed to repeat customers." />
+          <MiniMetric icon={Gauge} label="% of Capacity" value={`${Math.round(capacity)}%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${Math.round(Math.abs(capacityKpi?.comparison ?? 0))}%`, tone: 'good' }} definition="Checked-in attendance divided by available visitor capacity for the selected completed period." annotation annotationText="What is our average % of capacity daily?" />
+          <MiniMetric icon={Clock3} label="Avg Cinema Wait Time" value={`${averageCinemaWait} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: cinemaWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(cinemaWaitTrend)} min`, tone: cinemaWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated wait for cinema and gallery entry during the selected period." annotation annotationText="What is the average wait time for the Cinema gallery?" />
+          <MiniMetric icon={Clock3} label="Avg Elevator Wait Time" value={`${averageElevatorWait} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: elevatorWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(elevatorWaitTrend)} min`, tone: elevatorWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated elevator wait during the selected completed period." annotation annotationText="What is the average wait time for the elevators?" />
+          <MiniMetric icon={UsersRound} label="Avg Elevator Party Size" value={`${elevatorPartySize} people`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: '1 person', tone: 'bad' }} definition="Average visitors per observed elevator party based on aggregated instrumentation." annotation annotationText="What was the average party size in the elevators?" />
+          <MiniMetric icon={Clock3} label="Avg Museum Visit Duration" value={formatDuration(museumVisitMinutes)} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${Math.round(11 * data.averageFactor)} min`, tone: 'good' }} definition="Average elapsed time between visitor arrival and departure during the selected period." annotation annotationText="How long are people spending in the museum on average today, this week, this month?" />
+          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: averageGalleryVisit >= averagePriorGalleryVisit ? 'up' : 'down', label: `${Math.abs(averageGalleryVisit - averagePriorGalleryVisit)} min`, tone: averageGalleryVisit >= averagePriorGalleryVisit ? 'good' : 'muted' }} definition="Average time across west, east, and archive gallery observations." annotation annotationText="How long are people spending in each gallery?" />
+          <MiniMetric icon={UsersRound} label="Restaurant Reservations" value={Math.round(latestReservations).toLocaleString()} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: reservationComparison >= 0 ? 'up' : 'down', label: `${Math.abs(reservationComparison)}%`, tone: reservationComparison >= 0 ? 'good' : 'muted' }} definition="Completed restaurant reservations during the selected completed period." annotation annotationText="How many reservations do we have at the restaurant today?" />
+          <MiniMetric icon={UsersRound} label="Restaurant Repeat Customers" value={`${repeatCustomerRate}%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${repeatCustomerComparison}%`, tone: 'good' }} definition="Share of consented restaurant reservations attributed to repeat customers." annotation annotationText="How many repeat customers booked reservations today, this week, this month?" />
         </div>
       </section>
 
@@ -92,19 +115,9 @@ export function OperationsPage({ data }: { data: DashboardData }) {
 
         <section className="ops-subsection" aria-labelledby="capacity-title">
           <div className="subsection-title"><div><span>Daily capacity utilization</span><h3 id="capacity-title">Attendance vs. available capacity</h3></div><SourceBadge type="day-one" /></div>
-          <div className="threshold-row"><span><i className="threshold-good" />On track · under 70%</span><span><i className="threshold-watch" />Watch · 70–84%</span><span><i className="threshold-risk" />At risk · 85%+</span></div>
           <div className="two-column-grid">
             <ChartCard title="Capacity by hour and timed-entry window" subtitle={`Peak: ${peakCapacity}% · 2:00–3:00 PM`} insight="The museum stayed within daily capacity, but the 1:00 and 2:00 PM windows concentrated demand above the at-risk threshold." action="Reallocate 40 admissions toward the 3:00 PM window."><CapacityChart data={data.capacityByHour} /></ChartCard>
             <div className="capacity-detail"><span className="section-kicker">Completed-day capacity</span><strong>{Math.round(attendance).toLocaleString()} <small>visitors</small></strong><p>{availableCapacity.toLocaleString()} available visitor capacity across completed operating hours.</p><dl><div><dt>Average utilization</dt><dd>{Math.round(capacity)}%</dd></div><div><dt>Peak window</dt><dd>2:00–3:00 PM</dd></div><div><dt>Peak headroom</dt><dd>{peakHeadroom.toLocaleString()} visitors</dd></div><div><dt>Prior peak</dt><dd>{priorPeakCapacity}%</dd></div></dl><StatusBadge status={capacityStatus} /></div>
-          </div>
-        </section>
-
-        <section className="ops-subsection" aria-labelledby="average-time-title">
-          <div className="subsection-title"><div><span>Gallery engagement</span><h3 id="average-time-title">Average time by space</h3></div><SourceBadge type="instrumentation" /></div>
-          <p className="method-note">Time measures require aggregated, privacy-reviewed entry and exit observations. Values show average minutes per observed gallery visit.</p>
-          <div className="dwell-layout">
-            <div className="table-wrap"><table><caption>Average time by gallery compared with the prior comparable period</caption><thead><tr><th>Gallery</th><th>Average time</th><th>Prior period</th><th>Change</th></tr></thead><tbody>{galleryDwellTimes.map((gallery) => { const prior = gallery.prior ?? gallery.value; const change = gallery.value - prior; return <tr key={gallery.name}><th>{gallery.name}</th><td>{gallery.value} min</td><td>{prior} min</td><td className={change > 0 ? 'positive' : change < 0 ? 'negative' : ''}>{change > 0 ? '+' : ''}{change} min</td></tr> })}</tbody></table></div>
-            <div className="dwell-summary"><span>Gallery time</span><dl><div><dt>Average</dt><dd>{averageGalleryVisit} min</dd></div><div><dt>Prior average</dt><dd>{averagePriorGalleryVisit} min</dd></div><div><dt>Longest</dt><dd>{galleryDwellTimes.length ? `${Math.max(...galleryDwellTimes.map((gallery) => gallery.value))} min` : 'N/A'}</dd></div></dl></div>
           </div>
         </section>
 
@@ -113,34 +126,10 @@ export function OperationsPage({ data }: { data: DashboardData }) {
           <div className="two-column-grid flow-grid">
             <ChartCard title="Time-of-day traffic heatmap" subtitle="Relative traffic index from aggregated observations" badge="instrumentation" insight="Elevator and gallery traffic converged between 1:00 and 3:00 PM; dining demand peaked later." action="Stage floor hosts before the 1:00 PM arrival wave."><Heatmap data={data.flowHeatmap} /></ChartCard>
             <ChartCard title="Simplified floor flow" subtitle="High-interest completed-day movement peaks" badge="instrumentation"><FlowMap scale={data.periodScale} /></ChartCard>
-            <ChartCard title="Most frequently used zones" subtitle="Aggregated observed visits; a visitor may appear in multiple zones" badge="instrumentation"><HorizontalBarChart data={data.zoneUse} label="Most frequently used museum zones" /></ChartCard>
-            <InsightPanel title="Flow exceptions" items={[
-              { text: 'Fourth-floor elevator upflow peaked at 1:25 PM, twelve minutes after the largest lobby arrival wave.', action: 'Stage an elevator ambassador from 1:10–2:20 PM.' },
-              { text: 'Fifth-floor downflow and restaurant arrivals overlapped at 3:10 PM.', action: 'Redirect one elevator car and flex the host stand.' },
-              { text: 'Theater entry volume peaked 18 minutes before the 2:30 PM program.', action: 'Open pre-scan 25 minutes before showtime.' },
-            ]} />
+            <ChartCard className="gallery-attendance-card" title="Visitor attendance by gallery" subtitle="Capacity, attendance, and visit duration by gallery" badge="instrumentation"><GalleryAttendanceTable periodScale={data.periodScale} averageFactor={data.averageFactor} /></ChartCard>
           </div>
         </section>
 
-        <section className="ops-subsection" aria-labelledby="transport-title">
-          <div className="subsection-title"><div><span>Transportation and arrival patterns</span><h3 id="transport-title">How visitors reached the museum</h3></div><SourceBadge type="instrumentation" /></div>
-          <div className="two-column-grid">
-            <ChartCard title="Arrival volume by hour" subtitle="Ticket scan and parking-entry proxy"><AreaPairChart data={data.salesAttendance} label="Visitor arrivals and checked-in attendance by hour" firstName="Ticket demand" secondName="Checked in" /></ChartCard>
-            <ChartCard title="Estimated arrival mode" subtitle="Survey, parking transaction, shuttle, and modeled unknown share" badge="instrumentation" insight="Parking and rideshare represented an estimated 52% of arrivals. Mode confidence remains insufficient for routine operational reporting." action="Add a lightweight arrival-mode question to opt-in post-visit surveys."><DonutChart data={data.arrivalModes} label="Estimated visitor transportation mode" /></ChartCard>
-          </div>
-          <div className="instrumentation-callout"><CarFront size={21} /><div><strong>Transportation-mode instrumentation required</strong><p>Parking demand is available from transactions; rideshare, transit, walking, and unknown modes require partner feeds, surveys, or privacy-reviewed mobility aggregates.</p></div></div>
-        </section>
-      </div>
-
-      <div className="operations-band onsite-band">
-        <SectionIntro title="Onsite Engagement" description="Aggregated engagement signals showing how visitors used galleries, theaters, food, retail, park, and garden spaces." />
-        <div className="mini-metric-grid compact"><MiniMetric icon={Clock3} label="Average visit" value={formatDuration(museumVisitMinutes)} detail={`+${Math.round(11 * data.averageFactor)} min vs. ${data.comparisonLabel}`} /><MiniMetric icon={UsersRound} label="Average party" value={`${onsiteAverageParty} people`} detail={`Theater ${onsiteAverageParty} · Elevator proxy ${elevatorPartySize}`} /><MiniMetric icon={Gauge} label="Peak gallery load" value={`${peakGalleryLoad}%`} detail={`Average ${averageGalleryLoad}% · East peak 1:40 PM`} /><MiniMetric icon={MapPin} label="Top food floor" value="Level 5" detail="Peak demand 3:00 PM" /></div>
-        <div className="chart-grid">
-          <ChartCard title="Average time by space" subtitle="Minutes per observed visit" badge="instrumentation" insight="West gallery time was highest and increased three minutes. Archive gallery time declined despite stable entries." action="Review interpretive touchpoints and staff positioning in Archive gallery."><HorizontalBarChart data={data.dwellTime} label="Average visit duration by gallery, theater, and zone" unit=" min" /></ChartCard>
-          <ChartCard title="Gallery and theater popularity" subtitle="Visitors by space across completed periods" badge="instrumentation"><HorizontalBarChart data={data.galleryVisitors} label="Visitors by theater and gallery" /></ChartCard>
-          <ChartCard className="chart-wide" title="Gallery and theater attendance by time" subtitle="Completed operating hour compared with prior comparable period" badge="instrumentation" insight="Gallery traffic peaked at 2:00 PM, while theater entry demand remained elevated into the 3:00 PM program window." action="Separate gallery and theater arrival routing from 1:30–3:15 PM."><AreaPairChart data={data.galleryTraffic} label="Gallery and theater visitors by completed operating hour" firstName="Gallery visits" secondName="Theater visits" /></ChartCard>
-          <ChartCard className="chart-wide" title="Food, retail, park, and garden demand" subtitle="Food and retail visits by completed operating hour" badge="integration" insight="Food demand peaked at 1:00 PM, while retail remained elevated through the 4:00 PM departure wave." action="Preserve food staffing through 2:30 PM and shift one retail associate later."><AreaPairChart data={data.engagementAreas} label="Food and retail visitor demand by hour" firstName="Food areas" secondName="Retail" /></ChartCard>
-        </div>
       </div>
 
     </div>

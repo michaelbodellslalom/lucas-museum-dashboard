@@ -3,7 +3,42 @@ import { DemographicPriceChart, DonutChart, FunnelChart, MembershipChart, SalesA
 import { ChartCard, KpiCard, MetricState } from '../components/DashboardUI'
 import type { DashboardData } from '../types/dashboard'
 
+function getMuseumBrief(data: DashboardData | null) {
+  const dailySummary = 'Attendance exceeded expectations and revenue increased. Visitor engagement remained strong with average visit duration above three hours.'
+  const dailyPrimaryInsight = 'Primary concern: Elevator congestion occurred between 1 PM and 3 PM. No critical issues identified.'
+
+  if (!data) {
+    return {
+      title: "Today's Museum Brief",
+      summary: dailySummary,
+      primaryInsight: dailyPrimaryInsight,
+    }
+  }
+
+  if (data.rangeDays === 1) return { title: "Today's Museum Brief", summary: dailySummary, primaryInsight: dailyPrimaryInsight }
+
+  const getKpi = (id: string) => data.kpis.find((kpi) => kpi.id === id)
+  const attendance = getKpi('attendance')
+  const revenue = getKpi('revenue')
+  const capacity = getKpi('capacity')
+  const memberships = getKpi('memberships')
+  const redemption = getKpi('redemption')
+  const describeChange = (comparison: number) => comparison === 0 ? 'flat' : `${comparison > 0 ? 'up' : 'down'} ${Math.abs(Math.round(comparison))}%`
+  const summary = `${Math.round(attendance?.value ?? 0).toLocaleString()} visitors checked in, ${describeChange(attendance?.comparison ?? 0)} compared with ${data.comparisonLabel}. Total revenue reached ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(revenue?.value ?? 0)}, ${describeChange(revenue?.comparison ?? 0)}. Capacity utilization was ${Math.round(capacity?.value ?? 0)}%, and ${Math.round(memberships?.value ?? 0).toLocaleString()} memberships were sold.`
+  const primaryInsight = (redemption?.comparison ?? 0) < 0
+    ? `Primary concern: Ticket redemption was ${Math.round(redemption?.value ?? 0)}%, down ${Math.abs(Math.round(redemption?.comparison ?? 0))} points versus ${data.comparisonLabel}.`
+    : `Primary highlight: Membership sales were ${describeChange(memberships?.comparison ?? 0)} compared with ${data.comparisonLabel}.`
+
+  if (data.periodLabel === 'Last 7 completed days') return { title: "This Week's Museum Brief", summary, primaryInsight }
+  if (data.periodLabel === 'Last 30 completed days') return { title: 'Last 30 Days Museum Brief', summary, primaryInsight }
+  if (data.periodLabel === 'Month to date') return { title: "This Month's Museum Brief", summary, primaryInsight }
+  if (data.periodLabel === 'Year to date') return { title: 'Year-to-Date Museum Brief', summary, primaryInsight }
+
+  return { title: 'Custom Range Museum Brief', summary, primaryInsight }
+}
+
 export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardData | null; state: 'loaded' | 'loading' | 'empty' | 'error'; onRetry: () => void }) {
+  const museumBrief = getMuseumBrief(data)
   return (
     <div className="page executive-page">
       <section className="page-hero">
@@ -16,8 +51,9 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
       </section>
 
       <section className="executive-summary" aria-labelledby="museum-brief-title">
-        <div className="section-heading"><div><span className="section-kicker">Executive summary</span><h2 id="museum-brief-title">Today's Museum Brief</h2></div></div>
-        <p>Attendance exceeded expectations and revenue increased. Visitor engagement remained strong with average visit duration above three hours. The primary operational concern was elevator congestion between 1 PM and 3 PM. No critical issues identified.</p>
+        <div className="section-heading"><div><span className="section-kicker">Executive summary</span><h2 id="museum-brief-title">{museumBrief.title}</h2></div></div>
+        <p>{museumBrief.summary}</p>
+        <strong className="brief-insight">{museumBrief.primaryInsight}</strong>
       </section>
 
       <section aria-labelledby="kpi-title">
