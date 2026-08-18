@@ -85,7 +85,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
   return (
     <div className="page operations-page">
       <section className="page-hero operations-hero">
-        <div><h1>Operations Efficiencies Detail</h1><p>Completed-day visitor flow, onsite experience, and digital demand translated into practical operating decisions.</p><div className="hero-period"><Clock3 size={17} /><span>{data.periodLabel} · <strong>{data.dateRangeLabel}</strong></span></div></div>
+        <div><h1>Operations Efficiencies Detail</h1><p>Completed-day visitor flow and onsite experience translated into practical operating decisions.</p><div className="hero-period"><Clock3 size={17} /><span>{data.periodLabel} · <strong>{data.dateRangeLabel}</strong></span></div></div>
       </section>
 
       <section aria-labelledby="glance-title">
