@@ -90,6 +90,9 @@ h1, h2, h3 { letter-spacing: 0; }
 .page-hero h1 { max-width: 850px; margin-bottom: 12px; color: #fff; font-size: 43px; line-height: 1.04; font-weight: 600; text-shadow: 0 2px 16px rgba(0, 0, 0, .3); }
 .page-hero > div:first-child > p { max-width: 780px; color: rgba(255, 255, 255, .88); font-size: 15px; line-height: 1.55; }
 .hero-period { margin-top: 20px; display: flex; align-items: center; gap: 8px; color: #fff; font-size: 12px; }
+.executive-page > .page-hero { min-height: 235px; padding-block: 28px; }
+.executive-summary { max-width: 900px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.executive-summary .section-heading { margin-bottom: 9px; }.executive-summary .section-kicker { margin-bottom: 7px; }.executive-summary p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 .page > section, .operations-band { margin-top: 42px; }
 .section-heading { margin-bottom: 18px; display: flex; align-items: end; justify-content: space-between; gap: 20px; }
 .section-heading .section-kicker { margin-bottom: 6px; }
@@ -229,7 +232,7 @@ tbody th { min-width: 120px; font-size: 12px; } td:last-child { min-width: 200px
 @media (max-width: 640px) {
   html { scroll-padding-top: 90px; }
   .filter-bar { padding: 8px 12px; grid-template-columns: 38px minmax(0, 1fr); gap: 8px; }.filter-title { display: none; }.filter-controls { width: max-content; }
-  .page { padding: 26px 14px 48px; }.page-hero { min-height: 360px; padding: 24px 20px; flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 22px; background-position: 55% center; }.page-hero h1 { font-size: 32px; }
+  .page { padding: 26px 14px 48px; }.page-hero { min-height: 360px; padding: 24px 20px; flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 22px; background-position: 55% center; }.executive-page > .page-hero { min-height: 250px; }.page-hero h1 { font-size: 32px; }
   .page > section, .operations-band { margin-top: 34px; }.section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
   .kpi-grid { grid-template-columns: 1fr 1fr; gap: 7px; }.kpi-card { min-height: 175px; padding: 12px; }.kpi-card > strong { font-size: 25px; }.source-badge { white-space: normal; }
   .kpi-card:nth-child(odd) .info-button[data-tooltip]::after { left: 50%; right: auto; transform: translateX(-50%); }

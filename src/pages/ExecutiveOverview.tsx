@@ -15,6 +15,11 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
         </div>
       </section>
 
+      <section className="executive-summary" aria-labelledby="museum-brief-title">
+        <div className="section-heading"><div><span className="section-kicker">Executive summary</span><h2 id="museum-brief-title">Today's Museum Brief</h2></div></div>
+        <p>Attendance exceeded expectations and revenue increased. Visitor engagement remained strong with average visit duration above three hours. The primary operational concern was elevator congestion between 1 PM and 3 PM. No critical issues identified.</p>
+      </section>
+
       <section aria-labelledby="kpi-title">
         <div className="section-heading"><div><h2 id="kpi-title">Summary KPIs</h2></div>{data && <p>Compared with {data.comparisonLabel}.</p>}</div>
         {state !== 'loaded' || !data ? <MetricState state={state === 'loaded' ? 'empty' : state} onRetry={onRetry} /> : <div className="kpi-grid">{data.kpis.map((kpi) => <KpiCard key={kpi.id} kpi={kpi} comparisonLabel={data.comparisonLabel} />)}</div>}
