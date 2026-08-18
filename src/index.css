@@ -108,7 +108,9 @@ h1, h2, h3 { letter-spacing: 0; }
 .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(170px, 1fr)); gap: 10px; }
 .kpi-card { min-height: 166px; padding: 15px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .kpi-label { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.kpi-actions { flex: 0 0 auto; display: flex; align-items: center; gap: 2px; }
 .info-button { width: 20px; height: 20px; padding: 0; border: 0; background: transparent; color: #858179; cursor: help; }
+.annotation-button { color: var(--blue); }
 [data-tooltip] { position: relative; }
 [data-tooltip]::after { content: attr(data-tooltip); position: absolute; z-index: 100; left: 50%; bottom: calc(100% + 8px); width: 240px; padding: 9px 11px; border: 1px solid #444; border-radius: 4px; background: #292c2a; color: #fff; font-size: 12px; line-height: 1.45; font-weight: 500; opacity: 0; visibility: hidden; transform: translateX(-50%); pointer-events: none; }
 [data-tooltip]:hover::after, [data-tooltip]:focus-visible::after { opacity: 1; visibility: visible; }

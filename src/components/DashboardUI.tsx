@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { AlertTriangle, ArrowDownRight, ArrowUpRight, CircleCheck, Database, Info, Minus, RefreshCw } from 'lucide-react'
+import { AlertTriangle, ArrowDownRight, ArrowUpRight, CircleCheck, Database, Info, MessageSquareText, Minus, RefreshCw } from 'lucide-react'
 import type { Availability, Kpi, OperatingStatus } from '../types/dashboard'
 import { ChartViewProvider, type ChartView } from './Charts'
 
@@ -31,7 +31,7 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
   const unfavorable = ['redemption'].includes(kpi.id) ? kpi.comparison < 0 : false
   return (
     <article className="kpi-card" aria-label={`${kpi.label}: ${formatValue(kpi)}`}>
-      <div className="kpi-label"><span>{kpi.label}</span><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button></div>
+      <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button><button className="info-button annotation-button" aria-label={`Annotation for ${kpi.label}`} data-tooltip="Annotation text to be provided"><MessageSquareText size={15} /></button></div></div>
       <strong>{formatValue(kpi)}</strong>
       <div className="kpi-footer">
         <span className={`trend ${unfavorable ? 'trend-bad' : direction === 'down' ? 'trend-muted' : 'trend-good'}`}><TrendIcon size={15} />{Math.round(Math.abs(kpi.comparison))}%</span>
