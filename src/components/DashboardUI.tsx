@@ -36,6 +36,8 @@ const kpiAnnotations: Record<string, string> = {
   conversion: 'What is our ticket to Membership Conversion (Tessitura), today, this week, this month?',
 }
 
+const chartAnnotations: Record<string, string> = {}
+
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {
   const direction = kpi.comparison > 0 ? 'up' : kpi.comparison < 0 ? 'down' : 'flat'
   const TrendIcon = direction === 'up' ? ArrowUpRight : direction === 'down' ? ArrowDownRight : Minus
@@ -54,12 +56,13 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
   )
 }
 
-export function ChartCard({ title, subtitle, badge = 'day-one', insight, action, className = '', children }: {
+export function ChartCard({ title, subtitle, badge = 'day-one', insight, action, annotation = false, className = '', children }: {
   title: string
   subtitle?: string
   badge?: Availability
   insight?: string
   action?: string
+  annotation?: boolean
   className?: string
   children: ReactNode
 }) {
@@ -70,6 +73,7 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
         <div><h3>{title}</h3>{subtitle && <p>{subtitle}</p>}</div>
         <div className="chart-card-tools">
           <SourceBadge type={badge} />
+          {annotation && <button className="info-button annotation-button chart-annotation-button" aria-label={`Annotation for ${title}`} data-tooltip={chartAnnotations[title] ?? 'Annotation text to be provided'}><MessageSquareText size={15} /></button>}
           <label className="chart-view-filter"><span>Chart period</span><select value={chartView} onChange={(event) => setChartView(event.target.value as ChartView)} aria-label={`${title} chart period`}><option value="selected">Selected period</option><option value="prior">Prior period</option></select></label>
         </div>
       </header>
