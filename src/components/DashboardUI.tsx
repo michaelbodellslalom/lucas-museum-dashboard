@@ -25,13 +25,18 @@ function formatValue(kpi: Kpi) {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(kpi.value)
 }
 
+const kpiAnnotations: Record<string, string> = {
+  tickets: 'What was the Tickets Sold vs the Capacity today, this week, this month?',
+}
+
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {
   const direction = kpi.comparison > 0 ? 'up' : kpi.comparison < 0 ? 'down' : 'flat'
   const TrendIcon = direction === 'up' ? ArrowUpRight : direction === 'down' ? ArrowDownRight : Minus
   const unfavorable = ['redemption'].includes(kpi.id) ? kpi.comparison < 0 : false
+  const annotation = kpiAnnotations[kpi.id] ?? 'Annotation text to be provided'
   return (
     <article className="kpi-card" aria-label={`${kpi.label}: ${formatValue(kpi)}`}>
-      <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button><button className="info-button annotation-button" aria-label={`Annotation for ${kpi.label}`} data-tooltip="Annotation text to be provided"><MessageSquareText size={15} /></button></div></div>
+      <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button><button className="info-button annotation-button" aria-label={`Annotation for ${kpi.label}`} data-tooltip={annotation}><MessageSquareText size={15} /></button></div></div>
       <strong>{formatValue(kpi)}</strong>
       <div className="kpi-footer">
         <span className={`trend ${unfavorable ? 'trend-bad' : direction === 'down' ? 'trend-muted' : 'trend-good'}`}><TrendIcon size={15} />{Math.round(Math.abs(kpi.comparison))}%</span>
