@@ -3,14 +3,8 @@ import { AlertTriangle, ArrowDownRight, ArrowUpRight, CircleCheck, Database, Inf
 import type { Availability, Kpi, OperatingStatus } from '../types/dashboard'
 import { ChartViewProvider, type ChartView } from './Charts'
 
-const availabilityLabels: Partial<Record<Availability, string>> = {
-  instrumentation: 'Instrumentation required',
-}
-
-export function SourceBadge({ type }: { type: Availability }) {
-  const label = availabilityLabels[type]
-  if (!label) return null
-  return <span className={`source-badge source-${type}`}>{label}</span>
+export function SourceBadge(_: { type: Availability }) {
+  return null
 }
 
 export function StatusBadge({ status }: { status: OperatingStatus }) {

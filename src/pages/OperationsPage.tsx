@@ -23,8 +23,8 @@ function formatDuration(totalMinutes: number) {
   return `${hours}h ${minutes.toString().padStart(2, '0')}m`
 }
 
-function InsightPanel({ title, items }: { title: string; items: { text: string; action: string }[] }) {
-  return <aside className="action-panel"><span className="section-kicker">Recommended action</span><h3>{title}</h3>{items.map((item) => <div key={item.text}><p>{item.text}</p><strong><ArrowRight size={14} />{item.action}</strong></div>)}</aside>
+function InsightPanel({ title, titleId, items }: { title: string; titleId?: string; items: { text: string; action: string }[] }) {
+  return <aside className="action-panel"><span className="section-kicker">Recommended action</span><h3 id={titleId}>{title}</h3>{items.map((item) => <div key={item.text}><p>{item.text}</p><strong><ArrowRight size={14} />{item.action}</strong></div>)}</aside>
 }
 
 export function OperationsPage({ data }: { data: DashboardData }) {
@@ -73,10 +73,18 @@ export function OperationsPage({ data }: { data: DashboardData }) {
           <MiniMetric icon={Clock3} label="Avg Elevator Wait Time" value={`${averageElevatorWait} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: elevatorWaitTrend >= 0 ? 'up' : 'down', label: `${Math.abs(elevatorWaitTrend)} min`, tone: elevatorWaitTrend > 0 ? 'bad' : 'good' }} definition="Average observed or estimated elevator wait during the selected completed period." />
           <MiniMetric icon={UsersRound} label="Avg Elevator Party Size" value={`${elevatorPartySize} people`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: '1 person', tone: 'bad' }} definition="Average visitors per observed elevator party based on aggregated instrumentation." />
           <MiniMetric icon={Clock3} label="Avg Museum Visit Duration" value={formatDuration(museumVisitMinutes)} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${Math.round(11 * data.averageFactor)} min`, tone: 'good' }} definition="Average elapsed time between visitor arrival and departure during the selected period." />
-          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: averageGalleryVisit >= averagePriorGalleryVisit ? 'up' : 'down', label: `${Math.abs(averageGalleryVisit - averagePriorGalleryVisit)} min`, tone: averageGalleryVisit >= averagePriorGalleryVisit ? 'good' : 'muted' }} definition="Average dwell time across west, east, and archive gallery observations." />
+          <MiniMetric icon={MapPin} label="Avg Gallery Visit Duration" value={`${averageGalleryVisit} min`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: averageGalleryVisit >= averagePriorGalleryVisit ? 'up' : 'down', label: `${Math.abs(averageGalleryVisit - averagePriorGalleryVisit)} min`, tone: averageGalleryVisit >= averagePriorGalleryVisit ? 'good' : 'muted' }} definition="Average time across west, east, and archive gallery observations." />
           <MiniMetric icon={UsersRound} label="Restaurant Reservations" value={Math.round(latestReservations).toLocaleString()} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: reservationComparison >= 0 ? 'up' : 'down', label: `${Math.abs(reservationComparison)}%`, tone: reservationComparison >= 0 ? 'good' : 'muted' }} definition="Completed restaurant reservations during the selected completed period." />
           <MiniMetric icon={UsersRound} label="Restaurant Repeat Customers" value={`${repeatCustomerRate}%`} detail={`vs. ${data.comparisonLabel}`} comparison={{ direction: 'up', label: `${repeatCustomerComparison}%`, tone: 'good' }} definition="Share of consented restaurant reservations attributed to repeat customers." />
         </div>
+      </section>
+
+      <section className="recommended-insights" aria-labelledby="experience-insights-title">
+        <InsightPanel title="Experience insights" titleId="experience-insights-title" items={[
+          { text: `East gallery reached ${peakGalleryLoad}% of its comfortable operating capacity at 1:40 PM.`, action: 'Add floor staff and use soft routing toward Archive gallery.' },
+          { text: `Cinema turnaround left a ${Math.round(14 * data.averageFactor)}-minute overlap between exiting and arriving audiences.`, action: 'Increase turnaround to 20 minutes for the 2:30 PM program.' },
+          { text: 'Level 5 food demand remained elevated after gallery traffic eased.', action: 'Keep the service line open through 4:15 PM.' },
+        ]} />
       </section>
 
       <div className="operations-band">
@@ -91,12 +99,12 @@ export function OperationsPage({ data }: { data: DashboardData }) {
           </div>
         </section>
 
-        <section className="ops-subsection" aria-labelledby="queue-title">
-          <div className="subsection-title"><div><span>Wait-time monitoring</span><h3 id="queue-title">Ranked queue risk</h3></div><SourceBadge type="instrumentation" /></div>
-          <p className="method-note">Queue measures require sensors or structured staff observations. Demo values combine observations with ticket-scan and transaction proxies.</p>
-          <div className="queue-layout">
-            <div className="table-wrap"><table><caption>Locations ranked by peak wait relative to service target</caption><thead><tr><th>Location</th><th>Peak wait</th><th>Trend</th><th>Threshold</th><th>State</th><th>Recommended action</th></tr></thead><tbody>{data.queueRisks.map((risk) => <tr key={risk.location}><th>{risk.location}</th><td>{risk.peak} min</td><td className={risk.trend > 0 ? 'negative' : 'positive'}>{risk.trend > 0 ? '+' : ''}{risk.trend} min</td><td>{risk.threshold} min</td><td><StatusBadge status={risk.peak > risk.threshold * 1.3 ? 'At risk' : risk.peak > risk.threshold ? 'Watch' : 'On track'} /></td><td>{risk.action}</td></tr>)}</tbody></table></div>
-            <div className="queue-summary"><span>Average waits</span><dl><div><dt>Elevators</dt><dd>{averageElevatorWait} min</dd></div><div><dt>Cinema / galleries</dt><dd>{averageCinemaWait} min</dd></div><div><dt>Food floors</dt><dd>{Math.round(11 * data.averageFactor)} min</dd></div><div><dt>Restaurants</dt><dd>{Math.round(8 * data.averageFactor)} min</dd></div><div><dt>Service points</dt><dd>{Math.round(6 * data.averageFactor)} min</dd></div></dl></div>
+        <section className="ops-subsection" aria-labelledby="average-time-title">
+          <div className="subsection-title"><div><span>Gallery engagement</span><h3 id="average-time-title">Average time by space</h3></div><SourceBadge type="instrumentation" /></div>
+          <p className="method-note">Time measures require aggregated, privacy-reviewed entry and exit observations. Values show average minutes per observed gallery visit.</p>
+          <div className="dwell-layout">
+            <div className="table-wrap"><table><caption>Average time by gallery compared with the prior comparable period</caption><thead><tr><th>Gallery</th><th>Average time</th><th>Prior period</th><th>Change</th></tr></thead><tbody>{galleryDwellTimes.map((gallery) => { const prior = gallery.prior ?? gallery.value; const change = gallery.value - prior; return <tr key={gallery.name}><th>{gallery.name}</th><td>{gallery.value} min</td><td>{prior} min</td><td className={change > 0 ? 'positive' : change < 0 ? 'negative' : ''}>{change > 0 ? '+' : ''}{change} min</td></tr> })}</tbody></table></div>
+            <div className="dwell-summary"><span>Gallery time</span><dl><div><dt>Average</dt><dd>{averageGalleryVisit} min</dd></div><div><dt>Prior average</dt><dd>{averagePriorGalleryVisit} min</dd></div><div><dt>Longest</dt><dd>{galleryDwellTimes.length ? `${Math.max(...galleryDwellTimes.map((gallery) => gallery.value))} min` : 'N/A'}</dd></div></dl></div>
           </div>
         </section>
 
@@ -117,8 +125,8 @@ export function OperationsPage({ data }: { data: DashboardData }) {
         <section className="ops-subsection" aria-labelledby="transport-title">
           <div className="subsection-title"><div><span>Transportation and arrival patterns</span><h3 id="transport-title">How visitors reached the museum</h3></div><SourceBadge type="instrumentation" /></div>
           <div className="two-column-grid">
-            <ChartCard title="Estimated arrival mode" subtitle="Survey, parking transaction, shuttle, and modeled unknown share" badge="instrumentation" insight="Parking and rideshare represented an estimated 52% of arrivals. Mode confidence remains insufficient for routine operational reporting." action="Add a lightweight arrival-mode question to opt-in post-visit surveys."><DonutChart data={data.arrivalModes} label="Estimated visitor transportation mode" /></ChartCard>
             <ChartCard title="Arrival volume by hour" subtitle="Ticket scan and parking-entry proxy"><AreaPairChart data={data.salesAttendance} label="Visitor arrivals and checked-in attendance by hour" firstName="Ticket demand" secondName="Checked in" /></ChartCard>
+            <ChartCard title="Estimated arrival mode" subtitle="Survey, parking transaction, shuttle, and modeled unknown share" badge="instrumentation" insight="Parking and rideshare represented an estimated 52% of arrivals. Mode confidence remains insufficient for routine operational reporting." action="Add a lightweight arrival-mode question to opt-in post-visit surveys."><DonutChart data={data.arrivalModes} label="Estimated visitor transportation mode" /></ChartCard>
           </div>
           <div className="instrumentation-callout"><CarFront size={21} /><div><strong>Transportation-mode instrumentation required</strong><p>Parking demand is available from transactions; rideshare, transit, walking, and unknown modes require partner feeds, surveys, or privacy-reviewed mobility aggregates.</p></div></div>
         </section>
@@ -128,15 +136,10 @@ export function OperationsPage({ data }: { data: DashboardData }) {
         <SectionIntro title="Onsite Engagement" description="Aggregated engagement signals showing how visitors used galleries, theaters, food, retail, park, and garden spaces." />
         <div className="mini-metric-grid compact"><MiniMetric icon={Clock3} label="Average visit" value={formatDuration(museumVisitMinutes)} detail={`+${Math.round(11 * data.averageFactor)} min vs. ${data.comparisonLabel}`} /><MiniMetric icon={UsersRound} label="Average party" value={`${onsiteAverageParty} people`} detail={`Theater ${onsiteAverageParty} · Elevator proxy ${elevatorPartySize}`} /><MiniMetric icon={Gauge} label="Peak gallery load" value={`${peakGalleryLoad}%`} detail={`Average ${averageGalleryLoad}% · East peak 1:40 PM`} /><MiniMetric icon={MapPin} label="Top food floor" value="Level 5" detail="Peak demand 3:00 PM" /></div>
         <div className="chart-grid">
-          <ChartCard title="Average dwell time by space" subtitle="Minutes per observed visit" badge="instrumentation" insight="West gallery dwell was highest and increased three minutes. Archive gallery dwell declined despite stable entries." action="Review interpretive touchpoints and staff positioning in Archive gallery."><HorizontalBarChart data={data.dwellTime} label="Average visit duration by gallery, theater, and zone" unit=" min" /></ChartCard>
+          <ChartCard title="Average time by space" subtitle="Minutes per observed visit" badge="instrumentation" insight="West gallery time was highest and increased three minutes. Archive gallery time declined despite stable entries." action="Review interpretive touchpoints and staff positioning in Archive gallery."><HorizontalBarChart data={data.dwellTime} label="Average visit duration by gallery, theater, and zone" unit=" min" /></ChartCard>
           <ChartCard title="Gallery and theater popularity" subtitle="Visitors by space across completed periods" badge="instrumentation"><HorizontalBarChart data={data.galleryVisitors} label="Visitors by theater and gallery" /></ChartCard>
           <ChartCard className="chart-wide" title="Gallery and theater attendance by time" subtitle="Completed operating hour compared with prior comparable period" badge="instrumentation" insight="Gallery traffic peaked at 2:00 PM, while theater entry demand remained elevated into the 3:00 PM program window." action="Separate gallery and theater arrival routing from 1:30–3:15 PM."><AreaPairChart data={data.galleryTraffic} label="Gallery and theater visitors by completed operating hour" firstName="Gallery visits" secondName="Theater visits" /></ChartCard>
           <ChartCard className="chart-wide" title="Food, retail, park, and garden demand" subtitle="Food and retail visits by completed operating hour" badge="integration" insight="Food demand peaked at 1:00 PM, while retail remained elevated through the 4:00 PM departure wave." action="Preserve food staffing through 2:30 PM and shift one retail associate later."><AreaPairChart data={data.engagementAreas} label="Food and retail visitor demand by hour" firstName="Food areas" secondName="Retail" /></ChartCard>
-          <InsightPanel title="Experience insights" items={[
-            { text: `East gallery reached ${peakGalleryLoad}% of its comfortable operating capacity at 1:40 PM.`, action: 'Add floor staff and use soft routing toward Archive gallery.' },
-            { text: `Cinema turnaround left a ${Math.round(14 * data.averageFactor)}-minute overlap between exiting and arriving audiences.`, action: 'Increase turnaround to 20 minutes for the 2:30 PM program.' },
-            { text: 'Level 5 food demand remained elevated after gallery traffic eased.', action: 'Keep the service line open through 4:15 PM.' },
-          ]} />
         </div>
       </div>
 
