@@ -130,9 +130,10 @@ h1, h2, h3 { letter-spacing: 0; }
 .chart-full { grid-column: 1 / -1; }
 .chart-card { min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .card-heading { min-height: 47px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.chart-card-copy { min-width: 0; }.chart-title-line { width: fit-content; max-width: 100%; display: flex; align-items: flex-start; gap: 5px; position: relative; }.chart-title-line h3 { min-width: 0; }
 .card-heading h3 { margin-bottom: 4px; font-size: 16px; font-weight: 700; }.card-heading p { margin: 0; color: var(--muted); font-size: 11px; }
 .chart-card-tools { display: flex; align-items: flex-end; gap: 7px; }
-.chart-annotation-button[data-tooltip]::after { left: 0; right: auto; transform: none; }
+.chart-title-line .chart-annotation-button { flex: 0 0 20px; position: static; }.chart-title-line .chart-annotation-button[data-tooltip]::after { left: 0; right: auto; transform: none; }
 .chart-view-filter { display: flex; flex-direction: column; gap: 3px; }
 .chart-view-filter span { color: var(--muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
 .chart-view-filter select { min-width: 126px; height: 30px; padding: 0 7px; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); color: var(--ink); font-size: 10px; cursor: pointer; }

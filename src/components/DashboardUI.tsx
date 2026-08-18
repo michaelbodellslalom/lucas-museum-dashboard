@@ -70,10 +70,9 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
   return (
     <article className={`chart-card ${className}`}>
       <header className="card-heading">
-        <div><h3>{title}</h3>{subtitle && <p>{subtitle}</p>}</div>
+        <div className="chart-card-copy"><div className="chart-title-line"><h3>{title}</h3>{annotation && <button className="info-button annotation-button chart-annotation-button" aria-label={`Annotation for ${title}`} data-tooltip={chartAnnotations[title] ?? 'Annotation text to be provided'}><MessageSquareText size={15} /></button>}</div>{subtitle && <p>{subtitle}</p>}</div>
         <div className="chart-card-tools">
           <SourceBadge type={badge} />
-          {annotation && <button className="info-button annotation-button chart-annotation-button" aria-label={`Annotation for ${title}`} data-tooltip={chartAnnotations[title] ?? 'Annotation text to be provided'}><MessageSquareText size={15} /></button>}
           <label className="chart-view-filter"><span>Chart period</span><select value={chartView} onChange={(event) => setChartView(event.target.value as ChartView)} aria-label={`${title} chart period`}><option value="selected">Selected period</option><option value="prior">Prior period</option></select></label>
         </div>
       </header>
