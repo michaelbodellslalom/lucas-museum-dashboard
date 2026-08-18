@@ -45,7 +45,7 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
         <div>
           <span className="eyebrow">Executive overview</span>
           <h1>Commercial Performance Dashboard</h1>
-          <p>An overview of performance, operations, and more.</p>
+          <p>An overview of performance, operations, and more to give you the information you need in seconds.</p>
           <div className="hero-period"><CalendarClock size={17} /><span>{data?.periodLabel ?? 'Last complete business day'} · <strong>{data?.dateRangeLabel ?? 'November 12, 2026'}</strong></span></div>
         </div>
       </section>
