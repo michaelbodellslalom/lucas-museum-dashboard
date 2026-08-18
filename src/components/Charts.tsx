@@ -60,14 +60,13 @@ export function SalesAttendanceChart({ data }: { data: TimePoint[] }) {
   </AccessibleChart>
 }
 
-export function DonutChart({ data, label, currency = false, percent = false }: { data: CategoryValue[]; label: string; currency?: boolean; percent?: boolean }) {
+export function DonutChart({ data, label, currency = false }: { data: CategoryValue[]; label: string; currency?: boolean }) {
   const view = useChartView()
   const chartData = categoryView(data, view)
-  const formatValue = (value: number) => currency ? `$${value.toLocaleString()}` : percent ? `${value.toLocaleString()}%` : value.toLocaleString()
   return <AccessibleChart label={label} height={250}>
     <ResponsiveContainer width="100%" height="100%"><PieChart>
-      <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="44%" innerRadius={48} outerRadius={72} paddingAngle={2} labelLine={{ stroke: '#8b877e', strokeWidth: 1 }} label={({ cx, cy, midAngle, outerRadius, value }) => { const radius = Number(outerRadius) + 13; const x = Number(cx) + radius * Math.cos(-Number(midAngle) * Math.PI / 180); const y = Number(cy) + radius * Math.sin(-Number(midAngle) * Math.PI / 180); return <text x={x} y={y} fill="#4d4a44" fontSize={10} fontWeight={700} textAnchor={x > Number(cx) ? 'start' : 'end'} dominantBaseline="central">{formatValue(Number(value))}</text> }}>{chartData.map((item, index) => <Cell key={item.name} fill={item.color ?? colors[index % colors.length]} />)}</Pie>
-      <Tooltip contentStyle={tooltipStyle} formatter={(value) => formatValue(Number(value))} />
+      <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={55} outerRadius={84} paddingAngle={2}>{chartData.map((item, index) => <Cell key={item.name} fill={item.color ?? colors[index % colors.length]} />)}</Pie>
+      <Tooltip contentStyle={tooltipStyle} formatter={(value) => currency ? `$${Number(value).toLocaleString()}` : Number(value).toLocaleString()} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
     </PieChart></ResponsiveContainer>
   </AccessibleChart>
