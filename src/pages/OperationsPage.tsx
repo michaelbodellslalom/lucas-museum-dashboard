@@ -67,7 +67,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
   return (
     <div className="page operations-page">
       <section className="page-hero operations-hero">
-        <div><h1>Operations & Visitor Services</h1><p>Completed-day visitor flow, onsite experience, and digital demand translated into practical operating decisions.</p><div className="hero-period"><Clock3 size={17} /><span>{data.periodLabel} · <strong>{data.dateRangeLabel}</strong></span></div></div>
+        <div><h1>Operations Efficiencies Detail</h1><p>Completed-day visitor flow, onsite experience, and digital demand translated into practical operating decisions.</p><div className="hero-period"><Clock3 size={17} /><span>{data.periodLabel} · <strong>{data.dateRangeLabel}</strong></span></div></div>
       </section>
 
       <section aria-labelledby="glance-title">
@@ -85,7 +85,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
       </section>
 
       <div className="operations-band">
-        <SectionIntro title="Operations & Visitor Services" description="Where capacity, queues, movement, and arrivals created operational risk during the completed business day." />
+        <SectionIntro title="Operations Efficiencies" description="Where capacity, queues, movement, and arrivals created operational risk during the completed business day." />
 
         <section className="ops-subsection" aria-labelledby="capacity-title">
           <div className="subsection-title"><div><span>Daily capacity utilization</span><h3 id="capacity-title">Attendance vs. available capacity</h3></div><SourceBadge type="day-one" /></div>

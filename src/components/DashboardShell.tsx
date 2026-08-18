@@ -27,7 +27,7 @@ const navigation = [
   { id: 'overview', pageId: 'overview' as PageId, label: 'Executive Overview', icon: LayoutDashboard },
   { id: 'financials', label: 'Financials', icon: CircleDollarSign },
   { id: 'memberships', label: 'Memberships', icon: Users },
-  { id: 'operations', pageId: 'operations' as PageId, label: 'Operations', icon: ClipboardCheck },
+  { id: 'operations', pageId: 'operations' as PageId, label: 'Operations Efficiencies', icon: ClipboardCheck },
   { id: 'admissions', label: 'Admissions', icon: TicketCheck },
   { id: 'digital-engagement', label: 'Digital Engagement', icon: MonitorSmartphone },
 ]
