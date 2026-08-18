@@ -36,7 +36,13 @@ const kpiAnnotations: Record<string, string> = {
   conversion: 'What is our ticket to Membership Conversion (Tessitura), today, this week, this month?',
 }
 
-const chartAnnotations: Record<string, string> = {}
+const chartAnnotations: Record<string, string> = {
+  'Ticket sales vs. visitor attendance': 'What are the ticket sales by day and what potentially caused the spike in sales?',
+  'Revenue mix': 'What is the overall Revenue from founders, parking, f&b, retail, membership, ticket sales?',
+  'Membership performance': 'How many Memberships were sold online vs in person, today, this week, this month? What were the most popular Membership levels sold?',
+  'Online drop off funnel': 'What is our online user journey to purchase path and where are they dropping off/abandoning?',
+  'Ticket demand by visitor segment and price': 'What does our visitor demographic look like based on ticket type? How many tickets were sold by price today?',
+}
 
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {
   const direction = kpi.comparison > 0 ? 'up' : kpi.comparison < 0 ? 'down' : 'flat'
