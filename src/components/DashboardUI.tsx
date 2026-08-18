@@ -27,6 +27,13 @@ function formatValue(kpi: Kpi) {
 
 const kpiAnnotations: Record<string, string> = {
   tickets: 'What was the Tickets Sold vs the Capacity today, this week, this month?',
+  attendance: 'What was the Total Attendance today, this week, this month?',
+  redemption: 'What % of tickets are being sold vs. attended today, this week, this month?',
+  capacity: 'What is our average % of capacity daily? How can we improve our operations to be more efficient?',
+  revenue: 'What is the overall Revenue from founders, parking, f&b, retail, membership, ticket sales?',
+  'revenue-per-visitor': 'What was the average revenue per visitor (f&b and retail) today, this week, this month?',
+  memberships: 'How many Memberships were sold today, this week, this month?',
+  conversion: 'What is our ticket to Membership Conversion (Tessitura), today, this week, this month?',
 }
 
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {
