@@ -4,7 +4,6 @@ import {
   CapacityChart,
   DonutChart,
   FlowMap,
-  FunnelChart,
   Heatmap,
   HorizontalBarChart,
 } from '../components/Charts'
@@ -62,9 +61,6 @@ export function OperationsPage({ data }: { data: DashboardData }) {
   const peakCapacity = Math.max(...data.capacityByHour.map((item) => item.current))
   const priorPeakCapacity = Math.max(...data.capacityByHour.map((item) => item.prior))
   const peakHeadroom = Math.round(68 * data.averageFactor)
-  const latestSubscriberPoint = data.subscriberTrend[data.subscriberTrend.length - 1]
-  const emailClickThrough = Math.min(100, Math.ceil(5 * data.averageFactor))
-  const socialEngagement = Math.min(100, Math.ceil(6 * data.averageFactor))
   const onsiteAverageParty = Math.max(1, 2 + Math.ceil((data.averageFactor - 1) * 5))
   const peakGalleryLoad = Math.min(100, Math.round(88 * data.averageFactor))
   const averageGalleryLoad = Math.min(100, Math.round(68 * data.averageFactor))
@@ -149,22 +145,6 @@ export function OperationsPage({ data }: { data: DashboardData }) {
         </div>
       </div>
 
-      <div className="operations-band digital-band">
-        <SectionIntro title="Digital Engagement" description="Completed-day acquisition, commerce, subscriber, campaign, and reservation signals connected to onsite planning." />
-        <div className="mini-metric-grid digital-metrics"><MiniMetric icon={MousePointerClick} label="Web sessions" value={Math.round(totalWebVisitors).toLocaleString()} detail={`+${Math.abs(webComparison)}% vs. ${data.comparisonLabel}`} /><MiniMetric icon={Gauge} label="Email click-through" value={`${emailClickThrough}%`} detail={`+${Math.max(1, Math.round(data.averageFactor))} point`} /><MiniMetric icon={UsersRound} label="Email list" value={Math.round(latestSubscriberPoint?.current ?? 0).toLocaleString()} detail={`+${Math.round(460 * data.averageFactor).toLocaleString()} net subscribers`} /><MiniMetric icon={Clock3} label="Reservations" value={Math.round(latestReservations).toLocaleString()} detail={`+${Math.abs(reservationComparison)}% vs. ${data.comparisonLabel}`} /><MiniMetric icon={MousePointerClick} label="Social engagement" value={`${socialEngagement}%`} detail={`Week ${socialEngagement}% · Month ${Math.max(1, socialEngagement - 1)}%`} /><MiniMetric icon={UsersRound} label="Repeat customers" value={`${repeatCustomerRate}%`} detail={`Repeat reservations ${Math.round(13 * data.averageFactor)}% · consented`} /></div>
-        <div className="chart-grid">
-          <ChartCard title="Traffic acquisition mix" subtitle="Completed-day website sessions" badge="integration" insight="Organic search remained the largest source; paid social produced traffic but converted below average." action="Shift campaign optimization toward purchase completion, not landing-page clicks."><DonutChart data={data.acquisitionMix} label="Website acquisition source mix" /></ChartCard>
-          <ChartCard title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Compare campaign sources and landing-page paths to identify where intent weakens."><FunnelChart data={data.funnel} /></ChartCard>
-          <ChartCard className="chart-wide" title="Subscriber growth" subtitle="Email list and social subscribers · daily view; weekly and monthly rollups follow selected period" badge="integration"><AreaPairChart data={data.subscriberTrend} label="Email and social subscriber growth by day" firstName="Email list" secondName="Social subscribers" /></ChartCard>
-          <ChartCard title="Restaurant reservations" subtitle="Reservations by completed day" badge="integration"><AreaPairChart data={data.reservationsTrend} label="Restaurant reservation trend compared with prior period" firstName="Reservations" secondName="Secondary series" /></ChartCard>
-          <InsightPanel title="Digital exception" items={[
-            { text: 'Mobile checkout abandonment increased 5 points after payment entry.', action: 'Audit payment errors and reduce competing add-on content.' },
-            { text: `Newsletter subscribers grew ${Math.max(1, Math.round(data.averageFactor))}% week over week; campaign click-through reached ${emailClickThrough}%.`, action: 'Use high-intent segments for timed-entry balancing.' },
-            { text: `Repeat reservations were ${Math.round(13 * data.averageFactor)}% where consented identity matching was available.`, action: 'Keep repeat measures aggregated and consent-scoped.' },
-          ]} />
-        </div>
-        <div className="privacy-note"><strong>Privacy-conscious measurement</strong><p>Repeat customer and repeat reservation metrics use only consented identity matching and are shown in aggregate. No personally identifiable visitor information is present in this prototype.</p></div>
-      </div>
     </div>
   )
 }

@@ -5,6 +5,7 @@ import {
   ClipboardCheck,
   LayoutDashboard,
   Menu,
+  MonitorSmartphone,
   Settings2,
   TicketCheck,
   Users,
@@ -28,6 +29,7 @@ const navigation = [
   { id: 'memberships', label: 'Memberships', icon: Users },
   { id: 'operations', pageId: 'operations' as PageId, label: 'Operations', icon: ClipboardCheck },
   { id: 'admissions', label: 'Admissions', icon: TicketCheck },
+  { id: 'digital-engagement', label: 'Digital Engagement', icon: MonitorSmartphone },
 ]
 
 function Field({ label, value, options, onChange }: { label: string; value: string[]; options: readonly string[]; onChange: (value: string[]) => void }) {
