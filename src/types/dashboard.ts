@@ -53,7 +53,7 @@ export interface CategoryValue {
 export interface DemographicValue {
   name: string
   visitors: number
-  averageTicketPrice: number
+  ticketPrice: number
 }
 
 export interface AlertItem {

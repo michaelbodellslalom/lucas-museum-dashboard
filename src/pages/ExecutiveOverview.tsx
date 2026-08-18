@@ -35,7 +35,7 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
           <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Strengthen campaign-to-landing-page continuity and test clearer next steps for high-intent visitors." annotation>
             <FunnelChart data={data.funnel} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Ticket demand by visitor segment and price" subtitle="Aggregated ticket-holder mix and realized average price" insight="Adults represented 50% of attendance. Child, teen student, and military demand broadened reach while lowering realized ticket yield." action="Protect access pricing while testing family bundles in lower-demand windows." annotation>
+          <ChartCard className="chart-full" title="Ticket demand by visitor segment and revenue" subtitle="Aggregated ticket-holder mix and total ticket revenue" insight="Adults represented 50% of attendance and generated the largest share of ticket revenue. Military, child, and teen student admission remained complimentary." action="Protect complimentary access while monitoring paid demand across adult and senior tickets." annotation>
             <DemographicPriceChart data={data.visitorDemographics} />
           </ChartCard>
         </div>

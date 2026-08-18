@@ -102,7 +102,7 @@ function DemographicTooltip({ active, payload, label }: {
   return <div style={tooltipStyle} className="chart-tooltip">
     <strong>{label}</strong>
     <span>Visitors <b>{item.visitors.toLocaleString()}</b></span>
-    <span>Average ticket price <b>${item.averageTicketPrice.toFixed(2)}</b></span>
+    <span>Ticket price <b>${item.ticketPrice.toFixed(2)}</b></span>
     <span>Total revenue <b>${Math.round(item.totalRevenue).toLocaleString()}</b></span>
   </div>
 }
@@ -130,17 +130,17 @@ function DemographicAxisTick({ x = 0, y = 0, payload }: {
 export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
   const view = useChartView()
   const periodData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
-  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.averageTicketPrice }))
-  return <AccessibleChart label="Visitor volume and average ticket price by aggregated visitor demographic" height={280}>
+  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.ticketPrice }))
+  return <AccessibleChart label="Visitor volume and total ticket revenue by aggregated visitor demographic" height={280}>
     <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 18, right: 12, bottom: 4, left: -8 }}>
       <CartesianGrid stroke="#e6e2da" vertical={false} />
       <XAxis dataKey="name" tick={<DemographicAxisTick />} tickLine={false} axisLine={false} height={38} interval={0} />
       <YAxis yAxisId="visitors" tickFormatter={(value) => Number(value).toLocaleString()} tickLine={false} axisLine={false} fontSize={12} />
-      <YAxis yAxisId="price" orientation="right" domain={[0, 40]} tickFormatter={(value) => `$${value}`} tickLine={false} axisLine={false} fontSize={12} />
+      <YAxis yAxisId="revenue" orientation="right" tickFormatter={(value) => `$${Number(value).toLocaleString()}`} tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip content={<DemographicTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
       <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#285f7a" radius={[3, 3, 0, 0]} />
-      <Line yAxisId="price" type="monotone" dataKey="averageTicketPrice" name="Average ticket price" stroke="#bf6449" strokeWidth={3} dot={{ r: 4 }} />
+      <Line yAxisId="revenue" type="monotone" dataKey="totalRevenue" name="Total revenue" stroke="#bf6449" strokeWidth={3} dot={{ r: 4 }} />
     </ComposedChart></ResponsiveContainer>
   </AccessibleChart>
 }

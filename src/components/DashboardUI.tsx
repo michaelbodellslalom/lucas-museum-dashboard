@@ -41,7 +41,7 @@ const chartAnnotations: Record<string, string> = {
   'Revenue mix': 'What is the overall Revenue from founders, parking, f&b, retail, membership, ticket sales?',
   'Membership performance': 'How many Memberships were sold online vs in person, today, this week, this month? What were the most popular Membership levels sold?',
   'Online drop off funnel': 'What is our online user journey to purchase path and where are they dropping off/abandoning?',
-  'Ticket demand by visitor segment and price': 'What does our visitor demographic look like based on ticket type? How many tickets were sold by price today?',
+  'Ticket demand by visitor segment and revenue': 'What does our visitor demographic look like based on ticket type? How many tickets were sold by price today?',
 }
 
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {

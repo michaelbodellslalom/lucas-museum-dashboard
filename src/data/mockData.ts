@@ -14,7 +14,7 @@ export const REFRESH_TIME = '2026-11-12T05:00:00-08:00'
 export const filterOptions = {
   membershipLevel: ['All membership levels', 'Access', 'Alliance', 'Corporate', 'Insider', 'Social'],
   demographic: ['Select all', 'Active Military', 'Adult', 'Child (0-12)', 'Teen Student (13-17)', 'Senior (65+)'],
-  ticketPrice: ['All ticket prices', 'Complimentary ($0)', 'Access ($1–$20)', 'Standard ($21–$30)', 'Premium ($31+)'],
+  ticketPrice: ['All ticket prices', 'Active Military ($0)', 'Adult ($25)', 'Child (0-12) ($0)', 'Senior (65+) ($21)', 'Teen Student (13-17) ($0)'],
   membershipChannel: ['All membership channels', 'Online', 'In person'],
 } as const
 
@@ -70,11 +70,11 @@ export const membershipLevels: CategoryValue[] = [
 ]
 
 export const visitorDemographics: DemographicValue[] = [
-  { name: 'Active Military', visitors: 289, averageTicketPrice: 21.60 },
-  { name: 'Adult', visitors: 1809, averageTicketPrice: 31.40 },
-  { name: 'Child (0-12)', visitors: 434, averageTicketPrice: 0 },
-  { name: 'Senior (65+)', visitors: 543, averageTicketPrice: 24.80 },
-  { name: 'Teen Student (13-17)', visitors: 543, averageTicketPrice: 17.20 },
+  { name: 'Active Military', visitors: 289, ticketPrice: 0 },
+  { name: 'Adult', visitors: 1809, ticketPrice: 25 },
+  { name: 'Child (0-12)', visitors: 434, ticketPrice: 0 },
+  { name: 'Senior (65+)', visitors: 543, ticketPrice: 21 },
+  { name: 'Teen Student (13-17)', visitors: 543, ticketPrice: 0 },
 ]
 
 export const funnel: CategoryValue[] = [
