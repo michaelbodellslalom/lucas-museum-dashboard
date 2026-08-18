@@ -68,7 +68,7 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
 }) {
   const [chartView, setChartView] = useState<ChartView>('selected')
   return (
-    <article className={`chart-card ${className}`}>
+    <article className={`chart-card ${annotation ? 'chart-card-annotated' : ''} ${className}`}>
       <header className="card-heading">
         <div className="chart-card-copy"><div className="chart-title-line"><h3>{title}</h3>{annotation && <button className="info-button annotation-button chart-annotation-button" aria-label={`Annotation for ${title}`} data-tooltip={chartAnnotations[title] ?? 'Annotation text to be provided'}><MessageSquareText size={15} /></button>}</div>{subtitle && <p>{subtitle}</p>}</div>
         <div className="chart-card-tools">
