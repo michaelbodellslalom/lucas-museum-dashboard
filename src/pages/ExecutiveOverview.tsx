@@ -77,7 +77,7 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
         <div className="section-heading"><div><h2 id="visual-title">Trends, mix, and conversion</h2></div><p>All views reflect completed periods and active filters.</p></div>
         <div className="chart-grid">
           <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput.">
-            <SalesAttendanceChart data={data.salesAttendance} />
+            <SalesAttendanceChart data={data.salesAttendance} rangeDays={data.rangeDays} />
           </ChartCard>
           <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue.">
             <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />

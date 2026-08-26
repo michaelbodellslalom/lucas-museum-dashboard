@@ -44,21 +44,48 @@ function AccessibleChart({ label, children, height = 260 }: { label: string; chi
   return <div className="chart-frame" style={{ height }} role="img" aria-label={label}>{children}</div>
 }
 
-export function SalesAttendanceChart({ data }: { data: TimePoint[] }) {
+function salesAttendanceForRange(data: TimePoint[], rangeDays: number): TimePoint[] {
+  if (rangeDays === 1) return data
+
+  const dailyBase = data.reduce((totals, item) => ({
+    current: totals.current + item.current,
+    secondary: totals.secondary + (item.secondary ?? 0),
+    prior: totals.prior + item.prior,
+  }), { current: 0, secondary: 0, prior: 0 })
+  const end = new Date(Date.UTC(2026, 10, 12))
+  return Array.from({ length: rangeDays }, (_, index) => {
+    const date = new Date(end.getTime() - (rangeDays - index - 1) * 86_400_000)
+    const factor = 0.82 + (index % 5) * 0.06
+    return {
+      label: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(date),
+      current: Math.round(dailyBase.current * factor),
+      secondary: Math.round(dailyBase.secondary * factor),
+      prior: Math.round(dailyBase.prior * factor),
+      capacity: Math.round(flatCapacityForRange(data) * factor),
+    }
+  })
+}
+
+function flatCapacityForRange(data: TimePoint[]) {
+  return data.reduce((total, item) => total + (item.capacity ?? 0), 0)
+}
+
+export function SalesAttendanceChart({ data, rangeDays }: { data: TimePoint[]; rangeDays: number }) {
   const view = useChartView()
-  const flatCapacity = Math.max(...data.map((item) => item.capacity ?? 0))
+  const rangeData = salesAttendanceForRange(data, rangeDays)
+  const flatCapacity = rangeDays === 1 ? Math.max(...data.map((item) => item.capacity ?? 0)) : Math.max(...rangeData.map((item) => item.capacity ?? 0))
   const chartData = view === 'selected'
-    ? data.map((item) => ({ ...item, capacity: flatCapacity }))
-    : data.map((item) => ({ ...item, current: Math.round(item.prior), secondary: Math.round(item.prior * 0.84), capacity: flatCapacity }))
-  return <AccessibleChart label="Ticket sales and visitor attendance by hour with available capacity">
-    <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 16, right: 16, bottom: 4, left: -16 }}>
+    ? rangeData.map((item) => ({ ...item, capacity: flatCapacity }))
+    : rangeData.map((item) => ({ ...item, current: Math.round(item.prior), secondary: Math.round(item.prior * 0.84), capacity: flatCapacity }))
+  return <AccessibleChart label={`Ticket sales and visitor attendance by ${rangeDays === 1 ? 'hour' : 'day'} with available capacity`}>
+    <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} barGap={-8} margin={{ top: 16, right: 16, bottom: 4, left: -16 }}>
       <CartesianGrid stroke="#ebebeb" vertical={false} />
       <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-      <Bar dataKey="current" name="Tickets sold" fill="#ff5a14" radius={[0, 0, 0, 0]} />
-      <Line type="monotone" dataKey="secondary" name="Visitors checked in" stroke="#000000" strokeWidth={3} dot={{ r: 3 }} />
+      <Bar dataKey="current" name="Tickets sold" fill="#ff5a14" stroke="#ff5a14" barSize={22} radius={[0, 0, 0, 0]} />
+      <Bar dataKey="secondary" name="Visitors checked in" fill="#688276" stroke="#688276" barSize={22} radius={[0, 0, 0, 0]} />
       <Line type="step" dataKey="capacity" name="Capacity" stroke="#7a7a7a" strokeDasharray="5 4" dot={false} />
     </ComposedChart></ResponsiveContainer>
   </AccessibleChart>
