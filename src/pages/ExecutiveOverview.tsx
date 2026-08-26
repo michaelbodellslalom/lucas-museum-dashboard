@@ -76,31 +76,31 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
       {data && state === 'loaded' && <section aria-labelledby="visual-title">
         <div className="section-heading"><div><h2 id="visual-title">Trends, mix, and conversion</h2></div><p>All views reflect completed periods and active filters.</p></div>
         <div className="chart-grid">
-          <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput." action="Move 40 tickets into the 3:00 PM window and stagger group check-in.">
+          <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput.">
             <SalesAttendanceChart data={data.salesAttendance} />
           </ChartCard>
-          <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue." action="Test a post-visit retail offer for scanned ticket holders.">
+          <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue.">
             <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />
           </ChartCard>
-          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels." action="Keep onsite prompts focused on Corporate and Insider upgrades.">
+          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels.">
             <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
           </ChartCard>
-          <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Strengthen campaign-to-landing-page continuity and test clearer next steps for high-intent visitors.">
+          <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration.">
             <FunnelChart data={data.funnel} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Ticket demand by visitor segment and revenue" subtitle="Aggregated ticket-holder mix and total ticket revenue" insight="Adults represented 50% of attendance and generated the largest share of ticket revenue. Military, child, and teen student admission remained complimentary." action="Protect complimentary access while monitoring paid demand across adult and senior tickets.">
+          <ChartCard className="chart-full" title="Ticket demand by visitor segment and revenue" subtitle="Aggregated ticket-holder mix and total ticket revenue" insight="Adults represented 50% of attendance and generated the largest share of ticket revenue. Military, child, and teen student admission remained complimentary.">
             <DemographicPriceChart data={data.visitorDemographics} />
           </ChartCard>
           <ChartCard className="chart-full" title="Retail items sold" subtitle="Top and low sellers across in-store and online channels" insight="Museum catalog and enamel pins lead combined retail volume, while online artist print sales outperform their in-store sales.">
             <RetailItemsChart data={data.retailItems} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Revenue trend by stream" subtitle="Daily recognized revenue across major channels" insight="Ticketing remains the largest revenue stream, while membership and event revenue show the strongest late-period momentum." action="Compare campaign and program timing against the Nov 11 and Nov 12 revenue lift.">
+          <ChartCard className="chart-full" title="Revenue trend by stream" subtitle="Daily recognized revenue across major channels" insight="Ticketing remains the largest revenue stream, while membership and event revenue show the strongest late-period momentum.">
             <RevenueTrendChart data={data.revenueTrend} rangeDays={data.rangeDays} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Gallery visits and dwell time" subtitle="Top ten galleries ranked by visitor count" insight="The West gallery brings the greatest visitor volume, while Cinematic Art leads dwell time among the highest-interest spaces." action="Use dwell time alongside visitor volume when planning staffing and program rotations.">
+          <ChartCard className="chart-full" title="Gallery visits and dwell time" subtitle="Top ten galleries ranked by visitor count" insight="The West gallery brings the greatest visitor volume, while Cinematic Art leads dwell time among the highest-interest spaces.">
             <GalleryPerformanceChart data={data.galleryPerformance} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Revenue actual vs. plan" subtitle="Recognized revenue compared with planned channel targets" insight="Ticketing, food and beverage, and events are above plan, while memberships, retail, and parking have room to close the gap." action="Prioritize channel-specific recovery actions for the three categories below plan.">
+          <ChartCard className="chart-full" title="Revenue actual vs. plan" subtitle="Recognized revenue compared with planned channel targets" insight="Ticketing, food and beverage, and events are above plan, while memberships, retail, and parking have room to close the gap.">
             <RevenuePlanTable data={data.revenuePlan} />
           </ChartCard>
         </div>

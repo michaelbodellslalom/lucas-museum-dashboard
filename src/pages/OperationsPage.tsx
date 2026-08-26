@@ -116,7 +116,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
         <section className="ops-subsection" aria-labelledby="capacity-title">
           <div className="subsection-title"><div><span>Daily capacity utilization</span><h3 id="capacity-title">Attendance vs. available capacity</h3></div><SourceBadge type="day-one" /></div>
           <div className="two-column-grid">
-            <ChartCard title="Capacity by hour and timed-entry window" subtitle={`Peak: ${peakCapacity}% · 2:00–3:00 PM`} insight="The museum stayed within daily capacity, but the 1:00 and 2:00 PM windows concentrated demand above the at-risk threshold." action="Reallocate 40 admissions toward the 3:00 PM window."><CapacityChart data={data.capacityByHour} /></ChartCard>
+            <ChartCard title="Capacity by hour and timed-entry window" subtitle={`Peak: ${peakCapacity}% · 2:00–3:00 PM`} insight="The museum stayed within daily capacity, but the 1:00 and 2:00 PM windows concentrated demand above the at-risk threshold."><CapacityChart data={data.capacityByHour} /></ChartCard>
             <div className="capacity-detail"><span className="section-kicker">Completed-day capacity</span><strong>{Math.round(attendance).toLocaleString()} <small>visitors</small></strong><p>{availableCapacity.toLocaleString()} available visitor capacity across completed operating hours.</p><dl><div><dt>Average utilization</dt><dd>{Math.round(capacity)}%</dd></div><div><dt>Peak window</dt><dd>2:00–3:00 PM</dd></div><div><dt>Peak headroom</dt><dd>{peakHeadroom.toLocaleString()} visitors</dd></div><div><dt>Prior peak</dt><dd>{priorPeakCapacity}%</dd></div></dl><StatusBadge status={capacityStatus} /></div>
           </div>
         </section>
@@ -124,7 +124,7 @@ export function OperationsPage({ data }: { data: DashboardData }) {
         <section className="ops-subsection" aria-labelledby="flow-title">
           <div className="subsection-title"><div><span>Visitor flow and congestion</span><h3 id="flow-title">Movement by time, floor, and zone</h3></div><SourceBadge type="instrumentation" /></div>
           <div className="two-column-grid flow-grid">
-            <ChartCard title="Time-of-day traffic heatmap" subtitle="Relative traffic index from aggregated observations" badge="instrumentation" insight="Elevator and gallery traffic converged between 1:00 and 3:00 PM; dining demand peaked later." action="Stage floor hosts before the 1:00 PM arrival wave."><Heatmap data={data.flowHeatmap} /></ChartCard>
+            <ChartCard title="Time-of-day traffic heatmap" subtitle="Relative traffic index from aggregated observations" badge="instrumentation" insight="Elevator and gallery traffic converged between 1:00 and 3:00 PM; dining demand peaked later."><Heatmap data={data.flowHeatmap} /></ChartCard>
             <ChartCard title="Simplified floor flow" subtitle="High-interest completed-day movement peaks" badge="instrumentation"><FlowMap scale={data.periodScale} /></ChartCard>
             <ChartCard className="gallery-attendance-card" title="Visitor attendance by gallery" subtitle="Capacity, attendance, and visit duration by gallery" badge="instrumentation"><GalleryAttendanceTable periodScale={data.periodScale} averageFactor={data.averageFactor} /></ChartCard>
           </div>

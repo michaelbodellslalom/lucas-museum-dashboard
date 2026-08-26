@@ -37,12 +37,11 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
   )
 }
 
-export function ChartCard({ title, subtitle, badge = 'day-one', insight, action, className = '', children }: {
+export function ChartCard({ title, subtitle, badge = 'day-one', insight, className = '', children }: {
   title: string
   subtitle?: string
   badge?: Availability
   insight?: string
-  action?: string
   className?: string
   children: ReactNode
 }) {
@@ -62,7 +61,7 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
         <button className="insight-toggle" onClick={() => setInsightOpen(!insightOpen)} aria-expanded={insightOpen}>
           <strong>What this means</strong><ChevronDown size={16} aria-hidden="true" />
         </button>
-        {insightOpen && <div className="insight-details"><span>{insight}</span>{action && <b>Suggested action: {action}</b>}</div>}
+        {insightOpen && <div className="insight-details"><span>{insight}</span></div>}
       </div>}
     </article>
   )
