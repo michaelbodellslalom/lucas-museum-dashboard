@@ -28,14 +28,21 @@ export const baseKpis: Kpi[] = [
   { id: 'redemption', group: 'Admissions & Experience', label: 'Redemption rate', value: 84, format: 'percent', comparison: -2, definition: 'Checked-in visitors divided by tickets valid for the selected period.', availability: 'day-one' },
   { id: 'capacity', group: 'Admissions & Experience', label: 'Capacity utilization', value: 73, format: 'percent', comparison: 5, definition: 'Attendance divided by available operating capacity.', availability: 'day-one' },
   { id: 'satisfaction', group: 'Admissions & Experience', label: 'Visitor satisfaction rate', value: 92, format: 'percent', comparison: 3, definition: 'Share of post-visit respondents rating their museum experience positively.', availability: 'instrumentation' },
+  { id: 'web-visitors', group: 'Admissions & Experience', label: 'Web visitors', value: 18420, format: 'number', comparison: 7, definition: 'Unique visitors to the museum website during the selected period.', availability: 'integration' },
+  { id: 'click-through-rate', group: 'Admissions & Experience', label: 'Click-through rate', value: 6.8, format: 'percent', comparison: 1, definition: 'Share of tracked website sessions that clicked a primary ticketing or membership call to action.', availability: 'integration' },
+  { id: 'average-dwell-time', group: 'Admissions & Experience', label: 'Average dwell time', value: 188, format: 'duration', comparison: 5, definition: 'Average time visitors spend in the museum during the selected period.', availability: 'instrumentation' },
   { id: 'revenue', group: 'Revenue & Fundraising', label: 'Total revenue', value: 187420, format: 'currency', comparison: 12, definition: 'Recognized ticketing, membership, commerce, event, and donation revenue.', availability: 'integration' },
   { id: 'revenue-per-visitor', group: 'Revenue & Fundraising', label: 'Revenue per visitor', value: 51.80, format: 'currency', comparison: 6, definition: 'Total recognized revenue divided by checked-in visitors.', availability: 'integration' },
   { id: 'donations-received', group: 'Revenue & Fundraising', label: 'Donations received', value: 137, format: 'number', comparison: 9, definition: 'Number of individual donation transactions recorded during the selected period.', availability: 'integration' },
   { id: 'donation-amount', group: 'Revenue & Fundraising', label: 'Total donation amount', value: 9700, format: 'currency', comparison: 14, definition: 'Total donation and founder revenue recorded during the selected period.', availability: 'integration' },
   { id: 'memberships', group: 'Membership', label: 'Memberships sold', value: 164, format: 'number', comparison: 15, definition: 'New paid memberships started in the selected period.', availability: 'day-one' },
   { id: 'conversion', group: 'Membership', label: 'Ticket-to-member conversion', value: 4, format: 'percent', comparison: 1, definition: 'Memberships sold divided by ticket purchases.', availability: 'day-one' },
+  { id: 'member-party-size', group: 'Membership', label: 'Average party size per member visit', value: 2.6, format: 'decimal', comparison: 4, definition: 'Average number of visitors included in a member-led museum visit.', availability: 'instrumentation' },
+  { id: 'member-benefit-usage', group: 'Membership', label: 'Average members using benefits', value: 842, format: 'number', comparison: 11, definition: 'Average number of members who redeemed at least one membership benefit during the selected period.', availability: 'integration' },
   { id: 'events-sold', group: 'Events', label: 'Events sold', value: 28, format: 'number', comparison: 4, definition: 'Paid event registrations completed during the selected period.', availability: 'integration' },
   { id: 'event-inquiries', group: 'Events', label: 'Event inquiries', value: 64, format: 'number', comparison: -6, definition: 'Qualified event and venue inquiries received during the selected period.', availability: 'integration' },
+  { id: 'event-setup-time', group: 'Events', label: 'Average event setup time', value: 145, format: 'duration', comparison: -8, definition: 'Average time required to prepare event spaces before guest arrival.', availability: 'instrumentation' },
+  { id: 'event-strike-time', group: 'Events', label: 'Average event strike time', value: 92, format: 'duration', comparison: -5, definition: 'Average time required to clear and reset event spaces after an event.', availability: 'instrumentation' },
 ]
 
 export const alerts: AlertItem[] = [
@@ -175,14 +182,14 @@ export const reservationsTrend: TimePoint[] = [
 ]
 
 export const retailItems: RetailItem[] = [
-  { name: 'Museum catalog', inStore: 184, online: 142 },
-  { name: 'LM enamel pin', inStore: 216, online: 96 },
-  { name: 'Exhibition poster', inStore: 149, online: 118 },
-  { name: 'Storytelling tote', inStore: 132, online: 89 },
-  { name: 'Children\'s art kit', inStore: 108, online: 76 },
-  { name: 'Artist print set', inStore: 76, online: 103 },
-  { name: 'Postcard folio', inStore: 91, online: 54 },
-  { name: 'Gallery guide', inStore: 83, online: 46 },
+  { name: 'Museum catalog', inStore: 184, online: 142, inStoreRevenue: 8280, onlineRevenue: 6390 },
+  { name: 'LM enamel pin', inStore: 216, online: 96, inStoreRevenue: 4320, onlineRevenue: 1920 },
+  { name: 'Exhibition poster', inStore: 149, online: 118, inStoreRevenue: 5215, onlineRevenue: 4130 },
+  { name: 'Storytelling tote', inStore: 132, online: 89, inStoreRevenue: 5280, onlineRevenue: 3560 },
+  { name: 'Children\'s art kit', inStore: 108, online: 76, inStoreRevenue: 3780, onlineRevenue: 2660 },
+  { name: 'Artist print set', inStore: 76, online: 103, inStoreRevenue: 5320, onlineRevenue: 7210 },
+  { name: 'Postcard folio', inStore: 91, online: 54, inStoreRevenue: 1365, onlineRevenue: 810 },
+  { name: 'Gallery guide', inStore: 83, online: 46, inStoreRevenue: 830, onlineRevenue: 460 },
 ]
 
 export const revenueTrend: RevenueTrendPoint[] = [

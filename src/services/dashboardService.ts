@@ -70,7 +70,7 @@ function comparisonRange(period: ReportingPeriod, start: Date, end: Date, days: 
 function scaledKpis(kpis: Kpi[], scale: number, averageFactor: number): Kpi[] {
   return kpis.map((kpi) => ({
     ...kpi,
-    value: kpi.id === 'revenue-per-visitor'
+    value: kpi.id === 'revenue-per-visitor' || kpi.format === 'duration' || kpi.format === 'decimal'
       ? kpi.value * averageFactor
       : kpi.format === 'percent'
         ? Math.round(kpi.value * averageFactor * (scale < 0.15 ? 0.92 : 1))
@@ -89,7 +89,7 @@ function scaledCategories(values: CategoryValue[], scale: number): CategoryValue
 }
 
 function scaledRetailItems(values: RetailItem[], scale: number): RetailItem[] {
-  return values.map((item) => ({ ...item, inStore: Math.round(item.inStore * scale), online: Math.round(item.online * scale) }))
+  return values.map((item) => ({ ...item, inStore: Math.round(item.inStore * scale), online: Math.round(item.online * scale), inStoreRevenue: Math.round(item.inStoreRevenue * scale), onlineRevenue: Math.round(item.onlineRevenue * scale) }))
 }
 
 function scaledRevenueTrend(values: RevenueTrendPoint[], scale: number): RevenueTrendPoint[] {

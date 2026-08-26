@@ -96,22 +96,33 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
   </div>
 }
 
+function RetailTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ payload?: RetailItem }>; label?: string }) {
+  const item = payload?.[0]?.payload
+  if (!active || !item) return null
+  return <div style={tooltipStyle} className="chart-tooltip">
+    <strong>{label}</strong>
+    <span>In-store revenue <b>${item.inStoreRevenue.toLocaleString()}</b></span>
+    <span>Online revenue <b>${item.onlineRevenue.toLocaleString()}</b></span>
+    <span>Items sold <b>{(item.inStore + item.online).toLocaleString()}</b></span>
+  </div>
+}
+
 export function RetailItemsChart({ data }: { data: RetailItem[] }) {
   const view = useChartView()
   const chartData = [...data]
-    .map((item) => view === 'selected' ? item : { ...item, inStore: Math.round(item.inStore * 0.92), online: Math.round(item.online * 0.92) })
-    .sort((first, second) => (second.inStore + second.online) - (first.inStore + first.online))
-  return <AccessibleChart label="Retail items ranked by combined in-store and online units sold" height={Math.max(300, chartData.length * 34)}>
-    <ResponsiveContainer width="100%" height="100%"><BarChart data={chartData} layout="vertical" margin={{ top: 8, right: 44, bottom: 8, left: 88 }}>
+    .map((item) => view === 'selected' ? item : { ...item, inStore: Math.round(item.inStore * 0.92), online: Math.round(item.online * 0.92), inStoreRevenue: Math.round(item.inStoreRevenue * 0.92), onlineRevenue: Math.round(item.onlineRevenue * 0.92) })
+    .sort((first, second) => (second.inStoreRevenue + second.onlineRevenue) - (first.inStoreRevenue + first.onlineRevenue))
+  return <div className="retail-chart-frame"><AccessibleChart label="Retail items ranked by combined in-store and online revenue with units sold in the tooltip" height={Math.max(300, chartData.length * 34)}>
+    <ResponsiveContainer width="100%" height="100%"><BarChart data={chartData} layout="vertical" margin={{ top: 8, right: 44, bottom: 8, left: 154 }}>
       <CartesianGrid stroke="#ebebeb" horizontal={false} />
-      <XAxis type="number" tickLine={false} axisLine={false} fontSize={11} />
-      <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={82} fontSize={10} />
-      <Tooltip contentStyle={tooltipStyle} formatter={(value) => `${Number(value).toLocaleString()} items`} />
+      <XAxis type="number" tickFormatter={(value) => `$${Number(value / 1000).toFixed(0)}k`} tickLine={false} axisLine={false} fontSize={11} />
+      <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={148} fontSize={10} interval={0} />
+      <Tooltip content={<RetailTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-      <Bar dataKey="inStore" name="In-store" stackId="sales" fill="#ff5a14" radius={[0, 0, 0, 0]} />
-      <Bar dataKey="online" name="Online" stackId="sales" fill="#55758a" radius={[0, 0, 0, 0]} />
+      <Bar dataKey="inStoreRevenue" name="In-store revenue" stackId="revenue" fill="#ff5a14" radius={[0, 0, 0, 0]} />
+      <Bar dataKey="onlineRevenue" name="Online revenue" stackId="revenue" fill="#55758a" radius={[0, 0, 0, 0]} />
     </BarChart></ResponsiveContainer>
-  </AccessibleChart>
+  </AccessibleChart></div>
 }
 
 function revenueTrendForRange(data: RevenueTrendPoint[], rangeDays: number) {

@@ -153,6 +153,7 @@ h1, h2, h3 { font-family: "Suisse Works Book", Georgia, "Times New Roman", serif
 .chart-view-filter span { color: var(--muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
 .chart-view-filter select { min-width: 126px; height: 30px; padding: 0 7px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--ink); font-size: 10px; cursor: pointer; }
 .chart-frame { width: 100%; min-width: 0; }.recharts-surface:focus { outline: none; }
+.retail-chart-frame { width: min(100%, 1120px); margin-inline: auto; }
 .chart-tooltip { padding: 10px 12px; background: var(--paper); display: grid; gap: 5px; color: var(--muted); }
 .chart-tooltip > strong { margin-bottom: 2px; color: var(--ink); }
 .chart-tooltip > span { min-width: 205px; display: flex; justify-content: space-between; gap: 18px; }

@@ -32,7 +32,7 @@ export interface Kpi {
   group: KpiGroup
   label: string
   value: number
-  format: 'number' | 'currency' | 'percent' | 'duration'
+  format: 'number' | 'decimal' | 'currency' | 'percent' | 'duration'
   comparison: number
   definition: string
   availability: Availability
@@ -85,6 +85,8 @@ export interface RetailItem {
   name: string
   inStore: number
   online: number
+  inStoreRevenue: number
+  onlineRevenue: number
 }
 
 export interface RevenueTrendPoint {

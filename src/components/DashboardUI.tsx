@@ -13,6 +13,7 @@ export function StatusBadge({ status }: { status: OperatingStatus }) {
 }
 
 function formatValue(kpi: Kpi) {
+  if (kpi.format === 'decimal') return kpi.value.toFixed(1)
   if (kpi.format === 'currency') return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: kpi.value < 100 ? 2 : 0 }).format(kpi.value)
   if (kpi.format === 'percent') return `${Math.round(kpi.value)}%`
   if (kpi.format === 'duration') return `${Math.round(kpi.value)} min`
