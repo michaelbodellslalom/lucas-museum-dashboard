@@ -153,7 +153,7 @@ h1, h2, h3 { font-family: "Suisse Works Book", Georgia, "Times New Roman", serif
 .chart-view-filter span { color: var(--muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
 .chart-view-filter select { min-width: 126px; height: 30px; padding: 0 7px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--ink); font-size: 10px; cursor: pointer; }
 .chart-frame { width: 100%; min-width: 0; }.recharts-surface:focus { outline: none; }
-.retail-chart-frame { width: min(100%, 1120px); margin-inline: auto; }
+.retail-chart-frame { width: 100%; margin-inline: auto; }
 .chart-tooltip { padding: 10px 12px; background: var(--paper); display: grid; gap: 5px; color: var(--muted); }
 .chart-tooltip > strong { margin-bottom: 2px; color: var(--ink); }
 .chart-tooltip > span { min-width: 205px; display: flex; justify-content: space-between; gap: 18px; }
@@ -173,7 +173,10 @@ h1, h2, h3 { font-family: "Suisse Works Book", Georgia, "Times New Roman", serif
 .data-assurance > div { display: flex; align-items: flex-start; gap: 9px; color: var(--blue); }
 .data-assurance > div > span:not(.source-badge) { color: var(--muted); display: flex; flex-direction: column; font-size: 11px; }.data-assurance strong { margin-bottom: 3px; color: var(--ink); font-size: 12px; }
 
-.operations-hero { min-height: 205px; padding-block: 24px; align-items: center; }
+.operations-hero { min-height: 205px; padding-block: 24px; align-items: center; justify-content: center; text-align: center; }
+.operations-hero > div:first-child { margin-inline: auto; }
+.operations-hero > div:first-child > p { margin-inline: auto; }
+.operations-hero .hero-period { justify-content: center; }
 .section-intro { max-width: 760px; margin-bottom: 27px; }.section-intro .section-kicker { margin-bottom: 8px; }.section-intro h2 { font-size: 30px; }
 .section-intro p { max-width: 680px; margin: 10px 0 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
 .mini-metric-grid { display: grid; grid-template-columns: repeat(6, minmax(130px, 1fr)); gap: 9px; }

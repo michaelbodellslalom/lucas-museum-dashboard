@@ -78,7 +78,7 @@ export function SalesAttendanceChart({ data, rangeDays }: { data: TimePoint[]; r
     ? rangeData.map((item) => ({ ...item, capacity: flatCapacity }))
     : rangeData.map((item) => ({ ...item, current: Math.round(item.prior), secondary: Math.round(item.prior * 0.84), capacity: flatCapacity }))
   return <AccessibleChart label={`Ticket sales and visitor attendance by ${rangeDays === 1 ? 'hour' : 'day'} with available capacity`}>
-    <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} barGap={-8} margin={{ top: 16, right: 16, bottom: 4, left: -16 }}>
+    <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} barGap={6} margin={{ top: 16, right: 16, bottom: 4, left: -16 }}>
       <CartesianGrid stroke="#ebebeb" vertical={false} />
       <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis tickLine={false} axisLine={false} fontSize={12} />
@@ -154,9 +154,9 @@ export function RetailItemsChart({ data }: { data: RetailItem[] }) {
 
 function revenueTrendForRange(data: RevenueTrendPoint[], rangeDays: number) {
   if (rangeDays === 1) {
-    const hourlyWeights = [0.08, 0.11, 0.15, 0.18, 0.17, 0.13, 0.1, 0.08]
+    const hourlyWeights = [0.05, 0.08, 0.11, 0.14, 0.16, 0.15, 0.12, 0.09, 0.06, 0.03, 0.01]
     return data.slice(-1).flatMap((item) => hourlyWeights.map((weight, index) => {
-      const hour = index + 10
+      const hour = index + 9
       return {
       label: `${hour > 12 ? hour - 12 : hour} ${hour < 12 ? 'AM' : 'PM'}`,
       ticketing: Math.round(item.ticketing * weight),

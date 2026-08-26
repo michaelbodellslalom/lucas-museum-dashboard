@@ -52,6 +52,7 @@ export const alerts: AlertItem[] = [
 ]
 
 export const salesAttendance: TimePoint[] = [
+  { label: '9 AM', current: 286, secondary: 214, prior: 261, capacity: 520 },
   { label: '10 AM', current: 420, secondary: 328, prior: 382, capacity: 600 },
   { label: '11 AM', current: 558, secondary: 471, prior: 511, capacity: 650 },
   { label: '12 PM', current: 642, secondary: 536, prior: 574, capacity: 700 },
@@ -60,6 +61,8 @@ export const salesAttendance: TimePoint[] = [
   { label: '3 PM', current: 579, secondary: 493, prior: 551, capacity: 700 },
   { label: '4 PM', current: 402, secondary: 331, prior: 391, capacity: 620 },
   { label: '5 PM', current: 148, secondary: 146, prior: 172, capacity: 420 },
+  { label: '6 PM', current: 96, secondary: 82, prior: 101, capacity: 330 },
+  { label: '7 PM', current: 54, secondary: 48, prior: 62, capacity: 240 },
 ]
 
 export const revenueMix: CategoryValue[] = [
