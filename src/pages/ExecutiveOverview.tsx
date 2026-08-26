@@ -1,5 +1,5 @@
 import { CalendarClock, RefreshCw } from 'lucide-react'
-import { DemographicPriceChart, DonutChart, FunnelChart, GalleryPerformanceChart, MembershipChart, RetailItemsChart, RevenueTrendChart, SalesAttendanceChart, useChartView } from '../components/Charts'
+import { DemographicPriceChart, DonutChart, FunnelChart, GalleryPerformanceChart, Heatmap, MembershipChart, RetailItemsChart, RevenueTrendChart, SalesAttendanceChart, useChartView } from '../components/Charts'
 import { ChartCard, KpiCard, MetricState } from '../components/DashboardUI'
 import type { DashboardData } from '../types/dashboard'
 import type { KpiGroup } from '../types/dashboard'
@@ -102,6 +102,9 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
           </ChartCard>
           <ChartCard className="chart-full" title="Revenue actual vs. plan" subtitle="Recognized revenue compared with planned channel targets" insight="Ticketing, food and beverage, and events are above plan, while memberships, retail, and parking have room to close the gap.">
             <RevenuePlanTable data={data.revenuePlan} />
+          </ChartCard>
+          <ChartCard className="chart-full" title="Time-of-day traffic heatmap" subtitle="Relative traffic index from aggregated observations" badge="instrumentation" insight="Elevator and gallery traffic converged between 1:00 and 3:00 PM; dining demand peaked later.">
+            <Heatmap data={data.flowHeatmap} />
           </ChartCard>
         </div>
       </section>}

@@ -134,16 +134,20 @@ function RetailTooltip({ active, payload, label }: { active?: boolean; payload?:
   </div>
 }
 
+function RetailAxisTick({ x = 0, y = 0, payload }: { x?: number; y?: number; payload?: { value: string } }) {
+  return <text x={x} y={y} dy="0.35em" textAnchor="end" fill="#66635c" fontSize={10}>{payload?.value ?? ''}</text>
+}
+
 export function RetailItemsChart({ data }: { data: RetailItem[] }) {
   const view = useChartView()
   const chartData = [...data]
     .map((item) => view === 'selected' ? item : { ...item, inStore: Math.round(item.inStore * 0.92), online: Math.round(item.online * 0.92), inStoreRevenue: Math.round(item.inStoreRevenue * 0.92), onlineRevenue: Math.round(item.onlineRevenue * 0.92) })
     .sort((first, second) => (second.inStoreRevenue + second.onlineRevenue) - (first.inStoreRevenue + first.onlineRevenue))
   return <div className="retail-chart-frame"><AccessibleChart label="Retail items ranked by combined in-store and online revenue with units sold in the tooltip" height={Math.max(300, chartData.length * 34)}>
-    <ResponsiveContainer width="100%" height="100%"><BarChart data={chartData} layout="vertical" margin={{ top: 8, right: 44, bottom: 8, left: 154 }}>
+    <ResponsiveContainer width="100%" height="100%"><BarChart data={chartData} layout="vertical" margin={{ top: 8, right: 28, bottom: 8, left: 0 }}>
       <CartesianGrid stroke="#ebebeb" horizontal={false} />
       <XAxis type="number" tickFormatter={(value) => `$${Number(value / 1000).toFixed(0)}k`} tickLine={false} axisLine={false} fontSize={11} />
-      <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={148} fontSize={10} interval={0} />
+      <YAxis dataKey="name" type="category" tick={<RetailAxisTick />} tickLine={false} axisLine={false} width={110} interval={0} />
       <Tooltip content={<RetailTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
       <Bar dataKey="inStoreRevenue" name="In-store revenue" stackId="revenue" fill="#ff5a14" radius={[0, 0, 0, 0]} />
