@@ -47,18 +47,18 @@ export const salesAttendance: TimePoint[] = [
 ]
 
 export const revenueMix: CategoryValue[] = [
-  { name: 'Ticketing', value: 78250, prior: 70940, color: '#285f7a' },
-  { name: 'Memberships', value: 46300, prior: 39780, color: '#927039' },
-  { name: 'Food & beverage', value: 21480, prior: 19810, color: '#bf6449' },
-  { name: 'Retail', value: 17640, prior: 16890, color: '#4f7b65' },
-  { name: 'Parking', value: 6840, prior: 6510, color: '#73536f' },
-  { name: 'Events', value: 7210, prior: 6850, color: '#7393a1' },
-  { name: 'Donations / founders', value: 9700, prior: 6790, color: '#d4a947' },
+  { name: 'Ticketing', value: 78250, prior: 70940, color: '#ff5a14' },
+  { name: 'Memberships', value: 46300, prior: 39780, color: '#000000' },
+  { name: 'Food & beverage', value: 21480, prior: 19810, color: '#7a7a7a' },
+  { name: 'Retail', value: 17640, prior: 16890, color: '#ff9b73' },
+  { name: 'Parking', value: 6840, prior: 6510, color: '#404040' },
+  { name: 'Events', value: 7210, prior: 6850, color: '#c9c9c9' },
+  { name: 'Donations / founders', value: 9700, prior: 6790, color: '#ffcfbd' },
 ]
 
 export const membershipChannels: CategoryValue[] = [
-  { name: 'Online', value: 111, prior: 92, color: '#4f7b65' },
-  { name: 'In person', value: 53, prior: 51, color: '#bf6449' },
+  { name: 'Online', value: 111, prior: 92, color: '#ff5a14' },
+  { name: 'In person', value: 53, prior: 51, color: '#000000' },
 ]
 
 export const membershipLevels: CategoryValue[] = [

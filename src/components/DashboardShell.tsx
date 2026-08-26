@@ -3,6 +3,7 @@ import {
   ChevronDown,
   CircleDollarSign,
   ClipboardCheck,
+  Filter,
   LayoutDashboard,
   Menu,
   MonitorSmartphone,
@@ -14,6 +15,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { filterOptions } from '../data/mockData'
 import type { Filters, PageId, ReportingPeriod } from '../types/dashboard'
+import logoMark from '../../Images/LM Logo.png'
 
 const periodOptions: { value: ReportingPeriod; label: string; start: string; end: string }[] = [
   { value: 'last-business-day', label: 'Yesterday', start: '2026-11-11', end: '2026-11-11' },
@@ -161,6 +163,7 @@ export function FilterBar({ filters, onChange, onOpenNavigation }: {
   onChange: (next: Filters) => void
   onOpenNavigation: () => void
 }) {
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const update = (key: keyof Filters, value: string[]) => onChange({ ...filters, [key]: value })
   const updatePeriod = (period: ReportingPeriod) => {
     const option = periodOptions.find((item) => item.value === period)
@@ -169,8 +172,9 @@ export function FilterBar({ filters, onChange, onOpenNavigation }: {
   }
   const updateDate = (key: 'customStart' | 'customEnd', value: string) => onChange({ ...filters, period: 'custom', [key]: value })
   return (
-    <section className="filter-bar" aria-label="Dashboard filters">
+    <section className={`filter-bar ${filtersOpen ? 'filters-open' : ''}`} aria-label="Dashboard filters">
       <button className="menu-button" onClick={onOpenNavigation} aria-label="Open navigation"><Menu /></button>
+      <button className="mobile-filter-toggle" onClick={() => setFiltersOpen(!filtersOpen)} aria-label={filtersOpen ? 'Hide filters' : 'Show filters'} aria-expanded={filtersOpen}><Filter /></button>
       <div className="filter-title"><Settings2 size={18} /><div><strong>Reporting view</strong><span>Completed periods only</span></div></div>
       <div className="filter-controls">
         <div className="date-filter-group" role="group" aria-label="Reporting dates">
@@ -189,7 +193,7 @@ export function FilterBar({ filters, onChange, onOpenNavigation }: {
 function Sidebar({ page, onNavigate, open, onClose }: { page: PageId; onNavigate: (page: PageId) => void; open: boolean; onClose: () => void }) {
   return (
     <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
-      <div className="wordmark"><span>LUCAS MUSEUM</span><small>OF NARRATIVE ART / INTERNAL</small></div>
+      <div className="wordmark"><img className="wordmark-mark" src={logoMark} alt="" /><span>LUCAS MUSEUM</span><small>OF NARRATIVE ART / INTERNAL</small></div>
       <button className="mobile-close" onClick={onClose} aria-label="Close navigation"><X /></button>
       <nav aria-label="Primary navigation">
         {navigation.map(({ id, pageId, label, icon: Icon }) => pageId ? (

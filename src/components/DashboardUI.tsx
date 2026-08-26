@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { AlertTriangle, ArrowDownRight, ArrowUpRight, CircleCheck, Database, Info, MessageSquareText, Minus, RefreshCw } from 'lucide-react'
+import { AlertTriangle, ArrowDownRight, ArrowUpRight, CircleCheck, Database, Info, Minus, RefreshCw } from 'lucide-react'
 import type { Availability, Kpi, OperatingStatus } from '../types/dashboard'
 import { ChartViewProvider, type ChartView } from './Charts'
 
@@ -19,34 +19,13 @@ function formatValue(kpi: Kpi) {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(kpi.value)
 }
 
-const kpiAnnotations: Record<string, string> = {
-  tickets: 'What was the Tickets Sold vs the Capacity today, this week, this month?',
-  attendance: 'What was the Total Attendance today, this week, this month?',
-  redemption: 'What % of tickets are being sold vs. attended today, this week, this month?',
-  capacity: 'What is our average % of capacity daily? How can we improve our operations to be more efficient?',
-  revenue: 'What is the overall Revenue from founders, parking, f&b, retail, membership, ticket sales?',
-  'revenue-per-visitor': 'What was the average revenue per visitor (f&b and retail) today, this week, this month?',
-  memberships: 'How many Memberships were sold today, this week, this month?',
-  conversion: 'What is our ticket to Membership Conversion (Tessitura), today, this week, this month?',
-}
-
-const chartAnnotations: Record<string, string> = {
-  'Ticket sales vs. visitor attendance': 'What are the ticket sales by day and what potentially caused the spike in sales?',
-  'Revenue mix': 'What is the overall Revenue from founders, parking, f&b, retail, membership, ticket sales?',
-  'Membership performance': 'How many Memberships were sold online vs in person, today, this week, this month? What were the most popular Membership levels sold?',
-  'Online drop off funnel': 'What is our online user journey to purchase path and where are they dropping off/abandoning?',
-  'Ticket demand by visitor segment and revenue': 'What does our visitor demographic look like based on ticket type? How many tickets were sold by price today?',
-  'Time-of-day traffic heatmap': 'When are our peak arrival times today, this week, this month? Are we maintaining a constant flow of visitors?',
-}
-
 export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: string }) {
   const direction = kpi.comparison > 0 ? 'up' : kpi.comparison < 0 ? 'down' : 'flat'
   const TrendIcon = direction === 'up' ? ArrowUpRight : direction === 'down' ? ArrowDownRight : Minus
   const unfavorable = ['redemption'].includes(kpi.id) ? kpi.comparison < 0 : false
-  const annotation = kpiAnnotations[kpi.id] ?? 'Annotation text to be provided'
   return (
     <article className="kpi-card" aria-label={`${kpi.label}: ${formatValue(kpi)}`}>
-      <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button><button className="info-button annotation-button" aria-label={`Annotation for ${kpi.label}`} data-tooltip={annotation}><MessageSquareText size={15} /></button></div></div>
+      <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button></div></div>
       <strong>{formatValue(kpi)}</strong>
       <div className="kpi-footer">
         <span className={`trend ${unfavorable ? 'trend-bad' : direction === 'down' ? 'trend-muted' : 'trend-good'}`}><TrendIcon size={15} />{Math.round(Math.abs(kpi.comparison))}%</span>
@@ -57,21 +36,20 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
   )
 }
 
-export function ChartCard({ title, subtitle, badge = 'day-one', insight, action, annotation = false, className = '', children }: {
+export function ChartCard({ title, subtitle, badge = 'day-one', insight, action, className = '', children }: {
   title: string
   subtitle?: string
   badge?: Availability
   insight?: string
   action?: string
-  annotation?: boolean
   className?: string
   children: ReactNode
 }) {
   const [chartView, setChartView] = useState<ChartView>('selected')
   return (
-    <article className={`chart-card ${annotation ? 'chart-card-annotated' : ''} ${className}`}>
+    <article className={`chart-card ${className}`}>
       <header className="card-heading">
-        <div className="chart-card-copy"><div className="chart-title-line"><h3>{title}</h3>{annotation && <button className="info-button annotation-button chart-annotation-button" aria-label={`Annotation for ${title}`} data-tooltip={chartAnnotations[title] ?? 'Annotation text to be provided'}><MessageSquareText size={15} /></button>}</div>{subtitle && <p>{subtitle}</p>}</div>
+        <div className="chart-card-copy"><div className="chart-title-line"><h3>{title}</h3></div>{subtitle && <p>{subtitle}</p>}</div>
         <div className="chart-card-tools">
           <SourceBadge type={badge} />
           <label className="chart-view-filter"><span>Chart period</span><select value={chartView} onChange={(event) => setChartView(event.target.value as ChartView)} aria-label={`${title} chart period`}><option value="selected">Selected period</option><option value="prior">Prior period</option></select></label>

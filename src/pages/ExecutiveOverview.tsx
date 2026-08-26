@@ -43,7 +43,6 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
     <div className="page executive-page">
       <section className="page-hero">
         <div>
-          <span className="eyebrow">Executive overview</span>
           <h1>Commercial Performance Dashboard</h1>
           <p>An overview of performance, operations, and more to give you the information you need in seconds.</p>
           <div className="hero-period"><CalendarClock size={17} /><span>{data?.periodLabel ?? 'Last complete business day'} · <strong>{data?.dateRangeLabel ?? 'November 12, 2026'}</strong></span></div>
@@ -64,19 +63,19 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
       {data && state === 'loaded' && <section aria-labelledby="visual-title">
         <div className="section-heading"><div><h2 id="visual-title">Trends, mix, and conversion</h2></div><p>All views reflect completed periods and active filters.</p></div>
         <div className="chart-grid">
-          <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput." action="Move 40 tickets into the 3:00 PM window and stagger group check-in." annotation>
+          <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput." action="Move 40 tickets into the 3:00 PM window and stagger group check-in.">
             <SalesAttendanceChart data={data.salesAttendance} />
           </ChartCard>
-          <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue." action="Test a post-visit retail offer for scanned ticket holders." annotation>
+          <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue." action="Test a post-visit retail offer for scanned ticket holders.">
             <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />
           </ChartCard>
-          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels." action="Keep onsite prompts focused on Corporate and Insider upgrades." annotation>
+          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels." action="Keep onsite prompts focused on Corporate and Insider upgrades.">
             <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
           </ChartCard>
-          <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Strengthen campaign-to-landing-page continuity and test clearer next steps for high-intent visitors." annotation>
+          <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration." action="Strengthen campaign-to-landing-page continuity and test clearer next steps for high-intent visitors.">
             <FunnelChart data={data.funnel} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Ticket demand by visitor segment and revenue" subtitle="Aggregated ticket-holder mix and total ticket revenue" insight="Adults represented 50% of attendance and generated the largest share of ticket revenue. Military, child, and teen student admission remained complimentary." action="Protect complimentary access while monitoring paid demand across adult and senior tickets." annotation>
+          <ChartCard className="chart-full" title="Ticket demand by visitor segment and revenue" subtitle="Aggregated ticket-holder mix and total ticket revenue" insight="Adults represented 50% of attendance and generated the largest share of ticket revenue. Military, child, and teen student admission remained complimentary." action="Protect complimentary access while monitoring paid demand across adult and senior tickets.">
             <DemographicPriceChart data={data.visitorDemographics} />
           </ChartCard>
         </div>
