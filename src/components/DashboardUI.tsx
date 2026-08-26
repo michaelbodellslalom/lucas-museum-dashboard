@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { AlertTriangle, ArrowDownRight, ArrowUpRight, CircleCheck, Database, Info, Minus, RefreshCw } from 'lucide-react'
+import { AlertTriangle, ArrowDownRight, ArrowUpRight, ChevronDown, CircleCheck, Database, Info, Minus, RefreshCw } from 'lucide-react'
 import type { Availability, Kpi, OperatingStatus } from '../types/dashboard'
 import { ChartViewProvider, type ChartView } from './Charts'
 
@@ -28,7 +28,7 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
       <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button></div></div>
       <strong>{formatValue(kpi)}</strong>
       <div className="kpi-footer">
-        <span className={`trend ${unfavorable ? 'trend-bad' : direction === 'down' ? 'trend-muted' : 'trend-good'}`}><TrendIcon size={15} />{Math.round(Math.abs(kpi.comparison))}%</span>
+        <span className={`trend ${unfavorable || direction === 'down' ? 'trend-bad' : direction === 'up' ? 'trend-good' : 'trend-muted'}`}><TrendIcon size={15} />{Math.round(Math.abs(kpi.comparison))}%</span>
         <span>vs. {comparisonLabel}</span>
       </div>
       <SourceBadge type={kpi.availability} />
@@ -46,6 +46,7 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
   children: ReactNode
 }) {
   const [chartView, setChartView] = useState<ChartView>('selected')
+  const [insightOpen, setInsightOpen] = useState(false)
   return (
     <article className={`chart-card ${className}`}>
       <header className="card-heading">
@@ -56,7 +57,12 @@ export function ChartCard({ title, subtitle, badge = 'day-one', insight, action,
         </div>
       </header>
       <ChartViewProvider value={chartView}>{children}</ChartViewProvider>
-      {insight && <div className="insight"><strong>What this means</strong><span>{insight}</span>{action && <b>Suggested action: {action}</b>}</div>}
+      {insight && <div className={`insight ${insightOpen ? 'insight-open' : ''}`}>
+        <button className="insight-toggle" onClick={() => setInsightOpen(!insightOpen)} aria-expanded={insightOpen}>
+          <strong>What this means</strong><ChevronDown size={16} aria-hidden="true" />
+        </button>
+        {insightOpen && <div className="insight-details"><span>{insight}</span>{action && <b>Suggested action: {action}</b>}</div>}
+      </div>}
     </article>
   )
 }

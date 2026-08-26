@@ -10,6 +10,7 @@ import {
   LabelList,
   Legend,
   Line,
+  LineChart,
   Pie,
   PieChart,
   ReferenceLine,
@@ -18,9 +19,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import type { CategoryValue, DemographicValue, HeatmapCell, TimePoint } from '../types/dashboard'
+import type { CategoryValue, DemographicValue, GalleryPerformance, HeatmapCell, RevenueTrendPoint, RetailItem, TimePoint } from '../types/dashboard'
 
-const colors = ['#ff5a14', '#000000', '#7a7a7a', '#ff9b73', '#404040', '#c9c9c9', '#ffcfbd']
+const colors = ['#ff5a14', '#000000', '#55758a', '#688276', '#7a7a7a', '#9b806d', '#c9c9c9']
 const tooltipStyle = { border: '1px solid #d8d8d8', borderRadius: 0, boxShadow: '0 8px 24px rgba(0,0,0,.08)', fontSize: 12 }
 
 export type ChartView = 'selected' | 'prior'
@@ -30,7 +31,7 @@ export function ChartViewProvider({ value, children }: { value: ChartView; child
   return <ChartViewContext.Provider value={value}>{children}</ChartViewContext.Provider>
 }
 
-function useChartView() {
+export function useChartView() {
   return useContext(ChartViewContext)
 }
 
@@ -93,6 +94,100 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
       </BarChart></ResponsiveContainer>
     </AccessibleChart>
   </div>
+}
+
+export function RetailItemsChart({ data }: { data: RetailItem[] }) {
+  const view = useChartView()
+  const chartData = [...data]
+    .map((item) => view === 'selected' ? item : { ...item, inStore: Math.round(item.inStore * 0.92), online: Math.round(item.online * 0.92) })
+    .sort((first, second) => (second.inStore + second.online) - (first.inStore + first.online))
+  return <AccessibleChart label="Retail items ranked by combined in-store and online units sold" height={Math.max(300, chartData.length * 34)}>
+    <ResponsiveContainer width="100%" height="100%"><BarChart data={chartData} layout="vertical" margin={{ top: 8, right: 44, bottom: 8, left: 88 }}>
+      <CartesianGrid stroke="#ebebeb" horizontal={false} />
+      <XAxis type="number" tickLine={false} axisLine={false} fontSize={11} />
+      <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={82} fontSize={10} />
+      <Tooltip contentStyle={tooltipStyle} formatter={(value) => `${Number(value).toLocaleString()} items`} />
+      <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
+      <Bar dataKey="inStore" name="In-store" stackId="sales" fill="#ff5a14" radius={[0, 0, 0, 0]} />
+      <Bar dataKey="online" name="Online" stackId="sales" fill="#55758a" radius={[0, 0, 0, 0]} />
+    </BarChart></ResponsiveContainer>
+  </AccessibleChart>
+}
+
+function revenueTrendForRange(data: RevenueTrendPoint[], rangeDays: number) {
+  if (rangeDays === 1) {
+    const hourlyWeights = [0.08, 0.11, 0.15, 0.18, 0.17, 0.13, 0.1, 0.08]
+    return data.slice(-1).flatMap((item) => hourlyWeights.map((weight, index) => {
+      const hour = index + 10
+      return {
+      label: `${hour > 12 ? hour - 12 : hour} ${hour < 12 ? 'AM' : 'PM'}`,
+      ticketing: Math.round(item.ticketing * weight),
+      memberships: Math.round(item.memberships * weight),
+      foodAndBeverage: Math.round(item.foodAndBeverage * weight),
+      retail: Math.round(item.retail * weight),
+      events: Math.round(item.events * weight),
+      }
+    }))
+  }
+
+  if (rangeDays <= 7) return data.slice(-rangeDays)
+
+  const end = new Date(Date.UTC(2026, 10, 12))
+  return Array.from({ length: rangeDays }, (_, index) => {
+    const date = new Date(end.getTime() - (rangeDays - index - 1) * 86_400_000)
+    const source = data[index % data.length]
+    return {
+      ...source,
+      label: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(date),
+      ticketing: Math.round(source.ticketing * (0.86 + (index % 5) * 0.04)),
+      memberships: Math.round(source.memberships * (0.86 + (index % 5) * 0.04)),
+      foodAndBeverage: Math.round(source.foodAndBeverage * (0.86 + (index % 5) * 0.04)),
+      retail: Math.round(source.retail * (0.86 + (index % 5) * 0.04)),
+      events: Math.round(source.events * (0.86 + (index % 5) * 0.04)),
+    }
+  })
+}
+
+export function RevenueTrendChart({ data, rangeDays }: { data: RevenueTrendPoint[]; rangeDays: number }) {
+  const view = useChartView()
+  const rangeData = revenueTrendForRange(data, rangeDays)
+  const chartData = view === 'selected' ? rangeData : rangeData.map((item) => ({ ...item, ticketing: Math.round(item.ticketing * 0.92), memberships: Math.round(item.memberships * 0.92), foodAndBeverage: Math.round(item.foodAndBeverage * 0.92), retail: Math.round(item.retail * 0.92), events: Math.round(item.events * 0.92) }))
+  const series = [
+    ['ticketing', 'Ticketing', '#ff5a14'],
+    ['memberships', 'Memberships', '#000000'],
+    ['foodAndBeverage', 'Food & beverage', '#688276'],
+    ['retail', 'Retail', '#55758a'],
+    ['events', 'Events', '#9b806d'],
+  ] as const
+  return <AccessibleChart label="Revenue trend over time by category stream" height={290}>
+    <ResponsiveContainer width="100%" height="100%"><LineChart data={chartData} margin={{ top: 16, right: 18, bottom: 4, left: -8 }}>
+      <CartesianGrid stroke="#ebebeb" vertical={false} />
+      <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={11} />
+      <YAxis tickFormatter={(value) => `$${Number(value / 1000).toFixed(0)}k`} tickLine={false} axisLine={false} fontSize={11} />
+      <Tooltip contentStyle={tooltipStyle} formatter={(value) => `$${Number(value).toLocaleString()}`} />
+      <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
+      {series.map(([key, name, color]) => <Line key={key} type="monotone" dataKey={key} name={name} stroke={color} strokeWidth={2} dot={{ r: 2 }} />)}
+    </LineChart></ResponsiveContainer>
+  </AccessibleChart>
+}
+
+export function GalleryPerformanceChart({ data }: { data: GalleryPerformance[] }) {
+  const view = useChartView()
+  const chartData = [...data]
+    .map((item) => view === 'selected' ? item : { ...item, dwellTime: Math.round(item.dwellTime * 0.95), visitors: Math.round(item.visitors * 0.92) })
+    .sort((first, second) => second.visitors - first.visitors)
+  return <AccessibleChart label="Top ten galleries by visitor count with average dwell time" height={350}>
+    <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 16, right: 12, bottom: 38, left: -8 }}>
+      <CartesianGrid stroke="#ebebeb" vertical={false} />
+      <XAxis dataKey="name" tickLine={false} axisLine={false} fontSize={9} angle={-30} textAnchor="end" interval={0} height={58} />
+      <YAxis yAxisId="visitors" tickFormatter={(value) => Number(value).toLocaleString()} tickLine={false} axisLine={false} fontSize={11} />
+      <YAxis yAxisId="dwell" orientation="right" tickFormatter={(value) => `${value}m`} tickLine={false} axisLine={false} fontSize={11} />
+      <Tooltip contentStyle={tooltipStyle} formatter={(value, name) => name === 'Dwell time' ? `${value} min` : `${Number(value).toLocaleString()} visitors`} />
+      <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
+      <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#ff5a14" radius={[0, 0, 0, 0]} />
+      <Line yAxisId="dwell" type="monotone" dataKey="dwellTime" name="Dwell time" stroke="#000000" strokeWidth={2} dot={{ r: 3 }} />
+    </ComposedChart></ResponsiveContainer>
+  </AccessibleChart>
 }
 
 function DemographicTooltip({ active, payload, label }: {

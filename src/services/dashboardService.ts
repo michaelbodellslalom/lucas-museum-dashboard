@@ -1,5 +1,5 @@
 import * as mock from '../data/mockData'
-import type { CategoryValue, DashboardData, DemographicValue, Filters, HeatmapCell, Kpi, QueueRisk, ReportingPeriod, TimePoint } from '../types/dashboard'
+import type { CategoryValue, DashboardData, DemographicValue, Filters, GalleryPerformance, HeatmapCell, Kpi, QueueRisk, ReportingPeriod, RevenuePlanRow, RevenueTrendPoint, RetailItem, TimePoint } from '../types/dashboard'
 
 export interface DashboardDataAdapter {
   getDashboardData(filters: Filters, signal?: AbortSignal): Promise<DashboardData>
@@ -86,6 +86,29 @@ function scaledDemographics(values: DemographicValue[], scale: number): Demograp
 
 function scaledCategories(values: CategoryValue[], scale: number): CategoryValue[] {
   return values.map((item) => ({ ...item, value: Math.round(item.value * scale), prior: item.prior ? Math.round(item.prior * scale) : undefined }))
+}
+
+function scaledRetailItems(values: RetailItem[], scale: number): RetailItem[] {
+  return values.map((item) => ({ ...item, inStore: Math.round(item.inStore * scale), online: Math.round(item.online * scale) }))
+}
+
+function scaledRevenueTrend(values: RevenueTrendPoint[], scale: number): RevenueTrendPoint[] {
+  return values.map((item) => ({
+    ...item,
+    ticketing: Math.round(item.ticketing * scale),
+    memberships: Math.round(item.memberships * scale),
+    foodAndBeverage: Math.round(item.foodAndBeverage * scale),
+    retail: Math.round(item.retail * scale),
+    events: Math.round(item.events * scale),
+  }))
+}
+
+function scaledGalleryPerformance(values: GalleryPerformance[], scale: number, averageFactor: number): GalleryPerformance[] {
+  return values.map((item) => ({ ...item, dwellTime: Math.round(item.dwellTime * averageFactor), visitors: Math.round(item.visitors * scale) }))
+}
+
+function scaledRevenuePlan(values: RevenuePlanRow[], scale: number): RevenuePlanRow[] {
+  return values.map((item) => ({ ...item, actual: Math.round(item.actual * scale), planned: Math.round(item.planned * scale) }))
 }
 
 function scaledSeries(values: TimePoint[], scale: number): TimePoint[] {
@@ -179,6 +202,10 @@ export class MockDashboardAdapter implements DashboardDataAdapter {
       acquisitionMix: shiftedMix(mock.acquisitionMix, mixShift),
       subscriberTrend: scaledAverageSeries(mock.subscriberTrend, averageFactor),
       reservationsTrend: scaledSeries(mock.reservationsTrend, Math.max(0.2, scale)),
+      retailItems: scaledRetailItems(mock.retailItems, Math.max(0.2, scale)),
+      revenueTrend: scaledRevenueTrend(mock.revenueTrend, Math.max(0.2, scale)),
+      galleryPerformance: scaledGalleryPerformance(mock.galleryPerformance, Math.max(0.2, scale), averageFactor),
+      revenuePlan: scaledRevenuePlan(mock.revenuePlan, Math.max(0.2, scale)),
     }
   }
 }

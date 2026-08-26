@@ -5,6 +5,10 @@ import type {
   HeatmapCell,
   Kpi,
   QueueRisk,
+  GalleryPerformance,
+  RevenuePlanRow,
+  RevenueTrendPoint,
+  RetailItem,
   TimePoint,
 } from '../types/dashboard'
 
@@ -19,14 +23,19 @@ export const filterOptions = {
 } as const
 
 export const baseKpis: Kpi[] = [
-  { id: 'tickets', label: 'Tickets sold', value: 4286, format: 'number', comparison: 8, definition: 'Paid and complimentary admissions booked during the selected completed period.', availability: 'day-one' },
-  { id: 'attendance', label: 'Visitors checked in', value: 3618, format: 'number', comparison: 5, definition: 'Unique redeemed admissions recorded at entry scanners.', availability: 'day-one' },
-  { id: 'redemption', label: 'Redemption rate', value: 84, format: 'percent', comparison: -2, definition: 'Checked-in visitors divided by tickets valid for the selected period.', availability: 'day-one' },
-  { id: 'capacity', label: 'Capacity utilization', value: 73, format: 'percent', comparison: 5, definition: 'Attendance divided by available operating capacity.', availability: 'day-one' },
-  { id: 'revenue', label: 'Total revenue', value: 187420, format: 'currency', comparison: 12, definition: 'Recognized ticketing, membership, commerce, event, and donation revenue.', availability: 'integration' },
-  { id: 'revenue-per-visitor', label: 'Revenue per visitor', value: 51.80, format: 'currency', comparison: 6, definition: 'Total recognized revenue divided by checked-in visitors.', availability: 'integration' },
-  { id: 'memberships', label: 'Memberships sold', value: 164, format: 'number', comparison: 15, definition: 'New paid memberships started in the selected period.', availability: 'day-one' },
-  { id: 'conversion', label: 'Ticket-to-member conversion', value: 4, format: 'percent', comparison: 1, definition: 'Memberships sold divided by ticket purchases.', availability: 'day-one' },
+  { id: 'tickets', group: 'Admissions & Experience', label: 'Tickets sold', value: 4286, format: 'number', comparison: 8, definition: 'Paid and complimentary admissions booked during the selected completed period.', availability: 'day-one' },
+  { id: 'attendance', group: 'Admissions & Experience', label: 'Visitors checked in', value: 3618, format: 'number', comparison: 5, definition: 'Unique redeemed admissions recorded at entry scanners.', availability: 'day-one' },
+  { id: 'redemption', group: 'Admissions & Experience', label: 'Redemption rate', value: 84, format: 'percent', comparison: -2, definition: 'Checked-in visitors divided by tickets valid for the selected period.', availability: 'day-one' },
+  { id: 'capacity', group: 'Admissions & Experience', label: 'Capacity utilization', value: 73, format: 'percent', comparison: 5, definition: 'Attendance divided by available operating capacity.', availability: 'day-one' },
+  { id: 'satisfaction', group: 'Admissions & Experience', label: 'Visitor satisfaction rate', value: 92, format: 'percent', comparison: 3, definition: 'Share of post-visit respondents rating their museum experience positively.', availability: 'instrumentation' },
+  { id: 'revenue', group: 'Revenue & Fundraising', label: 'Total revenue', value: 187420, format: 'currency', comparison: 12, definition: 'Recognized ticketing, membership, commerce, event, and donation revenue.', availability: 'integration' },
+  { id: 'revenue-per-visitor', group: 'Revenue & Fundraising', label: 'Revenue per visitor', value: 51.80, format: 'currency', comparison: 6, definition: 'Total recognized revenue divided by checked-in visitors.', availability: 'integration' },
+  { id: 'donations-received', group: 'Revenue & Fundraising', label: 'Donations received', value: 137, format: 'number', comparison: 9, definition: 'Number of individual donation transactions recorded during the selected period.', availability: 'integration' },
+  { id: 'donation-amount', group: 'Revenue & Fundraising', label: 'Total donation amount', value: 9700, format: 'currency', comparison: 14, definition: 'Total donation and founder revenue recorded during the selected period.', availability: 'integration' },
+  { id: 'memberships', group: 'Membership', label: 'Memberships sold', value: 164, format: 'number', comparison: 15, definition: 'New paid memberships started in the selected period.', availability: 'day-one' },
+  { id: 'conversion', group: 'Membership', label: 'Ticket-to-member conversion', value: 4, format: 'percent', comparison: 1, definition: 'Memberships sold divided by ticket purchases.', availability: 'day-one' },
+  { id: 'events-sold', group: 'Events', label: 'Events sold', value: 28, format: 'number', comparison: 4, definition: 'Paid event registrations completed during the selected period.', availability: 'integration' },
+  { id: 'event-inquiries', group: 'Events', label: 'Event inquiries', value: 64, format: 'number', comparison: -6, definition: 'Qualified event and venue inquiries received during the selected period.', availability: 'integration' },
 ]
 
 export const alerts: AlertItem[] = [
@@ -49,11 +58,11 @@ export const salesAttendance: TimePoint[] = [
 export const revenueMix: CategoryValue[] = [
   { name: 'Ticketing', value: 78250, prior: 70940, color: '#ff5a14' },
   { name: 'Memberships', value: 46300, prior: 39780, color: '#000000' },
-  { name: 'Food & beverage', value: 21480, prior: 19810, color: '#7a7a7a' },
-  { name: 'Retail', value: 17640, prior: 16890, color: '#ff9b73' },
-  { name: 'Parking', value: 6840, prior: 6510, color: '#404040' },
-  { name: 'Events', value: 7210, prior: 6850, color: '#c9c9c9' },
-  { name: 'Donations / founders', value: 9700, prior: 6790, color: '#ffcfbd' },
+  { name: 'Food & beverage', value: 21480, prior: 19810, color: '#688276' },
+  { name: 'Retail', value: 17640, prior: 16890, color: '#55758a' },
+  { name: 'Parking', value: 6840, prior: 6510, color: '#9b806d' },
+  { name: 'Events', value: 7210, prior: 6850, color: '#7a7a7a' },
+  { name: 'Donations / founders', value: 9700, prior: 6790, color: '#c9c9c9' },
 ]
 
 export const membershipChannels: CategoryValue[] = [
@@ -163,4 +172,47 @@ export const reservationsTrend: TimePoint[] = [
   { label: 'Nov 8', current: 226, prior: 211 }, { label: 'Nov 9', current: 198, prior: 192 },
   { label: 'Nov 10', current: 244, prior: 219 }, { label: 'Nov 11', current: 262, prior: 237 },
   { label: 'Nov 12', current: 278, prior: 249 },
+]
+
+export const retailItems: RetailItem[] = [
+  { name: 'Museum catalog', inStore: 184, online: 142 },
+  { name: 'LM enamel pin', inStore: 216, online: 96 },
+  { name: 'Exhibition poster', inStore: 149, online: 118 },
+  { name: 'Storytelling tote', inStore: 132, online: 89 },
+  { name: 'Children\'s art kit', inStore: 108, online: 76 },
+  { name: 'Artist print set', inStore: 76, online: 103 },
+  { name: 'Postcard folio', inStore: 91, online: 54 },
+  { name: 'Gallery guide', inStore: 83, online: 46 },
+]
+
+export const revenueTrend: RevenueTrendPoint[] = [
+  { label: 'Nov 6', ticketing: 22400, memberships: 11200, foodAndBeverage: 3180, retail: 2640, events: 980 },
+  { label: 'Nov 7', ticketing: 25800, memberships: 12600, foodAndBeverage: 3420, retail: 2780, events: 1240 },
+  { label: 'Nov 8', ticketing: 28100, memberships: 13900, foodAndBeverage: 3680, retail: 3110, events: 870 },
+  { label: 'Nov 9', ticketing: 19600, memberships: 9800, foodAndBeverage: 2810, retail: 2320, events: 1120 },
+  { label: 'Nov 10', ticketing: 24200, memberships: 11700, foodAndBeverage: 3260, retail: 2740, events: 1360 },
+  { label: 'Nov 11', ticketing: 27600, memberships: 14100, foodAndBeverage: 3890, retail: 3250, events: 1640 },
+  { label: 'Nov 12', ticketing: 30550, memberships: 15200, foodAndBeverage: 4240, retail: 3480, events: 1980 },
+]
+
+export const galleryPerformance: GalleryPerformance[] = [
+  { name: 'Cinematic Art', dwellTime: 67, visitors: 287 },
+  { name: 'Art and Artists', dwellTime: 45, visitors: 749 },
+  { name: 'Cinema', dwellTime: 51, visitors: 1216 },
+  { name: 'West gallery', dwellTime: 42, visitors: 1922 },
+  { name: 'East gallery', dwellTime: 37, visitors: 1746 },
+  { name: 'Narrative Illustration', dwellTime: 32, visitors: 80 },
+  { name: 'Archive gallery', dwellTime: 29, visitors: 1094 },
+  { name: 'Storyboard Archive', dwellTime: 27, visitors: 27 },
+  { name: 'Graphic Novel Gallery', dwellTime: 25, visitors: 20 },
+  { name: 'Park / garden', dwellTime: 24, visitors: 812 },
+]
+
+export const revenuePlan: RevenuePlanRow[] = [
+  { channel: 'Ticketing', actual: 78250, planned: 76000 },
+  { channel: 'Memberships', actual: 46300, planned: 48000 },
+  { channel: 'Food & beverage', actual: 21480, planned: 20500 },
+  { channel: 'Retail', actual: 17640, planned: 18400 },
+  { channel: 'Parking', actual: 6840, planned: 7000 },
+  { channel: 'Events', actual: 7210, planned: 6800 },
 ]

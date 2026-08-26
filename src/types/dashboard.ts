@@ -15,6 +15,8 @@ export type Availability =
 
 export type OperatingStatus = 'On track' | 'Watch' | 'Needs attention' | 'At risk'
 
+export type KpiGroup = 'Admissions & Experience' | 'Revenue & Fundraising' | 'Membership' | 'Events'
+
 export interface Filters {
   period: ReportingPeriod
   membershipLevel: string[]
@@ -27,6 +29,7 @@ export interface Filters {
 
 export interface Kpi {
   id: string
+  group: KpiGroup
   label: string
   value: number
   format: 'number' | 'currency' | 'percent' | 'duration'
@@ -78,6 +81,33 @@ export interface HeatmapCell {
   value: number
 }
 
+export interface RetailItem {
+  name: string
+  inStore: number
+  online: number
+}
+
+export interface RevenueTrendPoint {
+  label: string
+  ticketing: number
+  memberships: number
+  foodAndBeverage: number
+  retail: number
+  events: number
+}
+
+export interface GalleryPerformance {
+  name: string
+  dwellTime: number
+  visitors: number
+}
+
+export interface RevenuePlanRow {
+  channel: string
+  actual: number
+  planned: number
+}
+
 export interface DashboardData {
   periodLabel: string
   dateRangeLabel: string
@@ -106,4 +136,8 @@ export interface DashboardData {
   acquisitionMix: CategoryValue[]
   subscriberTrend: TimePoint[]
   reservationsTrend: TimePoint[]
+  retailItems: RetailItem[]
+  revenueTrend: RevenueTrendPoint[]
+  galleryPerformance: GalleryPerformance[]
+  revenuePlan: RevenuePlanRow[]
 }
