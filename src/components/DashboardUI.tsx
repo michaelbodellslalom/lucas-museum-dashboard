@@ -24,8 +24,9 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
   const direction = kpi.comparison > 0 ? 'up' : kpi.comparison < 0 ? 'down' : 'flat'
   const TrendIcon = direction === 'up' ? ArrowUpRight : direction === 'down' ? ArrowDownRight : Minus
   const unfavorable = ['redemption'].includes(kpi.id) ? kpi.comparison < 0 : false
+  const isPhaseTwo = kpi.id === 'capacity' || kpi.id === 'average-dwell-time' || kpi.group === 'Events'
   return (
-    <article className="kpi-card" aria-label={`${kpi.label}: ${formatValue(kpi)}`}>
+    <article className={`kpi-card ${isPhaseTwo ? 'kpi-phase-two' : ''}`} aria-label={`${kpi.label}: ${formatValue(kpi)}`}>
       <div className="kpi-label"><span>{kpi.label}</span><div className="kpi-actions"><button className="info-button" aria-label={`Definition: ${kpi.definition}`} data-tooltip={kpi.definition}><Info size={15} /></button></div></div>
       <strong>{formatValue(kpi)}</strong>
       <div className="kpi-footer">
@@ -33,6 +34,7 @@ export function KpiCard({ kpi, comparisonLabel }: { kpi: Kpi; comparisonLabel: s
         <span>vs. {comparisonLabel}</span>
       </div>
       <SourceBadge type={kpi.availability} />
+      {isPhaseTwo && <span className="phase-two-badge">Coming in Phase 2</span>}
     </article>
   )
 }

@@ -15,7 +15,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { filterOptions } from '../data/mockData'
 import type { Filters, PageId, ReportingPeriod } from '../types/dashboard'
-import logoMark from '../../Images/LM Logo.png'
+import primaryLockup from '../assets/primary-lockup.png'
 
 const periodOptions: { value: ReportingPeriod; label: string; start: string; end: string }[] = [
   { value: 'last-business-day', label: 'Yesterday', start: '2026-11-11', end: '2026-11-11' },
@@ -197,7 +197,7 @@ export function FilterBar({ filters, onChange, onOpenNavigation }: {
 function Sidebar({ page, onNavigate, open, onClose }: { page: PageId; onNavigate: (page: PageId) => void; open: boolean; onClose: () => void }) {
   return (
     <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
-      <div className="wordmark"><img className="wordmark-mark" src={logoMark} alt="" /><span>LUCAS MUSEUM</span><small>OF NARRATIVE ART / INTERNAL</small></div>
+      <div className="wordmark"><img className="wordmark-lockup" src={primaryLockup} alt="Lucas Museum of Narrative Art" /><small>INTERNAL DASHBOARD</small></div>
       <button className="mobile-close" onClick={onClose} aria-label="Close navigation"><X /></button>
       <nav aria-label="Primary navigation">
         {navigation.map(({ id, pageId, label, icon: Icon }) => pageId ? (
