@@ -184,6 +184,7 @@ h1, h2, h3 { font-family: "Suisse Works Book", Georgia, "Times New Roman", serif
 .operating-picture-grid { grid-template-columns: repeat(4, minmax(150px, 1fr)); }
 .mini-metric-grid.compact { grid-template-columns: repeat(4, minmax(150px, 1fr)); margin-bottom: 14px; }
 .mini-metric { min-height: 115px; padding: 15px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); display: flex; flex-direction: column; }
+.mini-metric-phase-two { background: #eeece7; }
 .mini-metric-heading { min-height: 20px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; color: var(--blue); }.mini-metric-actions { display: flex; align-items: center; gap: 2px; }.mini-metric-heading .info-button { margin: -2px -2px 0 0; }.mini-metric > span { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
 .mini-metric > strong { margin: 5px 0; font-size: 22px; }.mini-metric-comparison { margin: 1px 0 7px; width: fit-content; gap: 2px; font-size: 11px; }.mini-metric-comparison i { margin: 0 2px; font-style: normal; font-weight: 500; }.mini-metric > small { margin-top: auto; color: var(--muted); font-size: 10px; line-height: 1.35; }
 .recommended-insights { margin-top: 14px; }
