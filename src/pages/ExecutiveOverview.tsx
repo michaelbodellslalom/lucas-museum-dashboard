@@ -1,5 +1,5 @@
 import { CalendarClock, RefreshCw } from 'lucide-react'
-import { DemographicPriceChart, DonutChart, FunnelChart, GalleryPerformanceChart, Heatmap, MembershipChart, RetailItemsChart, RevenueTrendChart, SalesAttendanceChart, useChartView } from '../components/Charts'
+import { DemographicPriceChart, DonutChart, FunnelChart, GalleryPerformanceChart, Heatmap, MembershipChart, RetailItemsChart, RevenueTrendChart, SalesAttendanceChart, WordCloud, useChartView } from '../components/Charts'
 import { ChartCard, KpiCard, MetricState } from '../components/DashboardUI'
 import type { DashboardData } from '../types/dashboard'
 import type { KpiGroup } from '../types/dashboard'
@@ -76,12 +76,14 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
       {data && state === 'loaded' && <section aria-labelledby="visual-title">
         <div className="section-heading"><div><h2 id="visual-title">Trends, mix, and conversion</h2></div><p>All views reflect completed periods and active filters.</p></div>
         <div className="chart-grid">
-          <ChartCard className="chart-half executive-paired-card revenue-top-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue.">
-            <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />
-          </ChartCard>
-          <ChartCard className="chart-half executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput.">
-            <SalesAttendanceChart data={data.salesAttendance} rangeDays={data.rangeDays} />
-          </ChartCard>
+          <div className="chart-pair">
+            <ChartCard className="executive-paired-card revenue-top-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue.">
+              <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />
+            </ChartCard>
+            <ChartCard className="executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput.">
+              <SalesAttendanceChart data={data.salesAttendance} rangeDays={data.rangeDays} />
+            </ChartCard>
+          </div>
           <ChartCard className="chart-full revenue-top-card" title="Revenue trend by stream" subtitle="Daily recognized revenue across major channels" insight="Ticketing remains the largest revenue stream, while membership and event revenue show the strongest late-period momentum.">
             <RevenueTrendChart data={data.revenueTrend} rangeDays={data.rangeDays} />
           </ChartCard>
@@ -100,12 +102,17 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
           <ChartCard className="chart-full" title="Time-of-day traffic heatmap" subtitle="Relative traffic index from aggregated observations" badge="instrumentation" insight="Elevator and gallery traffic converged between 1:00 and 3:00 PM; dining demand peaked later.">
             <Heatmap data={data.flowHeatmap} />
           </ChartCard>
-          <ChartCard className="chart-wide conversion-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels.">
-            <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
+          <ChartCard className="chart-full" title="Visitor themes" subtitle="Most frequent themes in visitor feedback" badge="instrumentation" insight="Cinema, family visits, and galleries are the strongest recurring themes in visitor feedback.">
+            <WordCloud />
           </ChartCard>
-          <ChartCard className="chart-wide conversion-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration.">
-            <FunnelChart data={data.funnel} />
-          </ChartCard>
+          <div className="chart-pair">
+            <ChartCard className="conversion-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels.">
+              <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
+            </ChartCard>
+            <ChartCard className="conversion-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration.">
+              <FunnelChart data={data.funnel} />
+            </ChartCard>
+          </div>
         </div>
       </section>}
 

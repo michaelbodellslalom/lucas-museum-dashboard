@@ -353,6 +353,23 @@ export function Heatmap({ data }: { data: HeatmapCell[] }) {
   </div>
 }
 
+const visitorThemes = [
+  ['cinema', 96], ['family', 82], ['galleries', 76], ['architecture', 68], ['artists', 63],
+  ['storytelling', 59], ['exhibitions', 54], ['food', 48], ['animation', 45], ['design', 41],
+  ['learning', 37], ['retail', 32], ['events', 29], ['accessibility', 25], ['membership', 22],
+] as const
+
+export function WordCloud() {
+  const minCount = Math.min(...visitorThemes.map(([, count]) => count))
+  const maxCount = Math.max(...visitorThemes.map(([, count]) => count))
+  return <div className="word-cloud" role="img" aria-label="Visitor feedback themes, with larger words representing more frequent themes">
+    {visitorThemes.map(([term, count], index) => {
+      const size = 14 + ((count - minCount) / (maxCount - minCount)) * 24
+      return <span key={term} style={{ fontSize: `${size}px`, color: colors[index % colors.length], fontWeight: count > 60 ? 700 : 500 }} title={`${term}: ${count} mentions`}>{term}</span>
+    })}
+  </div>
+}
+
 export function FlowMap({ scale = 1 }: { scale?: number }) {
   const view = useChartView()
   const flow = view === 'selected' ? { upper: 438, lower: 612 } : { upper: 403, lower: 563 }
