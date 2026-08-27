@@ -21,7 +21,7 @@ import {
 } from 'recharts'
 import type { CategoryValue, DemographicValue, GalleryPerformance, HeatmapCell, RevenueTrendPoint, RetailItem, TimePoint } from '../types/dashboard'
 
-const colors = ['#ff5a14', '#000000', '#55758a', '#688276', '#7a7a7a', '#9b806d', '#c9c9c9']
+const colors = ['#b89a6a', '#000000', '#806b4b', '#6d6659', '#9b9386', '#c8b99f', '#d7d2c8']
 const tooltipStyle = { border: '1px solid #d8d8d8', borderRadius: 0, boxShadow: '0 8px 24px rgba(0,0,0,.08)', fontSize: 12 }
 
 export type ChartView = 'selected' | 'prior'
@@ -84,7 +84,7 @@ export function SalesAttendanceChart({ data, rangeDays }: { data: TimePoint[]; r
       <YAxis tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-      <Bar dataKey="current" name="Tickets sold" fill="#ff5a14" stroke="#ff5a14" barSize={22} radius={[0, 0, 0, 0]} />
+      <Bar dataKey="current" name="Tickets sold" fill="#b89a6a" stroke="#b89a6a" barSize={22} radius={[0, 0, 0, 0]} />
       <Bar dataKey="secondary" name="Visitors checked in" fill="#688276" stroke="#688276" barSize={22} radius={[0, 0, 0, 0]} />
       <Line type="step" dataKey="capacity" name="Capacity" stroke="#7a7a7a" strokeDasharray="5 4" dot={false} />
     </ComposedChart></ResponsiveContainer>
@@ -116,7 +116,7 @@ export function MembershipChart({ channels, levels }: { channels: CategoryValue[
         <XAxis type="number" hide />
         <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} width={60} fontSize={12} />
         <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
-        <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#ff5a14" radius={[0, 0, 0, 0]}><LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
+        <Bar dataKey="value" name={view === 'selected' ? 'Selected period' : 'Prior comparable'} fill="#b89a6a" radius={[0, 0, 0, 0]}><LabelList dataKey="value" position="right" formatter={(value) => Number(value).toLocaleString()} fontSize={12} /></Bar>
         <ReferenceLine x={median} stroke="#000000" strokeWidth={2} strokeDasharray="7 4" label={{ value: `Median ${median.toLocaleString()}`, position: 'top', fill: '#000000', fontSize: 12, fontWeight: 700 }} />
       </BarChart></ResponsiveContainer>
     </AccessibleChart>
@@ -150,7 +150,7 @@ export function RetailItemsChart({ data }: { data: RetailItem[] }) {
       <YAxis dataKey="name" type="category" tick={<RetailAxisTick />} tickLine={false} axisLine={false} width={110} interval={0} />
       <Tooltip content={<RetailTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-      <Bar dataKey="inStoreRevenue" name="In-store revenue" stackId="revenue" fill="#ff5a14" radius={[0, 0, 0, 0]} />
+      <Bar dataKey="inStoreRevenue" name="In-store revenue" stackId="revenue" fill="#b89a6a" radius={[0, 0, 0, 0]} />
       <Bar dataKey="onlineRevenue" name="Online revenue" stackId="revenue" fill="#55758a" radius={[0, 0, 0, 0]} />
     </BarChart></ResponsiveContainer>
   </AccessibleChart></div>
@@ -195,7 +195,7 @@ export function RevenueTrendChart({ data, rangeDays }: { data: RevenueTrendPoint
   const rangeData = revenueTrendForRange(data, rangeDays)
   const chartData = view === 'selected' ? rangeData : rangeData.map((item) => ({ ...item, ticketing: Math.round(item.ticketing * 0.92), memberships: Math.round(item.memberships * 0.92), foodAndBeverage: Math.round(item.foodAndBeverage * 0.92), retail: Math.round(item.retail * 0.92), events: Math.round(item.events * 0.92) }))
   const series = [
-    ['ticketing', 'Ticketing', '#ff5a14'],
+    ['ticketing', 'Ticketing', '#b89a6a'],
     ['memberships', 'Memberships', '#000000'],
     ['foodAndBeverage', 'Food & beverage', '#688276'],
     ['retail', 'Retail', '#55758a'],
@@ -226,7 +226,7 @@ export function GalleryPerformanceChart({ data }: { data: GalleryPerformance[] }
       <YAxis yAxisId="dwell" orientation="right" tickFormatter={(value) => `${value}m`} tickLine={false} axisLine={false} fontSize={11} />
       <Tooltip contentStyle={tooltipStyle} formatter={(value, name) => name === 'Dwell time' ? `${value} min` : `${Number(value).toLocaleString()} visitors`} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-      <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#ff5a14" radius={[0, 0, 0, 0]} />
+      <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#b89a6a" radius={[0, 0, 0, 0]} />
       <Line yAxisId="dwell" type="monotone" dataKey="dwellTime" name="Dwell time" stroke="#000000" strokeWidth={2} dot={{ r: 3 }} />
     </ComposedChart></ResponsiveContainer>
   </AccessibleChart>
@@ -253,24 +253,13 @@ function DemographicAxisTick({ x = 0, y = 0, payload }: {
   payload?: { value: string }
 }) {
   const value = payload?.value ?? ''
-  if (value === 'Active Military') {
-    return <text x={x} y={y} textAnchor="middle" fill="#66635c" fontSize={11}>
-      <tspan x={x} dy="0.8em">Active</tspan>
-      <tspan x={x} dy="1.15em">Military</tspan>
-    </text>
-  }
-  const shortLabels: Record<string, string> = {
-    'Child (0-12)': 'Child',
-    'Teen Student (13-17)': 'Teen',
-    'Senior (65+)': 'Senior',
-  }
-  return <text x={x} y={y} dy="0.8em" textAnchor="middle" fill="#66635c" fontSize={11}>{shortLabels[value] ?? value}</text>
+  return <text x={x} y={y} dy="0.8em" textAnchor="middle" fill="#66635c" fontSize={11}>{value === 'Corporate Guest' ? <><tspan x={x} dy="0.8em">Corporate</tspan><tspan x={x} dy="1.15em">Guest</tspan></> : value}</text>
 }
 
 export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
   const view = useChartView()
   const periodData = view === 'selected' ? data : data.map((item) => ({ ...item, visitors: Math.round(item.visitors * 0.92) }))
-  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.ticketPrice }))
+  const chartData = periodData.map((item) => ({ ...item, totalRevenue: item.visitors * item.ticketPrice + (item.stackedVisitors ?? 0) * (item.stackedTicketPrice ?? 0) }))
   return <AccessibleChart label="Visitor volume and total ticket revenue by aggregated visitor demographic" height={280}>
     <ResponsiveContainer width="100%" height="100%"><ComposedChart data={chartData} margin={{ top: 18, right: 12, bottom: 4, left: -8 }}>
       <CartesianGrid stroke="#ebebeb" vertical={false} />
@@ -279,7 +268,8 @@ export function DemographicPriceChart({ data }: { data: DemographicValue[] }) {
       <YAxis yAxisId="revenue" orientation="right" tickFormatter={(value) => `$${Number(value).toLocaleString()}`} tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip content={<DemographicTooltip />} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-      <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#ff5a14" radius={[0, 0, 0, 0]} />
+      <Bar yAxisId="visitors" dataKey="visitors" name="Visitors" fill="#b89a6a" stackId="visitor-demand" radius={[0, 0, 0, 0]} />
+      <Bar yAxisId="visitors" dataKey="stackedVisitors" name="Teen" fill="#806b4b" stackId="visitor-demand" radius={[0, 0, 0, 0]} />
       <Line yAxisId="revenue" type="monotone" dataKey="totalRevenue" name="Total revenue" stroke="#000000" strokeWidth={3} dot={{ r: 4 }} />
     </ComposedChart></ResponsiveContainer>
   </AccessibleChart>
@@ -313,7 +303,7 @@ export function CapacityChart({ data }: { data: TimePoint[] }) {
       <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} />
       <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip contentStyle={tooltipStyle} formatter={(value) => `${value}%`} />
-      <Area type="monotone" dataKey="current" name="Utilization" stroke="#ff5a14" fill="#ffe0d2" strokeWidth={3} />
+      <Area type="monotone" dataKey="current" name="Utilization" stroke="#b89a6a" fill="#efe7d7" strokeWidth={3} />
       <Line type="monotone" dataKey="prior" name="Prior comparable" stroke="#7a7a7a" strokeWidth={2} dot={false} />
     </AreaChart></ResponsiveContainer>
   </AccessibleChart>
@@ -343,7 +333,7 @@ export function AreaPairChart({ data, label, firstName, secondName }: { data: Ti
       <YAxis tickLine={false} axisLine={false} fontSize={12} />
       <Tooltip contentStyle={tooltipStyle} formatter={(value) => Number(value).toLocaleString()} />
       <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-      <Area type="monotone" dataKey="current" name={firstName} stroke="#ff5a14" fill="#ffe0d2" strokeWidth={2} />
+      <Area type="monotone" dataKey="current" name={firstName} stroke="#b89a6a" fill="#efe7d7" strokeWidth={2} />
       <Area type="monotone" dataKey="secondary" name={secondName} stroke="#000000" fill="#ededed" strokeWidth={2} />
     </AreaChart></ResponsiveContainer>
   </AccessibleChart>
@@ -357,7 +347,7 @@ export function Heatmap({ data }: { data: HeatmapCell[] }) {
   return <div className="heatmap-wrap" role="img" aria-label="Visitor congestion by zone and hour; darker cells indicate higher traffic">
     <div className="heatmap" style={{ gridTemplateColumns: `88px repeat(${hours.length}, minmax(36px, 1fr))` }}>
       <span />{hours.map((hour) => <b key={hour}>{hour.replace(' ', '\n')}</b>)}
-      {zones.flatMap((zone) => [<strong key={`${zone}-label`}>{zone}</strong>, ...hours.map((hour) => { const value = chartData.find((cell) => cell.zone === zone && cell.hour === hour)?.value ?? 0; return <span key={`${zone}-${hour}`} style={{ backgroundColor: `color-mix(in srgb, #ff5a14 ${value}%, #f5f5f5)` }} title={`${zone}, ${hour}: traffic index ${value}`}><i>{value}</i></span> })])}
+      {zones.flatMap((zone) => [<strong key={`${zone}-label`}>{zone}</strong>, ...hours.map((hour) => { const value = chartData.find((cell) => cell.zone === zone && cell.hour === hour)?.value ?? 0; return <span key={`${zone}-${hour}`} style={{ backgroundColor: `color-mix(in srgb, #b89a6a ${value}%, #f5f5f5)` }} title={`${zone}, ${hour}: traffic index ${value}`}><i>{value}</i></span> })])}
     </div>
     <div className="heatmap-legend"><span>Lower traffic</span><i /><i /><i /><i /><span>Higher traffic</span></div>
   </div>

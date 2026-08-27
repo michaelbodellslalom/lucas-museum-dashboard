@@ -15,7 +15,7 @@ export type Availability =
 
 export type OperatingStatus = 'On track' | 'Watch' | 'Needs attention' | 'At risk'
 
-export type KpiGroup = 'Admissions & Experience' | 'Revenue & Fundraising' | 'Membership' | 'Events'
+export type KpiGroup = 'Admissions & Experience' | 'Revenue' | 'Fundraising' | 'Membership' | 'Events'
 
 export interface Filters {
   period: ReportingPeriod
@@ -57,6 +57,9 @@ export interface DemographicValue {
   name: string
   visitors: number
   ticketPrice: number
+  stackedVisitors?: number
+  stackedTicketPrice?: number
+  stackedLabel?: string
 }
 
 export interface AlertItem {

@@ -32,6 +32,10 @@ const navigation = [
   { id: 'operations', pageId: 'operations' as PageId, label: 'Operations Efficiencies', icon: ClipboardCheck },
   { id: 'admissions', label: 'Admissions', icon: TicketCheck },
   { id: 'digital-engagement', label: 'Digital Engagement', icon: MonitorSmartphone },
+  { id: 'visitor-services', label: 'Visitor Services', icon: Users },
+  { id: 'marketing', label: 'Marketing', icon: MonitorSmartphone },
+  { id: 'human-resources', label: 'Human Resources', icon: Users },
+  { id: 'volunteers', label: 'Volunteers', icon: Users },
 ]
 
 function Field({ label, value, options, onChange }: { label: string; value: string[]; options: readonly string[]; onChange: (value: string[]) => void }) {

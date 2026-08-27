@@ -17,8 +17,8 @@ export const REFRESH_TIME = '2026-11-12T05:00:00-08:00'
 
 export const filterOptions = {
   membershipLevel: ['All membership levels', 'Access', 'Alliance', 'Corporate', 'Insider', 'Social'],
-  demographic: ['Select all', 'Active Military', 'Adult', 'Child (0-12)', 'Teen Student (13-17)', 'Senior (65+)'],
-  ticketPrice: ['All ticket prices', 'Active Military ($0)', 'Adult ($25)', 'Child (0-12) ($0)', 'Senior (65+) ($21)', 'Teen Student (13-17) ($0)'],
+  demographic: ['Select all', 'Adult', 'Senior', 'Member', 'LM37', 'Child Teen', 'SNAP/EBT', 'Corporate Guest'],
+  ticketPrice: ['All ticket prices', 'Adult ($25)', 'Senior ($21)', 'Member ($0)', 'LM37 ($0)', 'Child Teen ($0)', 'SNAP/EBT ($3)', 'Corporate Guest ($0)'],
   membershipChannel: ['All membership channels', 'Online', 'In person'],
 } as const
 
@@ -31,10 +31,10 @@ export const baseKpis: Kpi[] = [
   { id: 'web-visitors', group: 'Admissions & Experience', label: 'Web visitors', value: 18420, format: 'number', comparison: 7, definition: 'Unique visitors to the museum website during the selected period.', availability: 'integration' },
   { id: 'click-through-rate', group: 'Admissions & Experience', label: 'Click-through rate', value: 6.8, format: 'percent', comparison: 1, definition: 'Share of tracked website sessions that clicked a primary ticketing or membership call to action.', availability: 'integration' },
   { id: 'average-dwell-time', group: 'Admissions & Experience', label: 'Average dwell time', value: 188, format: 'duration', comparison: 5, definition: 'Average time visitors spend in the museum during the selected period.', availability: 'instrumentation' },
-  { id: 'revenue', group: 'Revenue & Fundraising', label: 'Total revenue', value: 187420, format: 'currency', comparison: 12, definition: 'Recognized ticketing, membership, commerce, event, and donation revenue.', availability: 'integration' },
-  { id: 'revenue-per-visitor', group: 'Revenue & Fundraising', label: 'Revenue per visitor', value: 51.80, format: 'currency', comparison: 6, definition: 'Total recognized revenue divided by checked-in visitors.', availability: 'integration' },
-  { id: 'donations-received', group: 'Revenue & Fundraising', label: 'Donations received', value: 137, format: 'number', comparison: 9, definition: 'Number of individual donation transactions recorded during the selected period.', availability: 'integration' },
-  { id: 'donation-amount', group: 'Revenue & Fundraising', label: 'Total donation amount', value: 9700, format: 'currency', comparison: 14, definition: 'Total donation and founder revenue recorded during the selected period.', availability: 'integration' },
+  { id: 'revenue', group: 'Revenue', label: 'Total revenue', value: 187420, format: 'currency', comparison: 12, definition: 'Recognized ticketing, membership, commerce, event, and donation revenue.', availability: 'integration' },
+  { id: 'revenue-per-visitor', group: 'Revenue', label: 'Revenue per visitor', value: 51.80, format: 'currency', comparison: 6, definition: 'Total recognized revenue divided by checked-in visitors.', availability: 'integration' },
+  { id: 'donations-received', group: 'Fundraising', label: 'Donations received', value: 137, format: 'number', comparison: 9, definition: 'Number of individual donation transactions recorded during the selected period.', availability: 'integration' },
+  { id: 'donation-amount', group: 'Fundraising', label: 'Total donation amount', value: 9700, format: 'currency', comparison: 14, definition: 'Total donation and founder revenue recorded during the selected period.', availability: 'integration' },
   { id: 'memberships', group: 'Membership', label: 'Memberships sold', value: 164, format: 'number', comparison: 15, definition: 'New paid memberships started in the selected period.', availability: 'day-one' },
   { id: 'conversion', group: 'Membership', label: 'Ticket-to-member conversion', value: 4, format: 'percent', comparison: 1, definition: 'Memberships sold divided by ticket purchases.', availability: 'day-one' },
   { id: 'member-party-size', group: 'Membership', label: 'Average party size per member visit', value: 2.6, format: 'decimal', comparison: 4, definition: 'Average number of visitors included in a member-led museum visit.', availability: 'instrumentation' },
@@ -66,7 +66,7 @@ export const salesAttendance: TimePoint[] = [
 ]
 
 export const revenueMix: CategoryValue[] = [
-  { name: 'Ticketing', value: 78250, prior: 70940, color: '#ff5a14' },
+  { name: 'Ticketing', value: 78250, prior: 70940, color: '#b89a6a' },
   { name: 'Memberships', value: 46300, prior: 39780, color: '#000000' },
   { name: 'Food & beverage', value: 21480, prior: 19810, color: '#688276' },
   { name: 'Retail', value: 17640, prior: 16890, color: '#55758a' },
@@ -76,7 +76,7 @@ export const revenueMix: CategoryValue[] = [
 ]
 
 export const membershipChannels: CategoryValue[] = [
-  { name: 'Online', value: 111, prior: 92, color: '#ff5a14' },
+  { name: 'Online', value: 111, prior: 92, color: '#b89a6a' },
   { name: 'In person', value: 53, prior: 51, color: '#000000' },
 ]
 
@@ -89,11 +89,13 @@ export const membershipLevels: CategoryValue[] = [
 ]
 
 export const visitorDemographics: DemographicValue[] = [
-  { name: 'Active Military', visitors: 289, ticketPrice: 0 },
   { name: 'Adult', visitors: 1809, ticketPrice: 25 },
-  { name: 'Child (0-12)', visitors: 434, ticketPrice: 0 },
-  { name: 'Senior (65+)', visitors: 543, ticketPrice: 21 },
-  { name: 'Teen Student (13-17)', visitors: 543, ticketPrice: 0 },
+  { name: 'Senior', visitors: 543, ticketPrice: 21 },
+  { name: 'Member', visitors: 612, ticketPrice: 0 },
+  { name: 'LM37', visitors: 204, ticketPrice: 0 },
+  { name: 'Child Teen', visitors: 434, ticketPrice: 0, stackedVisitors: 543, stackedTicketPrice: 0, stackedLabel: 'Teen' },
+  { name: 'SNAP/EBT', visitors: 118, ticketPrice: 3 },
+  { name: 'Corporate Guest', visitors: 177, ticketPrice: 0 },
 ]
 
 export const funnel: CategoryValue[] = [

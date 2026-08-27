@@ -4,7 +4,8 @@ import { ChartCard, KpiCard, MetricState } from '../components/DashboardUI'
 import type { DashboardData } from '../types/dashboard'
 import type { KpiGroup } from '../types/dashboard'
 
-const kpiGroupOrder: KpiGroup[] = ['Admissions & Experience', 'Revenue & Fundraising', 'Membership', 'Events']
+const revenueKpiGroups: KpiGroup[] = ['Revenue', 'Fundraising']
+const kpiGroupOrder: KpiGroup[] = ['Admissions & Experience', 'Membership', 'Events']
 
 function RevenuePlanTable({ data }: { data: DashboardData['revenuePlan'] }) {
   const view = useChartView()
@@ -68,6 +69,11 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
         <strong className="brief-insight"><span>{museumBrief.primaryInsight.split(':')[0]}:</span>{museumBrief.primaryInsight.slice(museumBrief.primaryInsight.indexOf(':') + 1)}</strong>
       </section>
 
+      {data && state === 'loaded' && <section className="revenue-section" aria-labelledby="revenue-title">
+        <div className="section-heading"><div><span className="section-kicker">Commercial health</span><h2 id="revenue-title">Revenue &amp; fundraising</h2></div><p>Recognized revenue and giving, separated for faster review.</p></div>
+        <div className="kpi-groups revenue-kpi-groups">{revenueKpiGroups.map((group) => <div className="kpi-group" key={group}><h3>{group}</h3><div className="kpi-grid">{data.kpis.filter((kpi) => kpi.group === group).map((kpi) => <KpiCard key={kpi.id} kpi={kpi} comparisonLabel={data.comparisonLabel} />)}</div></div>)}</div>
+      </section>}
+
       <section aria-labelledby="kpi-title">
         <div className="section-heading"><div><h2 id="kpi-title">Summary KPIs</h2></div>{data && <p>Compared with {data.comparisonLabel}.</p>}</div>
         {state !== 'loaded' || !data ? <MetricState state={state === 'loaded' ? 'empty' : state} onRetry={onRetry} /> : <div className="kpi-groups">{kpiGroupOrder.map((group) => <div className="kpi-group" key={group}><h3>{group}</h3><div className="kpi-grid">{data.kpis.filter((kpi) => kpi.group === group).map((kpi) => <KpiCard key={kpi.id} kpi={kpi} comparisonLabel={data.comparisonLabel} />)}</div></div>)}</div>}
@@ -76,17 +82,17 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
       {data && state === 'loaded' && <section aria-labelledby="visual-title">
         <div className="section-heading"><div><h2 id="visual-title">Trends, mix, and conversion</h2></div><p>All views reflect completed periods and active filters.</p></div>
         <div className="chart-grid">
-          <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput.">
-            <SalesAttendanceChart data={data.salesAttendance} rangeDays={data.rangeDays} />
-          </ChartCard>
-          <ChartCard className="executive-paired-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue.">
+          <ChartCard className="executive-paired-card revenue-top-card" title="Revenue mix" subtitle="Recognized revenue by stream" badge="integration" insight="Membership revenue grew fastest, while food and retail captured 21% of total revenue.">
             <DonutChart data={data.revenueMix} label="Revenue mix across seven museum revenue streams" currency />
           </ChartCard>
-          <ChartCard className="chart-wide executive-paired-card" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels.">
-            <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
+          <ChartCard className="chart-full revenue-top-card" title="Revenue trend by stream" subtitle="Daily recognized revenue across major channels" insight="Ticketing remains the largest revenue stream, while membership and event revenue show the strongest late-period momentum.">
+            <RevenueTrendChart data={data.revenueTrend} rangeDays={data.rangeDays} />
           </ChartCard>
-          <ChartCard className="executive-paired-card" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration.">
-            <FunnelChart data={data.funnel} />
+          <ChartCard className="chart-full revenue-top-card" title="Revenue actual vs. plan" subtitle="Recognized revenue compared with planned channel targets" insight="Ticketing, food and beverage, and events are above plan, while memberships, retail, and parking have room to close the gap.">
+            <RevenuePlanTable data={data.revenuePlan} />
+          </ChartCard>
+          <ChartCard className="chart-wide executive-paired-card" title="Ticket sales vs. visitor attendance" subtitle="Completed operating hours · capacity reference shown" insight="The 2:00 PM window was the day’s peak. Attendance remained below hard capacity, but arrivals compressed lobby throughput.">
+            <SalesAttendanceChart data={data.salesAttendance} rangeDays={data.rangeDays} />
           </ChartCard>
           <ChartCard className="chart-full" title="Ticket demand by visitor segment and revenue" subtitle="Aggregated ticket-holder mix and total ticket revenue" insight="Adults represented 50% of attendance and generated the largest share of ticket revenue. Military, child, and teen student admission remained complimentary.">
             <DemographicPriceChart data={data.visitorDemographics} />
@@ -94,17 +100,17 @@ export function ExecutiveOverview({ data, state, onRetry }: { data: DashboardDat
           <ChartCard className="chart-full" title="Retail items sold" subtitle="Top and low sellers across in-store and online channels" insight="Museum catalog and enamel pins lead combined retail volume, while online artist print sales outperform their in-store sales.">
             <RetailItemsChart data={data.retailItems} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Revenue trend by stream" subtitle="Daily recognized revenue across major channels" insight="Ticketing remains the largest revenue stream, while membership and event revenue show the strongest late-period momentum.">
-            <RevenueTrendChart data={data.revenueTrend} rangeDays={data.rangeDays} />
-          </ChartCard>
           <ChartCard className="chart-full" title="Gallery visits and dwell time" subtitle="Top ten galleries ranked by visitor count" insight="The West gallery brings the greatest visitor volume, while Cinematic Art leads dwell time among the highest-interest spaces.">
             <GalleryPerformanceChart data={data.galleryPerformance} />
           </ChartCard>
-          <ChartCard className="chart-full" title="Revenue actual vs. plan" subtitle="Recognized revenue compared with planned channel targets" insight="Ticketing, food and beverage, and events are above plan, while memberships, retail, and parking have room to close the gap.">
-            <RevenuePlanTable data={data.revenuePlan} />
-          </ChartCard>
           <ChartCard className="chart-full" title="Time-of-day traffic heatmap" subtitle="Relative traffic index from aggregated observations" badge="instrumentation" insight="Elevator and gallery traffic converged between 1:00 and 3:00 PM; dining demand peaked later.">
             <Heatmap data={data.flowHeatmap} />
+          </ChartCard>
+          <ChartCard className="chart-wide" title="Membership performance" subtitle="Channel contribution and membership level" insight="Online generated two-thirds of memberships, led by Alliance and Access levels.">
+            <MembershipChart channels={data.membershipChannels} levels={data.membershipLevels} />
+          </ChartCard>
+          <ChartCard className="chart-wide" title="Online drop off funnel" subtitle="Awareness through completed online action" insight="The largest audience loss occurs between awareness and interest, before visitors demonstrate active consideration.">
+            <FunnelChart data={data.funnel} />
           </ChartCard>
         </div>
       </section>}
