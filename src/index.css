@@ -166,6 +166,7 @@ h1, h2, h3 { font-family: "Suisse Works Book", Georgia, "Times New Roman", serif
 .conversion-card { min-height: 370px; align-self: stretch; }
 .conversion-card > .membership-chart, .conversion-card > .funnel-chart { min-height: 300px; }
 .conversion-card > .funnel-chart { min-height: 320px; }
+.conversion-card > .insight { margin-top: auto; }
 .funnel-step { width: 100%; display: flex; flex-direction: column; align-items: center; position: relative; cursor: help; }
 .funnel-step > div { min-height: 36px; padding: 7px 11px; clip-path: polygon(4% 0, 96% 0, 90% 100%, 10% 100%); color: #fff; display: grid; place-items: center; }
 .funnel-step > div span { width: 100%; font-size: 12px; line-height: 1.2; font-weight: 700; text-align: center; }
